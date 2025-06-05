@@ -1,103 +1,258 @@
-import Image from "next/image";
+'use client'
+import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+import Image from 'next/image';
 
-export default function Home() {
+
+export default function LoginPage() {
+  const [show, setShow] = useState(false)
+  const [isLogin, setIsLogin] = useState(true)
+  const [isOtpVisible, setIsOtpVisible] = useState(true)
+  const [otp, setOtp] = useState('')
+  const [data, setData] = useState({
+    email: '',
+    password: '',
+    fullname: '',
+    username: ''
+  })
+
+  useEffect(() => {
+    setShow(true)
+  }, [])
+
+  const handleSignup = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    
+    if (!data.email || !data.password || !data.fullname || !data.username) {
+      console.error("All fields are required for signup");
+      return;
+    }
+    try {
+      const res = fetch('/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      res.then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      }).then(data => {
+        console.log('Signup successful:', data);
+        setIsOtpVisible(true);
+      }).catch(error => { 
+        console.error('There was a problem with the fetch operation:', error);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleLogin = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    if (!data.email || !data.password) {
+      console.error("Email and password are required for login");
+      return;
+    }
+    try {
+      const res = fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      res.then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      }).then(data => {
+        console.log('Signup successful:', data);
+      }).catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  const handleOtp = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    if (!otp) {
+      console.error("OTP is required");
+      return;
+    }
+    try {
+      const res = fetch('/api/verifyotp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: data.email, otp }),
+      });
+      res.then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      }).then(data => {
+        console.log('OTP verification successful:', data);
+      }).catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen flex items-center justify-center bg-black text-white px-4">
+      <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        {/* Left: Animated image */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={show ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 1 }}
+          className="hidden md:block"
+        >
+          <Image
+            src="/images/login.png"
+            alt="App preview"
+            className="rounded-xl mx-auto shadow-lg"
+            layout="responsive"
+            width={700}
+            height={420}
+          />
+        </motion.div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        {/* Right: Login / Signup form */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={show ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="bg-zinc-900 rounded-xl p-8 w-full max-w-md mx-auto shadow-xl"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <h2 className="text-3xl font-bold font-sans text-center mb-6">
+            {isLogin ? 'Log In to Poplix' : 'Sign Up for Poplix'}
+          </h2>
+
+          {isLogin ? (
+            <form className="space-y-4">
+              <input
+                type="text"
+                placeholder="Email or username"
+                className="w-full p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={data.email}
+                onChange={(e) => setData({ ...data, email: e.target.value })}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                className="w-full p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={data.password}
+                onChange={(e) => setData({ ...data, password: e.target.value })}
+              />
+              <button
+                onClick={handleLogin}
+                type="submit"
+                className="w-full p-3 bg-blue-600 hover:bg-blue-700 transition-all rounded text-white font-semibold"
+              >
+                Log In
+              </button >
+            </form>
+          ) : (
+            <form className="space-y-4">
+              <input
+                type="email"
+                placeholder="Email"
+                value={data.email}
+                onChange={(e) => setData({ ...data, email: e.target.value })}
+                className="w-full p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={data.password}
+                onChange={(e) => setData({ ...data, password: e.target.value })}
+                className="w-full p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={data.fullname}
+                onChange={(e) => setData({ ...data, fullname: e.target.value })}
+                className="w-full p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <input
+                type="text"
+                placeholder="Username"
+                value={data.username}
+                onChange={(e) => setData({ ...data, username: e.target.value })}
+                className="w-full p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+
+              <button
+                onClick={handleSignup}
+                type="submit"
+                className="w-full p-3 bg-green-600 hover:bg-green-700 transition-all rounded text-white font-semibold"
+              >
+                Sign Up
+              </button>
+            </form>
+          )}
+          {
+          isOtpVisible &&  <div className='mt-5 flex flex-col gap-4'>
+              <input
+                type="text"
+                placeholder="OTP"
+                className="w-full  p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+              />
+              <button
+                onClick={handleOtp}
+                className="w-full p-3 bg-blue-600 hover:bg-blue-700 transition-all rounded text-white font-semibold"
+              >
+                Verify OTP
+              </button>
+            </div>
+          }
+
+
+          <div className="text-center text-sm text-zinc-400 mt-6">
+            {isLogin ? (
+              <>
+                Don&#39;t have an account?{' '}
+                <button
+                  onClick={() => setIsLogin(false)}
+                  className="text-green-400 hover:underline"
+                >
+                  Sign up
+                </button>
+              </>
+            ) : (
+              <>
+                Already have an account?{' '}
+                <button
+                  onClick={() => {
+                    setIsLogin(true);
+                    setIsOtpVisible(false);
+                  }}
+                  className="text-blue-400 hover:underline"
+                >
+                  Log in
+                </button>
+              </>
+            )}
+          </div>
+        </motion.div>
+      </div>
     </div>
-  );
+
+  )
 }
