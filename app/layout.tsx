@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+
   title: "Poplix – Connect with Us",
   description: "Poplix is your next-gen social media platform, designed to help you connect with friends, share moments, and discover local buzz.",
 };

@@ -1,3 +1,4 @@
+
 'use client'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
@@ -7,7 +8,7 @@ import Image from 'next/image';
 export default function LoginPage() {
   const [show, setShow] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
-  const [isOtpVisible, setIsOtpVisible] = useState(true)
+  const [isOtpVisible, setIsOtpVisible] = useState(false)
   const [otp, setOtp] = useState('')
   const [data, setData] = useState({
     email: '',
@@ -256,3 +257,5 @@ export default function LoginPage() {
 
   )
 }
+
+
