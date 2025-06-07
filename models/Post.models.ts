@@ -1,27 +1,15 @@
-import { Schema, model, Types } from "mongoose";
-
-export const PostType = [
-  "GENERAL",
-  "EVENT",
-  "MARKETPLACE",
-  "FOOD",
-  "QUESTION",
-  "CONFESSION",
-];
-export const UserStatus = ["ACTIVE", "SUSPENDED", "DELETED"];
-export const PlaceType = ["video", "image", "location", "text"];
+import { Schema, model,models, Types } from "mongoose";
 
 const PostSchema = new Schema({
-  type: {
-    type: String,
-    enum: PostType,
-    default: "text",
-  },
   user: { type: Types.ObjectId, ref: "User", required: true },
   title: String,
   content: String,
-  images: [String],
-  video: String,
+  url: String,
+  type: {
+    type: String,
+    enum: ["text", "image", "video"],
+    required: true,
+  },
   tags: [String],
   city: String,
   area: String,
@@ -31,7 +19,6 @@ const PostSchema = new Schema({
   eventDate: Date,
   place: {
     name: String,
-    type: { type: String, enum: PlaceType },
     address: String,
     coordinates: {
       lat: Number,
@@ -46,5 +33,6 @@ const PostSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-const Post = model("Post", PostSchema);
+
+const Post = models.Post ||  model("Post", PostSchema);
 export default Post;

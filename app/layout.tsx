@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -14,8 +15,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
 
-  title: "Poplix – Connect with Us",
+  title: "Poplix",
   description: "Poplix is your next-gen social media platform, designed to help you connect with friends, share moments, and discover local buzz.",
+  icons: {
+    icon: '/logos/poplix1.png',
+  },
 };
 
 

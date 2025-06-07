@@ -3,9 +3,12 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie'
 
 
 export default function LoginPage() {
+  const router = useRouter();
   const [show, setShow] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
   const [isOtpVisible, setIsOtpVisible] = useState(false)
@@ -21,15 +24,25 @@ export default function LoginPage() {
     setShow(true)
   }, [])
 
+useEffect(() => {
+  console.log('route is ruuning dont worry')
+  const token = Cookies.get('login');
+  if (token) {
+    setTimeout(() => {
+      router.replace('/home');
+    }, 100);
+  }
+}, [router]);
+
   const handleSignup = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    
+
     if (!data.email || !data.password || !data.fullname || !data.username) {
       console.error("All fields are required for signup");
       return;
     }
     try {
-      const res = fetch('/api/signup', {
+      const res = fetch('/api/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,7 +57,7 @@ export default function LoginPage() {
       }).then(data => {
         console.log('Signup successful:', data);
         setIsOtpVisible(true);
-      }).catch(error => { 
+      }).catch(error => {
         console.error('There was a problem with the fetch operation:', error);
       });
     } catch (error) {
@@ -59,7 +72,7 @@ export default function LoginPage() {
       return;
     }
     try {
-      const res = fetch('/api/login', {
+      const res = fetch('/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,6 +86,7 @@ export default function LoginPage() {
         return response.json();
       }).then(data => {
         console.log('Signup successful:', data);
+        router.push('/home');
       }).catch(error => {
         console.error('There was a problem with the fetch operation:', error);
       });
@@ -89,7 +103,7 @@ export default function LoginPage() {
       return;
     }
     try {
-      const res = fetch('/api/verifyotp', {
+      const res = fetch('/api/user/verifyotp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -207,7 +221,7 @@ export default function LoginPage() {
             </form>
           )}
           {
-          isOtpVisible &&  <div className='mt-5 flex flex-col gap-4'>
+            isOtpVisible && <div className='mt-5 flex flex-col gap-4'>
               <input
                 type="text"
                 placeholder="OTP"
