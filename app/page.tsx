@@ -4,7 +4,11 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie'
+
+import { handleSignup } from '@/actions/signup';
+import { handleLogin } from '@/actions/login';
+import { handleOtp } from '@/actions/otpverification';
+import { checkAuth } from '@/actions/auth';
 
 
 export default function LoginPage() {
@@ -25,105 +29,34 @@ export default function LoginPage() {
   }, [])
 
 useEffect(() => {
-  console.log('route is ruuning dont worry')
-  const token = Cookies.get('login');
-  if (token) {
-    setTimeout(() => {
-      router.replace('/home');
-    }, 100);
+  async function verifyAuth() {
+    const response = await checkAuth();
+    if (response) {
+      setTimeout(() => {
+        router.replace('/home');
+      }, 100);
+    }
   }
+  verifyAuth();
 }, [router]);
 
-  const handleSignup = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
 
-    if (!data.email || !data.password || !data.fullname || !data.username) {
-      console.error("All fields are required for signup");
-      return;
+  const onSubmit = async (e) => {
+    const success = await handleSignup(e, data);
+    if (success) {
+      setIsOtpVisible(true);
     }
-    try {
-      const res = fetch('/api/user/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      res.then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      }).then(data => {
-        console.log('Signup successful:', data);
-        setIsOtpVisible(true);
-      }).catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-      });
-    } catch (error) {
-      console.error(error);
+  };
+  const onSubmitLogin = async (e) => {
+    const success = await handleLogin(e, data);
+    if (success) {
+      router.push('/home');
     }
-  }
+  };
 
-  const handleLogin = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    if (!data.email || !data.password) {
-      console.error("Email and password are required for login");
-      return;
-    }
-    try {
-      const res = fetch('/api/user/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      res.then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      }).then(data => {
-        console.log('Signup successful:', data);
-        router.push('/home');
-      }).catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-
-  const handleOtp = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    if (!otp) {
-      console.error("OTP is required");
-      return;
-    }
-    try {
-      const res = fetch('/api/user/verifyotp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: data.email, otp }),
-      });
-      res.then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      }).then(data => {
-        console.log('OTP verification successful:', data);
-      }).catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const onOtpverification = async (e) => {
+    handleOtp(e, data , otp);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black text-white px-4">
@@ -173,7 +106,7 @@ useEffect(() => {
                 onChange={(e) => setData({ ...data, password: e.target.value })}
               />
               <button
-                onClick={handleLogin}
+                onClick={onSubmitLogin}
                 type="submit"
                 className="w-full p-3 bg-blue-600 hover:bg-blue-700 transition-all rounded text-white font-semibold"
               >
@@ -212,7 +145,7 @@ useEffect(() => {
               />
 
               <button
-                onClick={handleSignup}
+                onClick={onSubmit}
                 type="submit"
                 className="w-full p-3 bg-green-600 hover:bg-green-700 transition-all rounded text-white font-semibold"
               >
@@ -230,7 +163,7 @@ useEffect(() => {
                 onChange={(e) => setOtp(e.target.value)}
               />
               <button
-                onClick={handleOtp}
+                onClick={onOtpverification}
                 className="w-full p-3 bg-blue-600 hover:bg-blue-700 transition-all rounded text-white font-semibold"
               >
                 Verify OTP

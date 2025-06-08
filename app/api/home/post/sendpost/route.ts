@@ -27,38 +27,45 @@ export async function POST(req: NextRequest) {
     const userId = payload.userId;
 
     let uploadResult: any = null;
+    let type: "text" | "image" | "video" = "text";
 
     if (file) {
       const buffer = Buffer.from(await file.arrayBuffer());
 
       uploadResult = await new Promise((resolve, reject) => {
-        cloudinary.uploader.upload_stream(
-          {
-            folder: "poplix",
-            resource_type: "auto", // supports both images & videos
-          },
-          (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-          }
-        ).end(buffer);
+        cloudinary.uploader
+          .upload_stream(
+            {
+              folder: "poplix",
+              resource_type: "auto", // supports both images & videos
+            },
+            (err, result) => {
+              if (err) return reject(err);
+              resolve(result);
+            }
+          )
+          .end(buffer);
       });
+
+       type = uploadResult?.resource_type === "video" ? "video" : "image";
     }
 
- const user  = await User.findOne({
-  _id : userId
- })
+    const newPost = await Post.create({
+      user: userId,
+      content: content,
+      url: uploadResult?.url || null,
+      type: type,
+    });
 
     return NextResponse.json(
       {
         message: "Post created successfully",
-        // post: newPost,
-        user : user
+        post: newPost,
       },
       { status: 201 }
     );
   } catch (error) {
-    console.error("POST /sendpost error:", error);
+    console.log("POST /sendpost error:", error);
     return NextResponse.json(
       { error: "Something went wrong." },
       { status: 500 }

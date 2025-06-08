@@ -7,7 +7,10 @@ const UserSchema = new Schema({
   password: { type: String, required: true },
   otp: { type: String, required: true },
 
-  avatar: String,
+  avatar: {
+    type:String,
+    default : "https://asset.cloudinary.com/dsndcjfwh/bc746e21612b07e9392ee01e16f1b369"
+  },
   banner: String,
   bio: String,
   phone: { type: String, unique: true, sparse: true },
