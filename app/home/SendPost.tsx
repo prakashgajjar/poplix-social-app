@@ -10,6 +10,7 @@ import {
   X as XIcon,
 } from "lucide-react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const SendPost = () => {
   const [content, setContent] = useState("");
@@ -51,9 +52,9 @@ const SendPost = () => {
       );
 
       if (response.status === 201) {
-        alert('post uploaded');
+        toast.success("✨ New post just dropped!");
       } else {
-        alert("something wrong");
+         toast.success("Couldn't upload the post right now. Give it another shot? 💪");
       }
 
     } catch (error) {

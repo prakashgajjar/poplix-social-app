@@ -1,4 +1,4 @@
-import { Schema, model,models, Types } from "mongoose";
+import { Schema, model, models, Types } from "mongoose";
 
 const PostSchema = new Schema({
   user: { type: Types.ObjectId, ref: "User", required: true },
@@ -11,19 +11,11 @@ const PostSchema = new Schema({
     required: true,
   },
   tags: [String],
-  city: String,
-  area: String,
-  price: Number,
-  condition: String,
-  expiresAt: Date,
-  eventDate: Date,
-  place: {
-    name: String,
-    address: String,
-    coordinates: {
-      lat: Number,
-      lng: Number,
-    },
+  isRetweet: { type: Boolean, default: false },
+  retweetOf: {
+    type: Types.ObjectId,
+    ref: "Post",
+    default: null,
   },
   views: { type: Number, default: 0 },
   isPinned: { type: Boolean, default: false },
@@ -33,6 +25,5 @@ const PostSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-
-const Post = models.Post ||  model("Post", PostSchema);
+const Post = models.Post || model("Post", PostSchema);
 export default Post;

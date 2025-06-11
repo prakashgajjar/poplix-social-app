@@ -1,5 +1,5 @@
 "use client";
-
+import { Toaster } from 'react-hot-toast';
 import {
   FaHome, FaSearch, FaBell, FaUser, FaPlus,
 } from "react-icons/fa";
@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import SendPost from "./SendPost";
 import { getPosts } from "@/actions/getpost";
 import { getprofiledatail } from "@/actions/profile/getprofiledetail";
+import RePostCard from "./RePost";
 
 
 export default function HomeLayout() {
@@ -24,7 +25,7 @@ export default function HomeLayout() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-black text-white">
-
+      <Toaster position="top-right" reverseOrder={false} />
       {/* Feed center */}
       <main className="flex-1 max-w-3xl border-x h-screen overflow-scroll border-gray-800 mx-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
         {/* Sticky Tab Bar */}
@@ -32,8 +33,8 @@ export default function HomeLayout() {
           <button
             onClick={() => setActiveTab("foryou")}
             className={`w-1/2 py-2 font-semibold ${activeTab === "foryou"
-                ? "border-b-4 border-blue-500 text-white"
-                : "text-gray-400 hover:text-white"
+              ? "border-b-4 border-blue-500 text-white"
+              : "text-gray-400 hover:text-white"
               }`}
           >
             For You
@@ -41,8 +42,8 @@ export default function HomeLayout() {
           <button
             onClick={() => setActiveTab("following")}
             className={`w-1/2 py-2 font-semibold ${activeTab === "following"
-                ? "border-b-4 border-blue-500 text-white"
-                : "text-gray-400 hover:text-white"
+              ? "border-b-4 border-blue-500 text-white"
+              : "text-gray-400 hover:text-white"
               }`}
           >
             Following
@@ -53,9 +54,13 @@ export default function HomeLayout() {
           <SendPost />
 
           <div>
-            {posts.map((post) => (
-              <Post key={post._id} post={post} />
-            ))}
+            {posts.map((post) =>
+              post.isRetweet ? (
+                <RePostCard key={post._id} post={post.retweetOf} repostUser={post.user} />
+              ) : (
+                <Post key={post._id} post={post} />
+              )
+            )}
           </div>
         </div>
       </main>
