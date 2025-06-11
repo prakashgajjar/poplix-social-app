@@ -1,9 +1,12 @@
-
+"use client";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
+import { usePathname } from "next/navigation";
 import Sidebar from "./Navbar";
+import SubscribePremium from "./home/SubscribePremium";
+import TrendingCard from "./home/TrendingCard";
+import FollowSuggestions from "./home/FollowSuggestions";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,29 +18,44 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-
-  title: "Poplix",
-  description: "Poplix is your next-gen social media platform, designed to help you connect with friends, share moments, and discover local buzz.",
-  icons: {
-    icon: '/logos/poplix1.png',
-  },
-};
-
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const showSidebar = pathname !== "/";
+
   return (
-    <html lang="en" >
+    <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} h-screen antialiased bg-black text-white flex`}
+        className={`${geistSans.variable} ${geistMono.variable} h-screen antialiased bg-black text-white`}
       >
-          <Sidebar/>
-  
-        <div className=" w-full">{children}</div>
+        <div className="flex h-screen overflow-hidden max-w-[1400px] mx-auto">
+          {/* Left Sidebar */}
+          {showSidebar && <Sidebar />}
+
+          {/* Main Content */}
+          <main className="flex-1 px-1 py-4 md:px-1 lg:px-1">
+            {children}
+          </main>
+
+         {
+          showSidebar &&  <aside className="hidden lg:block w-[300px] px-1 mt-2 py-1">
+            <input
+              type="text"
+              placeholder="Search"
+              className="w-full px-4 py-2 rounded-full bg-gray-900 text-white outline-none mb-6"
+            />
+
+            <div className="flex flex-col mt-2 gap-5">
+              <SubscribePremium />
+              <TrendingCard />
+              <FollowSuggestions />
+            </div>
+          </aside>
+         }
+        </div>
       </body>
     </html>
   );

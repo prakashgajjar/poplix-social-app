@@ -28,17 +28,21 @@ export default function LoginPage() {
     setShow(true)
   }, [])
 
-useEffect(() => {
-  async function verifyAuth() {
-    const response = await checkAuth();
-    if (response) {
-      setTimeout(() => {
-        router.replace('/home');
-      }, 100);
+  useEffect(() => {
+    async function verifyAuth() {
+      const response = await checkAuth();
+      if (response) {
+        const hasReloaded = localStorage.getItem("hasReloaded");
+
+        if (!hasReloaded) {
+          localStorage.setItem("hasReloaded", "true");
+          router.replace("/home");
+          window.location.reload();
+        }
+      }
     }
-  }
-  verifyAuth();
-}, [router]);
+    verifyAuth();
+  }, [router]);
 
 
   const onSubmit = async (e) => {
@@ -55,7 +59,7 @@ useEffect(() => {
   };
 
   const onOtpverification = async (e) => {
-    handleOtp(e, data , otp);
+    handleOtp(e, data, otp);
   };
 
   return (
@@ -190,6 +194,9 @@ useEffect(() => {
                   onClick={() => {
                     setIsLogin(true);
                     setIsOtpVisible(false);
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 10)
                   }}
                   className="text-blue-400 hover:underline"
                 >

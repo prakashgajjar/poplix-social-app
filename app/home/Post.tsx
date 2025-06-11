@@ -3,11 +3,43 @@
 import { MessageCircle, Heart, Repeat, Share2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { likepost } from "@/actions/postActions/postlike";
+import { getlikes } from "@/actions/postActions/getlikes";
 
 const PostCard = ({ post }) => {
     const [expanded, setExpanded] = useState(false);
     const [showReadMore, setShowReadMore] = useState(false);
     const contentRef = useRef(null);
+
+    const [likedPost, setLikedPost] = useState([]);
+    const [isLiked, setIsLiked] = useState(false);
+
+    useEffect(() => {
+        if (likedPost && likedPost.includes(post._id)) {
+            setIsLiked(true);
+        } else {
+            setIsLiked(false);
+        }
+    }, [likedPost, post._id]);
+
+    const handleLike = async () => {
+        const res = await likepost(post._id);
+
+        if (res?.liked) {
+            setLikedPost((prev) => [...prev, post._id]);
+        } else {
+            setLikedPost((prev) => prev.filter((id) => id !== post._id));
+        }
+    };
+
+    const handleGetlike = async () => {
+        const data = await getlikes();
+        setLikedPost(data);
+    };
+
+    useEffect(() => {
+        handleGetlike();
+    }, []);
 
     useEffect(() => {
         const el = contentRef.current;
@@ -17,21 +49,25 @@ const PostCard = ({ post }) => {
     }, [post]);
 
     return (
-        <div className="max-w-xl mx-auto bg-black text-white p-4 rounded-xl shadow-md">
+        <div className="max-w-2xl mx-auto bg-black text-white p-4 rounded-xl shadow-md">
             {/* Header */}
-            <div className="flex items-center space-x-2">
-                <img
+            <div className="flex relative -left-[29px] items-center space-x-2">
+                <Image
                     src="https://res.cloudinary.com/dsndcjfwh/image/upload/v1749358852/user_irazfm.png"
                     alt="User"
-                    className="w-10 h-10 rounded-full"
+                    width={40}
+                    height={40}
+                    className="w-10 h-10 rounded-full object-cover"
                 />
                 <div>
                     <div className="font-bold flex items-center space-x-1">
                         <span>{post?.user?.username}</span>
-                        <img
+                        <Image
                             src="data:image/svg+xml;utf8,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20aria-label%3D%22Verified%20account%22%20role%3D%22img%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210%22%20stroke%3D%22%231DA1F2%22%20stroke-width%3D%222%22%20fill%3D%22%231DA1F2%22%3E%3C%2Fcircle%3E%0A%20%20%3Cpath%20d%3D%22M9%2012.5l2%202%204-4%22%20stroke%3D%22white%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3C%2Fpath%3E%0A%3C%2Fsvg%3E%0A"
                             alt="Verified"
-                            className="w-4 h-4"
+                            width={16}
+                            height={16}
+                            className="w-4 h-4 object-contain"
                         />
                         <span className="text-gray-400">
                             {post?.user?.username} · 22m
@@ -41,7 +77,7 @@ const PostCard = ({ post }) => {
             </div>
 
             {/* Content */}
-            <div className="mt-2 max-w-xl space-y-2 text-sm">
+            <div className="mt-2 max-w-2xl relative left-5 space-y-2 text-md">
                 <div
                     ref={contentRef}
                     className={`text-white whitespace-pre-wrap break-words overflow-hidden ${expanded ? "" : "line-clamp-4"}`}
@@ -61,17 +97,19 @@ const PostCard = ({ post }) => {
 
             {/* Media */}
             {post?.type === "image" && (
-                <div className="mt-3 grid grid-cols-2 gap-2 rounded-xl overflow-hidden">
-                    <img
+                <div className="mt-3 grid relative left-5 grid-cols-2 gap-2 rounded-xl overflow-hidden">
+                    <Image
                         src={post?.url}
                         alt="Post media"
-                        className="col-span-2 rounded-xl"
+                        width={900}
+                        height={300}
+                        className="col-span-2 rounded-xl object-cover"
                     />
                 </div>
             )}
 
             {post?.type === "video" && (
-                <div className="mt-3 grid grid-cols-2 gap-2 rounded-xl overflow-hidden">
+                <div className="mt-3 grid relative left-5 grid-cols-2 gap-2 rounded-xl overflow-hidden">
                     <video
                         src={post?.url}
                         className="col-span-2 rounded-xl"
@@ -92,8 +130,8 @@ const PostCard = ({ post }) => {
                 <div className="flex items-center space-x-1 hover:text-green-400 cursor-pointer">
                     <Repeat size={16} /> <span>14</span>
                 </div>
-                <div className="flex items-center space-x-1 hover:text-pink-400 cursor-pointer">
-                    <Heart size={16} /> <span>268</span>
+                <div className="flex items-center space-x-1 hover:text-pink-400 cursor-pointer" onClick={handleLike}>
+                    <Heart size={16} className={`${isLiked ? "fill-pink-500" : ""}`} /> <span>268</span>
                 </div>
                 <div className="flex items-center space-x-1 hover:text-white cursor-pointer">
                     <Share2 size={16} /> <span>9.2K</span>

@@ -1,8 +1,8 @@
 import cloudinary from "@/lib/cloudinary";
 import { NextResponse, NextRequest } from "next/server";
-import Post from "@/models/Post.models.ts";
-import { jwtVerify } from "jose";
+import Post from "@/models/Post.models";
 import User from "@/models/User.models";
+import { getUserIdFromToken } from "@/lib/getUserIdfromToken";
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,15 +16,9 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-
-    const token = req.cookies.get("login")?.value;
-    if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
-    const { payload } = await jwtVerify(token, secret);
-    const userId = payload.userId;
+    
+    const userId = await getUserIdFromToken();
+    const user = await User.findById(userId);
 
     let uploadResult: any = null;
     let type: "text" | "image" | "video" = "text";
@@ -56,6 +50,9 @@ export async function POST(req: NextRequest) {
       url: uploadResult?.url || null,
       type: type,
     });
+
+    user.posts.push(newPost._id);
+    await user.save();
 
     return NextResponse.json(
       {

@@ -25,7 +25,7 @@ const navItems = [
 export default function Sidebar() {
   const [selectedIndex, setSelectedIndex] = useState(null);
   return (
-  <div className="hidden md:flex flex-col justify-between w-80 px-4 py-6 border-r border-gray-800 ">
+  <div className="hidden md:flex flex-col justify-between w-[300px] px-1 py-6 border-r border-gray-800 ">
       <div>
         <div className="mb-10">
           <Image

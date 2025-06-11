@@ -18,6 +18,7 @@ export default function HomeLayout() {
   const [posts, setPosts] = useState([]);
   const [activeTab, setActiveTab] = useState("foryou");
 
+
   useEffect(() => {
     getPosts()
       .then(setPosts)
@@ -28,7 +29,7 @@ export default function HomeLayout() {
     <div className="flex h-screen overflow-hidden bg-black text-white">
       
       {/* Feed center */}
-      <main className="flex-1 max-w-2xl border-x h-screen overflow-scroll border-gray-800 mx-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+      <main className="flex-1 max-w-3xl border-x h-screen overflow-scroll border-gray-800 mx-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
         {/* Sticky Tab Bar */}
         <div className="flex justify-between items-center border-b border-gray-700 pb-2 mb-2 bg-black sticky top-0 z-10">
           <button
@@ -65,19 +66,7 @@ export default function HomeLayout() {
       </main>
 
       {/* Right sidebar */}
-      <aside className="hidden lg:block w-80 p-4">
-        <input
-          type="text"
-          placeholder="Search"
-          className="w-full px-4 py-2 rounded-full bg-gray-900 text-white outline-none mb-6"
-        />
-
-        <div className="flex flex-col gap-5">
-          <SubscribePremium />
-          <TrendingCard />
-          <FollowSuggestions />
-        </div>
-      </aside>
+      
 
       {/* Mobile Bottom Nav */}
       <div className="fixed bottom-0 w-full bg-black border-t border-gray-800 flex justify-around items-center py-2 md:hidden z-50">

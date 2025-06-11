@@ -67,7 +67,7 @@ const SendPost = () => {
   };
 
   return (
-    <div className="bg-black p-4 rounded-xl border border-gray-800 text-white w-full max-w-xl mx-auto">
+    <div className="bg-black p-4 rounded-xl border border-gray-800 text-white w-full  mx-auto">
       <div className="flex items-start gap-3">
         <img
           src="/images/2.jpg"
