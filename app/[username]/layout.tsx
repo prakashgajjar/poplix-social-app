@@ -1,16 +1,9 @@
 import "../globals.css";
 import type { Metadata } from "next";
-import { jwtVerify } from "jose";
-import { cookies } from "next/headers";
 
-
-const cookieStore = cookies();
-    const token = cookieStore.get("login")?.value;
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
-    const { payload } = await jwtVerify(token, secret);
     
 export const metadata: Metadata = {
-  title: `${payload.email}`,
+  title: `Poplix-Profile`,
   description:
     "Poplix is your next-gen social media platform, designed to help you connect with friends, share moments, and discover local buzz.",
   icons: {

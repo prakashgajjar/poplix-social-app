@@ -18,7 +18,6 @@ const SendPost = () => {
   const [isPosting, setIsPosting] = useState<boolean | null>(false);
 
 
-
   const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {

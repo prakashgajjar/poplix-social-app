@@ -8,10 +8,7 @@ import Post from "@/app/home/Post";
 import { useEffect, useState } from "react";
 import SendPost from "./SendPost";
 import { getPosts } from "@/actions/getpost";
-
-import TrendingCard from "./TrendingCard";
-import FollowSuggestions from "./FollowSuggestions";
-import SubscribePremium from "./SubscribePremium";
+import { getprofiledatail } from "@/actions/profile/getprofiledetail";
 
 
 export default function HomeLayout() {
@@ -27,28 +24,26 @@ export default function HomeLayout() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-black text-white">
-      
+
       {/* Feed center */}
       <main className="flex-1 max-w-3xl border-x h-screen overflow-scroll border-gray-800 mx-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
         {/* Sticky Tab Bar */}
         <div className="flex justify-between items-center border-b border-gray-700 pb-2 mb-2 bg-black sticky top-0 z-10">
           <button
             onClick={() => setActiveTab("foryou")}
-            className={`w-1/2 py-2 font-semibold ${
-              activeTab === "foryou"
+            className={`w-1/2 py-2 font-semibold ${activeTab === "foryou"
                 ? "border-b-4 border-blue-500 text-white"
                 : "text-gray-400 hover:text-white"
-            }`}
+              }`}
           >
             For You
           </button>
           <button
             onClick={() => setActiveTab("following")}
-            className={`w-1/2 py-2 font-semibold ${
-              activeTab === "following"
+            className={`w-1/2 py-2 font-semibold ${activeTab === "following"
                 ? "border-b-4 border-blue-500 text-white"
                 : "text-gray-400 hover:text-white"
-            }`}
+              }`}
           >
             Following
           </button>
@@ -66,7 +61,7 @@ export default function HomeLayout() {
       </main>
 
       {/* Right sidebar */}
-      
+
 
       {/* Mobile Bottom Nav */}
       <div className="fixed bottom-0 w-full bg-black border-t border-gray-800 flex justify-around items-center py-2 md:hidden z-50">

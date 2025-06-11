@@ -8,16 +8,6 @@ import SubscribePremium from "./home/SubscribePremium";
 import TrendingCard from "./home/TrendingCard";
 import FollowSuggestions from "./home/FollowSuggestions";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,18 +17,18 @@ export default function RootLayout({
   const showSidebar = pathname !== "/";
 
   return (
-    <html lang="en">
+    <html lang="en"  >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} h-screen antialiased bg-black text-white`}
+        className="bg-black text-white antialiased "
       >
         <div className="flex h-screen overflow-hidden max-w-[1400px] mx-auto">
           {/* Left Sidebar */}
           {showSidebar && <Sidebar />}
 
           {/* Main Content */}
-          <main className="flex-1 px-1 py-4 md:px-1 lg:px-1">
+          <div className="flex-1 px-1 py-4 md:px-1 lg:px-1">
             {children}
-          </main>
+          </div>
 
          {
           showSidebar &&  <aside className="hidden lg:block w-[300px] px-1 mt-2 py-1">
