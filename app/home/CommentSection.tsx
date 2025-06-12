@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { SendHorizonal } from "lucide-react";
 import Image from "next/image";
 import { sendcomment } from "@/actions/postActions/sendcomments";
+import { formatDistanceToNow } from 'date-fns';
 
 
 export default function CommentSection({ comments, postId , user }) {
@@ -61,7 +62,7 @@ console.log("user : ",user)
             {/* 👽 Avatar */}
             <div className="w-9 h-9 rounded-full overflow-hidden border border-[#444] flex-shrink-0 shadow">
               <Image
-                src={comment?.user?.avatar || "https://api.dicebear.com/8.x/bottts/svg?seed=guestalien"}
+                src={comment?.user?.avatar}
                 alt="User Avatar"
                 width={36}
                 height={36}
@@ -69,14 +70,14 @@ console.log("user : ",user)
               />
             </div>
 
-            {/* 📄 Comment Box */}
+            {/* Comment Box */}
             <div className="bg-[#181820] p-3 rounded-xl border border-[#2a2a2a] w-full shadow-sm">
               <div className="flex justify-between items-center mb-1">
                 <span className="text-white font-semibold text-sm">
                   {comment?.user?.username || "SpaceUser"}
                 </span>
                 <span className="text-xs text-gray-500">
-                  {comment?.createdAt || "a moment ago"}
+                  {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
                 </span>
               </div>
               <p className="text-sm text-gray-300 leading-snug">

@@ -1,15 +1,14 @@
  import axios from "axios";
  
- export  const getlikes = async () => {
+ export  const trendingtag = async () => {
     try {
-      const response = await axios.get("api/home/post/getlikes", {
+      const response = await axios.get("api/home/trending", {
         headers: {
           "Content-Type": "aplication/json"
         }
       })
-      // console.log(response.data.likedPostIds);
       if (response.status === 200) {
-        const data = response.data.likedPostIds;
+        const data = response.data;
         return data;
       }
     } catch (error) {

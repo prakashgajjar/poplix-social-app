@@ -10,8 +10,7 @@ import toast from "react-hot-toast";
       })
       if (response.status === 200) {
         const comments = response.data.comments;
-        console.log(comments);
-        toast.success("all comment get!");
+        // console.log(comments);
         return comments;
       }
     } catch (error) {

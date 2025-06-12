@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
           "Content-Type": "aplication/json"
         }
       })
-      console.log(response.data);
+      // console.log(response.data);
       if (response.status === 200) {
         const data = response.data;
         if(data){

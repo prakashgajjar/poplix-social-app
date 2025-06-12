@@ -7,7 +7,7 @@
           "Content-Type": "multipart/form-data"
         }
       })
-      console.log(response.data);
+      // console.log(response.data);
       if (response.status === 200) {
         const data = response.data;
         return data;

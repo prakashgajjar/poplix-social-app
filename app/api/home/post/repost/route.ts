@@ -37,7 +37,11 @@ export async function POST(req: NextRequest) {
       type: oldPost.type,
     });
 
-    const retweet = retweetDoc.toObject({ getters: true, versionKey: false })
+    const retweet = retweetDoc.toObject({ getters: true, versionKey: false });
+
+    oldPost.countRepost = (oldPost.countRepost || 0) + 1;
+    await oldPost.save();
+
     return NextResponse.json(
       {
         message: status.OK.message,

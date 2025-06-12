@@ -171,16 +171,16 @@ const PostCard = ({ post }) => {
                         }
                         setCommentLoad(!commentLoad);
                     }}>
-                        <MessageCircle size={16} /> <span>4</span>
+                        <MessageCircle size={16} /> <span>{post?.comments.length}</span>
                     </div>
                     <div className="flex items-center space-x-1 hover:text-green-400 cursor-pointer" onClick={() => setShowRepostModal(true)}>
-                        <Repeat size={16} /> <span>14</span>
+                        <Repeat size={16} /> <span>{post?.countRepost || 0}</span>
                     </div>
                     <div className="flex items-center space-x-1 hover:text-pink-400 cursor-pointer" onClick={handleLike}>
-                        <Heart size={16} className={`${isLiked ? "fill-pink-500" : ""}`} /> <span>268</span>
+                        <Heart size={16} className={`${isLiked ? "fill-pink-500" : ""}`} /> <span>{post?.likes.length}</span>
                     </div>
                     <div className="flex items-center space-x-1 hover:text-white cursor-pointer">
-                        <Share2 size={16} /> <span>9.2K</span>
+                        <Share2 size={16} /> <span>0</span>
                     </div>
                 </div>
 

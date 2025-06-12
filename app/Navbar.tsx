@@ -5,27 +5,40 @@ import {
   FaRocket, FaUsers, FaBriefcase, FaListUl, FaEllipsisH, FaBolt
 } from "react-icons/fa";
 import Image from "next/image";
-import { useState } from "react";
-
-const navItems = [
-  { icon: <FaHome />, label: "Home" },
-  { icon: <FaSearch />, label: "Explore" },
-  { icon: <FaBell />, label: "Notifications" },
-  { icon: <FaEnvelope />, label: "Messages" },
-  { icon: <FaListUl />, label: "Lists" },
-  { icon: <FaBookmark />, label: "Bookmarks" },
-  { icon: <FaBriefcase />, label: "Jobs" },
-  { icon: <FaUsers />, label: "Communities" },
-  { icon: <FaRocket />, label: "Premium" },
-  { icon: <FaBolt />, label: "Verified Orgs" },
-  { icon: <FaUser />, label: "Profile" },
-  { icon: <FaEllipsisH />, label: "More" },
-];
+import {  useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { getuserinfo } from "@/actions/getuserinfo";
 
 export default function Sidebar() {
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [user, setUser] = useState(null);
+
+  const navItems = [
+    { icon: <FaHome />, label: "Home", route: "/home" },
+    { icon: <FaSearch />, label: "Explore", route: "/explore" },
+    { icon: <FaBell />, label: "Notifications", route: "/notifications" },
+    { icon: <FaEnvelope />, label: "Messages", route: "/messages" },
+    { icon: <FaListUl />, label: "Lists", route: "/lists" },
+    { icon: <FaBookmark />, label: "Bookmarks", route: "/bookmarks" },
+    { icon: <FaBriefcase />, label: "Jobs", route: "/jobs" },
+    { icon: <FaUsers />, label: "Communities", route: "/communities" },
+    { icon: <FaRocket />, label: "Premium", route: "/premium" },
+    { icon: <FaBolt />, label: "Verified Orgs", route: "/verified-orgs" },
+    { icon: <FaUser />, label: "Profile", route: `/profile` },
+    { icon: <FaEllipsisH />, label: "More", route: "/more" },
+  ];
+
+  useEffect(() => {
+    async function run() {
+      const data = await getuserinfo();
+      setUser(data);
+      // console.log("data :", data)
+    }
+    run();
+  }, [])
+  const router = useRouter();
   return (
-  <div className="hidden md:flex flex-col justify-between w-[300px] px-1 py-6 border-r border-gray-800 ">
+     <div className="hidden md:flex flex-col justify-between w-[300px] px-1 py-6 border-r border-gray-800 ">
       <div>
         <div className="mb-10">
           <Image
@@ -37,13 +50,20 @@ export default function Sidebar() {
         </div>
 
         <nav className="space-y-4">
-          {navItems.map(({ icon, label }, i) => (
+          {navItems.map(({ icon, label, route }, i) => (
             <div
               key={i}
-              onClick={() => setSelectedIndex(i)}
-              className={`flex items-center gap-4 p-2 text-lg rounded-lg cursor-pointer hover:bg-gray-800 ${
-                selectedIndex === i ? "bg-gray-700" : ""
-              }`}
+              onClick={async () => {
+                setSelectedIndex(i)
+                if (route === "/profile" ) {
+                  router.replace(`${user?.user?.username}`)
+                }else{
+                  router.replace(`${route}`)
+                }
+                
+              }}
+              className={`flex items-center gap-4 p-2 text-lg rounded-lg cursor-pointer hover:bg-gray-800 ${selectedIndex === i ? "bg-gray-700" : ""
+                }`}
             >
               {icon}
               <span>{label}</span>
@@ -56,11 +76,11 @@ export default function Sidebar() {
         </button>
       </div>
 
-      <div className="flex items-center gap-3 mt-6 p-2 hover:bg-gray-800 rounded cursor-pointer">
-        <img src="/images/2.jpg" className="w-10 h-10 rounded-full" alt="Profile" />
+      <div className="flex items-center gap-3 mt-6 p-2 hover:bg-gray-800 rounded cursor-pointer" onClick={()=>router.replace(`${user?.user?.username}`)}>
+        <Image src={`${user?.user?.avatar || "/images/default-avatar.png"}`} className="w-10 h-10 rounded-full" alt="Profile" width={40} height={40}/>
         <div>
-          <p className="font-semibold">Prakash Gajjar</p>
-          <p className="text-sm text-gray-400">@prakash801805</p>
+          <p className="font-semibold">{user?.user?.username}</p>
+          <p className="text-sm text-gray-400">{user?.user?.username}</p>
         </div>
       </div>
     </div>

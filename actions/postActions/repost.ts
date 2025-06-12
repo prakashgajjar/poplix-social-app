@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
           "Content-Type": "aplication/json"
         }
       })
-      console.log(response.data.liked);
+      // console.log(response.data.liked);
       if (response.status === 200) {
         const data = response
          toast.success("✨ New post just dropped!");

@@ -16,16 +16,16 @@ export async function POST(req: NextRequest) {
       { $sample: { size: 10 } },
     ]);
     const postIds = posts.map((post) => post._id);
-const populatedPosts = await Post.find({ _id: { $in: postIds } })
-  .populate({
-    path: "user", // user who posted or reposted
-  })
-  .populate({
-    path: "retweetOf", // the original post
-    populate: {
-      path: "user", // also populate the user of the original post
-    },
-  });
+    const populatedPosts = await Post.find({ _id: { $in: postIds } })
+      .populate({
+        path: "user", // user who posted or reposted
+      })
+      .populate({
+        path: "retweetOf", // the original post
+        populate: {
+          path: "user", // also populate the user of the original post
+        },
+      });
     return NextResponse.json({ status: status.OK.code, data: populatedPosts });
   } catch (error) {
     console.error(error);

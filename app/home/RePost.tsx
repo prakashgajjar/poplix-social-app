@@ -52,9 +52,11 @@ const RePostCard = ({ post, repostUser }) => {
     <div className="max-w-2xl mx-auto bg-black text-white px-4 py-3 rounded-xl shadow-md ">
 
       {/* Repost Header with avatar */}
-      <div className="flex items-start -left-[29px] relative space-x-3 mb-2">
+      <div className="flex items-start -left-[29px] relative space-x-3 mb-2 cursor-pointer " onClick={()=>{
+         router.replace(`/${repostUser?.username}`);
+      }}>
         <Image
-          src={`${post?.user?.avatar}`}
+          src={`${repostUser?.avatar}`}
           alt="User"
           width={40}
           height={40}
@@ -146,16 +148,16 @@ const RePostCard = ({ post, repostUser }) => {
         {/* Action Buttons */}
         <div className="flex justify-between text-gray-400 mt-4 ml-12 text-sm">
           <div className="flex items-center space-x-1 hover:text-blue-400 cursor-pointer">
-            <MessageCircle size={16} /> <span>4</span>
+            <MessageCircle size={16} /> <span>{post?.comments?.length}</span>
           </div>
           <div className="flex items-center space-x-1 hover:text-green-400 cursor-pointer">
-            <Repeat size={16} /> <span>14</span>
+            <Repeat size={16} /> <span>{post?.countRepost?.length ||0}</span>
           </div>
           <div className="flex items-center space-x-1 hover:text-pink-400 cursor-pointer" onClick={handleLike}>
-            <Heart size={16} className={`${isLiked ? "fill-pink-500" : ""}`} /> <span>268</span>
+            <Heart size={16} className={`${isLiked ? "fill-pink-500" : ""}`} /> <span>{post?.likes?.length}</span>
           </div>
           <div className="flex items-center space-x-1 hover:text-white cursor-pointer">
-            <Share2 size={16} /> <span>9.2K</span>
+            <Share2 size={16} /> <span>0</span>
           </div>
         </div>
       </div>
