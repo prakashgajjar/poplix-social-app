@@ -179,7 +179,6 @@ const PostCard = ({ post }) => {
                         ]}
                         onPostComment={(newComment) => {
                             console.log("New comment:", newComment);
-                            // Call your backend API to save
                         }}
                     />
                 }

@@ -8,13 +8,14 @@ import Post from "@/app/home/Post";
 import { useEffect, useState } from "react";
 import SendPost from "./SendPost";
 import { getPosts } from "@/actions/getpost";
-import { getprofiledatail } from "@/actions/profile/getprofiledetail";
 import RePostCard from "./RePost";
+
 
 
 export default function HomeLayout() {
   const [posts, setPosts] = useState([]);
   const [activeTab, setActiveTab] = useState("foryou");
+
 
 
   useEffect(() => {
@@ -52,7 +53,6 @@ export default function HomeLayout() {
 
         <div className="p-4">
           <SendPost />
-
           <div>
             {posts.map((post) =>
               post.isRetweet ? (

@@ -8,15 +8,20 @@ import {
   CalendarClock,
   MapPin,
   X as XIcon,
+  Navigation,
+  Route,
+  Map,
 } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import EmojiPicker from "./EmojiComp";
 
 const SendPost = () => {
   const [content, setContent] = useState("");
   const [media, setMedia] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isPosting, setIsPosting] = useState<boolean | null>(false);
+  const [showEmoji , setShowEmoji] = useState<boolean |null>(false);
 
 
   const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +59,7 @@ const SendPost = () => {
       if (response.status === 201) {
         toast.success("✨ New post just dropped!");
       } else {
-         toast.success("Couldn't upload the post right now. Give it another shot? 💪");
+        toast.success("Couldn't upload the post right now. Give it another shot? 💪");
       }
 
     } catch (error) {
@@ -130,21 +135,31 @@ const SendPost = () => {
                   className="hidden"
                 />
               </label>
-              <Smile className="w-5 h-5" />
+              <div onClick={()=>setShowEmoji(!showEmoji)}>
+                <Smile className="w-5 h-5" />
+              </div>
               <CalendarClock className="w-5 h-5" />
               <MapPin className="w-5 h-5" />
+              <Route className="w-5 h-5" />
             </div>
 
             <button
               onClick={handlePost}
               disabled={(!content && !media) || isPosting}
               className={`px-4 py-1 rounded-full font-semibold transition ${(content || media) && !isPosting
-                  ? 'bg-blue-500 hover:bg-blue-600 text-white'
-                  : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                : 'bg-gray-700 text-gray-400 cursor-not-allowed'
                 }`}
-            > 
+            >
               {isPosting ? 'Posting...' : 'Post'}
             </button>
+          </div>
+          <div>
+            {
+             showEmoji && <div className='mt-2'>
+                <EmojiPicker setContent={setContent} />
+              </div>
+            }
           </div>
         </div>
       </div>

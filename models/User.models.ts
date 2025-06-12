@@ -32,8 +32,6 @@ const UserSchema = new Schema(
     bio: String,
     phone: { type: String, unique: true, sparse: true },
     website: String,
-    city: String,
-    area: String,
     gender: String,
     birthday: Date,
 
