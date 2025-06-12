@@ -1,78 +1,87 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { SendHorizonal } from "lucide-react";
+import Image from "next/image";
+import { sendcomment } from "@/actions/postActions/sendcomments";
 
-export default function CommentSection({ comments = [], onPostComment }) {
+
+export default function CommentSection({ comments, postId , user }) {
   const [commentText, setCommentText] = useState("");
-  const [allComments, setAllComments] = useState(comments);
   const commentBoxRef = useRef(null);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+console.log("user : ",user)
+  const handleSend = () => {
     if (!commentText.trim()) return;
-
-    const newComment = {
-      username: "You",
-      text: commentText,
-      timeAgo: "Just now",
-    };
-
-    await onPostComment(commentText);
-    setAllComments((prev) => [...prev, newComment]);
+    sendcomment(postId, commentText);
     setCommentText("");
-
-    // Scroll to bottom after comment
-    setTimeout(() => {
-      commentBoxRef.current.scrollTop = commentBoxRef.current.scrollHeight;
-    }, 100);
+    
   };
 
   return (
-    <div className="w-full  relative  max-w-2xl h-[400px] bg-[#101018]/80 border border-[#2a2a2a] rounded-2xl shadow-xl mx-auto flex flex-col overflow-hidden">
+    <div className="w-full max-w-2xl h-[450px] bg-[#0e0e15] border border-[#2a2a2a] rounded-2xl shadow-xl mx-auto flex flex-col overflow-hidden">
 
-      {/* 🧾 Top Input Row */}
-      <form
-        onSubmit={handleSubmit}
-        className="flex items-center gap-3 px-4 py-3 border-b border-[#333] bg-[#181818]"
-      >
-        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 text-white flex items-center justify-center font-bold shadow">
-          U
+      {/* 💬 Input Area */}
+      <div className="flex items-center gap-3 px-4 py-3 border-b border-[#333] bg-[#16161e]">
+        {/* 👽 Static Alien Avatar */}
+        <div className="w-10 h-10 rounded-full border-2 border-[#5eead4] overflow-hidden shadow-md">
+          <Image
+            src={`${user?.user?.avatar}`}
+            alt="Alien"
+            width={40}
+            height={40}
+            className="object-cover rounded-full"
+          />
         </div>
 
+        {/* 📝 Textarea */}
         <textarea
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
-          placeholder="Write a comment..."
+          placeholder="Leave a comment..."
           rows={1}
           className="flex-1 resize-none bg-[#101018] text-white placeholder-gray-500 p-2.5 rounded-xl border border-[#2a2a2a] focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm"
         />
 
+        {/* 📤 Send Button */}
         <button
-          type="submit"
-          className="p-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:brightness-110 text-white rounded-xl shadow-md transition-all"
+          onClick={handleSend}
+          className="p-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:brightness-110 text-white rounded-xl shadow-md transition-all"
         >
           <SendHorizonal size={18} />
         </button>
-      </form>
+      </div>
 
-      {/* 💬 Scrollable Comment List */}
+      {/* 🧾 Comment List */}
       <div
         ref={commentBoxRef}
-        className="flex-1 overflow-y-auto px-4  py-4 space-y-4 custom-scrollbar"
+        className="flex-1 overflow-y-auto px-4 py-4 space-y-5 custom-scrollbar"
       >
-        {allComments.map((comment, index) => (
+        {comments?.map((comment, index) => (
           <div key={index} className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold shadow">
-              {comment.username[0]?.toUpperCase()}
+            {/* 👽 Avatar */}
+            <div className="w-9 h-9 rounded-full overflow-hidden border border-[#444] flex-shrink-0 shadow">
+              <Image
+                src={comment?.user?.avatar || "https://api.dicebear.com/8.x/bottts/svg?seed=guestalien"}
+                alt="User Avatar"
+                width={36}
+                height={36}
+                className="object-cover rounded-full"
+              />
             </div>
 
-            <div className="bg-[#181818] p-3 rounded-xl border border-[#2a2a2a] w-full shadow-sm">
+            {/* 📄 Comment Box */}
+            <div className="bg-[#181820] p-3 rounded-xl border border-[#2a2a2a] w-full shadow-sm">
               <div className="flex justify-between items-center mb-1">
-                <span className="text-white font-semibold text-sm">{comment.username}</span>
-                <span className="text-xs text-gray-500">{comment.timeAgo}</span>
+                <span className="text-white font-semibold text-sm">
+                  {comment?.user?.username || "SpaceUser"}
+                </span>
+                <span className="text-xs text-gray-500">
+                  {comment?.createdAt || "a moment ago"}
+                </span>
               </div>
-              <p className="text-sm text-gray-300 leading-snug">{comment.text}</p>
+              <p className="text-sm text-gray-300 leading-snug">
+                {comment?.content}
+              </p>
             </div>
           </div>
         ))}

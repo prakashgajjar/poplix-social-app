@@ -3,7 +3,6 @@ import { Toaster } from 'react-hot-toast';
 import {
   FaHome, FaSearch, FaBell, FaUser, FaPlus,
 } from "react-icons/fa";
-import Image from "next/image";
 import Post from "@/app/home/Post";
 import { useEffect, useState } from "react";
 import SendPost from "./SendPost";
@@ -54,11 +53,11 @@ export default function HomeLayout() {
         <div className="p-4">
           <SendPost />
           <div>
-            {posts.map((post) =>
-              post.isRetweet ? (
-                <RePostCard key={post._id} post={post.retweetOf} repostUser={post.user} />
+            {posts?.map((post) =>
+              post?.isRetweet ? (
+                <RePostCard key={post._id} post={post?.retweetOf} repostUser={post?.user} />
               ) : (
-                <Post key={post._id} post={post} />
+                <Post key={post?._id} post={post} />
               )
             )}
           </div>

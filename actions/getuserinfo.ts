@@ -1,20 +1,19 @@
  import axios from "axios";
  
- export  const getPosts = async () => {
+ export  const getuserinfo = async () => {
     try {
-      const response = await axios.post("api/home/post/getposts", {}, {
+      const response = await axios.get("api/home/getuserinfo", {
         headers: {
           "Content-Type": "aplication/json"
         }
       })
-      // console.log(response.data.data);
+      console.log("userinfo : ",response.data);
       if (response.status === 200) {
-        const data = response.data.data;
+        const data = response.data;
         return data;
       }
     } catch (error) {
       console.error(error)
-      return null
     }
 
   }

@@ -11,12 +11,16 @@ import { formatDistanceToNow } from 'date-fns';
 import RepostConfirmModal from "./RepostConform";
 import { toast } from "react-hot-toast";
 import CommentSection from "./CommentSection";
+import { getcomments } from "@/actions/postActions/getcomments";
+import { getuserinfo } from "@/actions/getuserinfo";
 
 const PostCard = ({ post }) => {
     const [expanded, setExpanded] = useState(false);
     const [showReadMore, setShowReadMore] = useState(false);
     const [showRepostModal, setShowRepostModal] = useState(false);
     const [commentLoad, setCommentLoad] = useState(false);
+    const [commentData, setCommentData] = useState([]);
+    const [user, setUser] = useState(null);
     const contentRef = useRef(null);
     const router = useRouter()
 
@@ -57,7 +61,16 @@ const PostCard = ({ post }) => {
     };
 
     useEffect(() => {
-        handleGetlike();
+        async function getData() {
+            try {
+                const data = await getuserinfo();
+                await handleGetlike();
+                setUser(data);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getData();
     }, []);
 
     useEffect(() => {
@@ -92,7 +105,7 @@ const PostCard = ({ post }) => {
                                 className="w-4 h-4 object-contain"
                             />
                             <span className="text-gray-400">
-                                {post?.user?.username} · {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+                                {post?.user?.username} · {formatDistanceToNow(new Date(post?.createdAt), { addSuffix: true })}
                             </span>
                         </div>
                     </div>
@@ -151,7 +164,13 @@ const PostCard = ({ post }) => {
 
                 {/* Action Buttons */}
                 <div className="flex justify-between text-gray-400 mt-4 text-sm">
-                    <div className="flex items-center space-x-1 hover:text-blue-400 cursor-pointer" onClick={() => setCommentLoad(!commentLoad)}>
+                    <div className="flex items-center space-x-1 hover:text-blue-400 cursor-pointer" onClick={async () => {
+                        if(!commentLoad){                        
+                            const data = await getcomments(post?._id);
+                            setCommentData(data)
+                        }
+                        setCommentLoad(!commentLoad);
+                    }}>
                         <MessageCircle size={16} /> <span>4</span>
                     </div>
                     <div className="flex items-center space-x-1 hover:text-green-400 cursor-pointer" onClick={() => setShowRepostModal(true)}>
@@ -169,17 +188,9 @@ const PostCard = ({ post }) => {
             <div className="mt-2 relative left-2">
                 {
                     commentLoad && <CommentSection
-                        comments={[
-                            { username: "sneha", text: "Loved this post baby 😘", timeAgo: "2m ago" },
-                            { username: "raj_99", text: "🔥🔥", timeAgo: "10m ago" },
-                            { username: "sneha", text: "Loved this post baby 😘", timeAgo: "2m ago" },
-                            { username: "raj_99", text: "🔥🔥", timeAgo: "10m ago" },
-                            { username: "sneha", text: "Loved this post baby 😘", timeAgo: "2m ago" },
-                            { username: "raj_99", text: "🔥🔥", timeAgo: "10m ago" },
-                        ]}
-                        onPostComment={(newComment) => {
-                            console.log("New comment:", newComment);
-                        }}
+                        comments={commentData}
+                        postId={post?._id}
+                        user={user}
                     />
                 }
             </div>

@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("Error getting liked post IDs:", error);
     return NextResponse.json(
-      { message: status.INTERNAL_ERROR.message },
+      { message: error.message },
       { status: status.INTERNAL_ERROR.code }
     );
   }

@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       'tse4.mm.bing.net',
       "res.cloudinary.com",
       "asset.cloudinary.com",
+      "api.dicebear.com",
     ],
   },
 };
