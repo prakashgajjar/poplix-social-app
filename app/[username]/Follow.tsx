@@ -4,9 +4,6 @@ import { followuser } from '@/actions/profile/follow'
 const Follow = ({ id }) => {
     const [follow, setFollow] = useState<boolean>(false);
 
-    useEffect(() => {
-        setFollow(checkSubscribe);
-    }, [checkSubscribe]);
 
     const handleFollow = async () => {
         const data = await followuser(id);

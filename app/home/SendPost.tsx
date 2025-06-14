@@ -1,6 +1,6 @@
 
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image as ImageIcon,
   Video as VideoIcon,
@@ -15,13 +15,16 @@ import {
 import axios from "axios";
 import toast from "react-hot-toast";
 import EmojiPicker from "./EmojiComp";
+import Image from "next/image";
+import { getuserinfo } from "@/actions/auth/getuserinfo";
 
 const SendPost = () => {
   const [content, setContent] = useState("");
   const [media, setMedia] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isPosting, setIsPosting] = useState<boolean | null>(false);
-  const [showEmoji , setShowEmoji] = useState<boolean |null>(false);
+  const [showEmoji, setShowEmoji] = useState<boolean | null>(false);
+  const [userData, setUSerData] = useState<Object | null>(null);
 
 
   const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,12 +74,22 @@ const SendPost = () => {
     setIsPosting(false);
   };
 
+  useEffect(() => {
+    async function run() {
+      const data = await getuserinfo();
+      setUSerData(data)
+    }
+    run();
+  }, [])
+
   return (
     <div className="bg-black p-4 rounded-xl border border-gray-800 text-white w-full  mx-auto">
       <div className="flex items-start gap-3">
-        <img
-          src="/images/2.jpg"
+        <Image
+          src={`${userData?.user?.avatar || ""}`}
           alt="Profile"
+          height={40}
+          width={40}
           className="w-10 h-10 rounded-full object-cover"
         />
         <div className="flex-1">
@@ -104,10 +117,12 @@ const SendPost = () => {
                     className="max-h-64 w-full object-cover rounded-xl"
                   />
                 ) : (
-                  <img
+                  <Image
                     src={previewUrl}
                     alt="Preview"
-                    className=" w-full object-cover rounded-xl"
+                    className="w-full object-cover rounded-xl"
+                    width={800}
+                    height={400}
                   />
                 )}
               </div>
@@ -135,7 +150,7 @@ const SendPost = () => {
                   className="hidden"
                 />
               </label>
-              <div onClick={()=>setShowEmoji(!showEmoji)}>
+              <div onClick={() => setShowEmoji(!showEmoji)}>
                 <Smile className="w-5 h-5" />
               </div>
               <CalendarClock className="w-5 h-5" />
@@ -156,7 +171,7 @@ const SendPost = () => {
           </div>
           <div>
             {
-             showEmoji && <div className='mt-2'>
+              showEmoji && <div className='mt-2'>
                 <EmojiPicker setContent={setContent} />
               </div>
             }

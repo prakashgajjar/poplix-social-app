@@ -79,7 +79,7 @@ export default function Sidebar() {
       <div className="flex items-center gap-3 mt-6 p-2 hover:bg-gray-800 rounded cursor-pointer" onClick={()=>router.replace(`${user?.user?.username}`)}>
         <Image src={`${user?.user?.avatar || "/images/default-avatar.png"}`} className="w-10 h-10 rounded-full" alt="Profile" width={40} height={40}/>
         <div>
-          <p className="font-semibold text-white">{user?.user?.fullname || "not given" }</p>
+          <p className="font-semibold text-white">{user?.user?.fullname }</p>
           <p className="text-sm text-gray-400">{user?.user?.username}</p>
         </div>
       </div>
