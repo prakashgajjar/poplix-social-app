@@ -3,6 +3,7 @@ import { NextResponse, NextRequest } from "next/server";
 import Post from "@/models/Post.models";
 import User from "@/models/User.models";
 import { getUserIdFromToken } from "@/lib/getUserIdfromToken";
+import { Notification } from "@/models/Notification.models";
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,11 +17,11 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    
+
     const userId = await getUserIdFromToken();
     const user = await User.findById(userId);
 
-    let uploadResult: any = null;
+    let uploadResult = null;
     let type: "text" | "image" | "video" = "text";
 
     if (file) {
@@ -41,7 +42,7 @@ export async function POST(req: NextRequest) {
           .end(buffer);
       });
 
-       type = uploadResult?.resource_type === "video" ? "video" : "image";
+      type = uploadResult?.resource_type === "video" ? "video" : "image";
     }
 
     const newPost = await Post.create({
@@ -53,6 +54,28 @@ export async function POST(req: NextRequest) {
 
     user.posts.push(newPost._id);
     await user.save();
+
+    if (user.followers && user.followers.length > 0) {
+      const followers = await User.find({ _id: { $in: user.followers } });
+
+      await Promise.all(
+        followers.map(async (follower) => {
+          const notification = await Notification.create({
+            recipient: follower._id,
+            sender: userId,
+            type: "post", // optional: add this to enum
+            message: `${user.username} just posted something new!`,
+            meta: {
+              avatar: user.avatar,
+              username: user.username,
+            },
+          });
+
+          follower.notifications.push(notification._id);
+          await follower.save();
+        })
+      );
+    }
 
     return NextResponse.json(
       {

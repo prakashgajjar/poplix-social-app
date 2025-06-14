@@ -30,23 +30,23 @@ export default function RootLayout({
             {children}
           </div>
 
-         {
-          showSidebar &&  <aside className="hidden lg:block w-[300px] px-1 mt-2 py-1">
-            <input
-              type="text"
-              placeholder="Search"
-              className="w-full px-4 py-2 rounded-full bg-gray-900 text-white outline-none mb-6"
-            />
+          {
+            showSidebar && <aside className="hidden lg:block w-[300px] px-1 mt-2 py-1">
+              <input
+                type="text"
+                placeholder="Search"
+                className="w-full px-4 py-2 rounded-full bg-gray-900 text-white outline-none mb-6"
+              />
 
-            <div className="flex flex-col mt-2 gap-5">
-              <SubscribePremium />
-              <TrendingCard />
-              <FollowSuggestions />
-            </div>
-          </aside>
-         }
+              <div className="flex flex-col mt-2 gap-5">
+                <SubscribePremium />
+                <TrendingCard />
+                <FollowSuggestions />
+              </div>
+            </aside>
+          }
         </div>
       </body>
-    </html>
+    </html >
   );
 }

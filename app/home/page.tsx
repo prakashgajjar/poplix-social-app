@@ -6,7 +6,7 @@ import {
 import Post from "@/app/home/Post";
 import { useEffect, useState } from "react";
 import SendPost from "./SendPost";
-import { getPosts } from "@/actions/getpost";
+import { getPosts } from '@/actions/postActions/getpost';
 import RePostCard from "./RePost";
 
 
@@ -14,8 +14,6 @@ import RePostCard from "./RePost";
 export default function HomeLayout() {
   const [posts, setPosts] = useState([]);
   const [activeTab, setActiveTab] = useState("foryou");
-
-
 
   useEffect(() => {
     getPosts()

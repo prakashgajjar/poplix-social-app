@@ -12,7 +12,7 @@ import RepostConfirmModal from "./RepostConform";
 import { toast } from "react-hot-toast";
 import CommentSection from "./CommentSection";
 import { getcomments } from "@/actions/postActions/getcomments";
-import { getuserinfo } from "@/actions/getuserinfo";
+import { getuserinfo } from "@/actions/auth/getuserinfo";
 
 const PostCard = ({ post }) => {
     const [expanded, setExpanded] = useState(false);

@@ -1,21 +1,20 @@
  import axios from "axios";
 import toast from "react-hot-toast";
  
- export  const repost = async (postId) => {
+ export  const getallnotifications = async () => {
     try {
-      const response = await axios.post("api/home/post/repost",{postId}
-      , {
+      const response = await axios.get("api/notification/getallnotification", {
         headers: {
           "Content-Type": "aplication/json"
         }
       })
       if (response.status === 200) {
-        const data = response
-        return data;
+        const notification = response?.data?.user?.notifications;
+        return notification;
       }
     } catch (error) {
       console.error(error)
-      toast.success("Oops! Something went wrong. Please try again. 😔");
+      toast.success(error?.message);
     }
 
   }

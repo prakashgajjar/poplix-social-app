@@ -2,26 +2,43 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import status from "@/utils/status";
 import Post from "@/models/Post.models";
+import "@/models/Comment.models";
 
 export async function POST(req: NextRequest) {
   await connectDB();
 
   try {
-    const {id} = await req.json();
+    const { id } = await req.json();
 
-    const post = await Post.findOne({_id : id}).populate({
-        path : "comments",
-        populate : {
-            path : "user"
-        }
-    })
+    if (!id) {
+      return NextResponse.json(
+        { message: "Post ID is required" },
+        { status: status.BAD_REQUEST.code }
+      );
+    }
 
-    return NextResponse.json({ comments : post.comments  }, { status: status.OK.code });
+    const post = await Post.findById(id).populate({
+      path: "comments",
+      populate: {
+        path: "user",
+      },
+    });
 
-  } catch (error) {
-    console.error("Error getting liked post IDs:", error);
+    if (!post) {
+      return NextResponse.json(
+        { message: "Post not found" },
+        { status: status.NOT_FOUND.code }
+      );
+    }
+
     return NextResponse.json(
-      { message: error.message },
+      { comments: post.comments },
+      { status: status.OK.code }
+    );
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    return NextResponse.json(
+      { message: status.INTERNAL_ERROR.message },
       { status: status.INTERNAL_ERROR.code }
     );
   }

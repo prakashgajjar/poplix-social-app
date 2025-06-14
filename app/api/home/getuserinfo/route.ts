@@ -1,19 +1,20 @@
-import { NextRequest, NextResponse } from "next/server";
+import {NextResponse } from "next/server";
 import User from "@/models/User.models";
 import connectDB from "@/lib/db";
 import status from "@/utils/status";
 import { getUserIdFromToken } from "@/lib/getUserIdfromToken";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   await connectDB();
   const userId = await getUserIdFromToken();
 
   try {
     const user = await User.findOne({_id : userId}).populate({
         path:"posts",
+        populate : { path : "notifications"}
     })
 
-    console.log(user);
+    // console.log(user);
     if (!user) {
       NextResponse.json(
         { message: status.NOT_FOUND.message },

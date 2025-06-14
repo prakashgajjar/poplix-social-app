@@ -7,6 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import { uploadBanner } from "@/actions/profile/uploadbanner";
 import { uploadprofilepic } from "@/actions/profile/uploadprofilepic";
 import { getprofiledatail } from "@/actions/profile/getprofiledetail";
+import Follow from "./follow"
 import ProfileInfo from "./Profile";
 
 export default function ProfilePage() {
@@ -43,17 +44,17 @@ export default function ProfilePage() {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getprofiledatail({ username });
-        setProfile(data.user);
-        setUserId(data.userId);
-      } catch (error) {
-        console.error("Failed to fetch profile", error);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const data = await getprofiledatail({ username });
+      setProfile(data.user);
+      setUserId(data.userId);
+    } catch (error) {
+      console.error("Failed to fetch profile", error);
+    }
+  };
 
+  useEffect(() => {
     if (username) fetchData();
   }, [username]);
 
@@ -66,7 +67,7 @@ export default function ProfilePage() {
             <ArrowLeft size={20} />
           </button>
           <div>
-            <h1 className="text-white font-semibold text-base">{profile?.profileName || "User Name"}</h1>
+            <h1 className="text-white font-semibold text-base">{profile?.fullname || "User Name"}</h1>
             <p className="text-gray-400 text-sm">{profile?.posts?.length || 0} posts</p>
           </div>
         </div>
@@ -102,21 +103,25 @@ export default function ProfilePage() {
         {/* Profile Section */}
         <div className="px-4 mt-[-40px]">
           <div className="flex justify-between items-end">
-            <div className="relative group" >
+            <div className="relative group w-24 h-24">
               <Image
                 src={
-                  (profile?.avatar) ||
+                  profile?.avatar ||
                   "https://res.cloudinary.com/dsndcjfwh/image/upload/v1749358852/user_irazfm.png"
                 }
                 alt="Profile"
                 width={96}
                 height={96}
-                className="rounded-full border-4 border-black"
+                className="rounded-full border-4 border-black object-cover w-full h-full"
               />
-              {
-              (userId === profile._id) &&  <div>
-                  <div className="absolute inset-0 bg-black/60 rounded-full hidden group-hover:flex items-center justify-center cursor-pointer" onClick={handleProfilePicClick}>
-                    <Camera size={20} />
+
+              {userId === profile._id && (
+                <>
+                  <div
+                    className="absolute inset-0 bg-black/60 rounded-full hidden group-hover:flex items-center justify-center cursor-pointer transition"
+                    onClick={handleProfilePicClick}
+                  >
+                    <Camera size={20} className="text-white" />
                   </div>
                   <input
                     type="file"
@@ -126,12 +131,11 @@ export default function ProfilePage() {
                     className="hidden"
                     onChange={handleProfilePicChange}
                   />
-                </div>
-              }
+                </>
+              )}
             </div>
-            <button className="bg-white text-black rounded-full px-4 py-1 font-semibold text-sm">
-              Follow
-            </button>
+
+            <Follow id={profile._id}  />
           </div>
 
           <ProfileInfo profile={profile} />

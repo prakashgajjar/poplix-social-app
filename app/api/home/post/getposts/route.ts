@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
     const posts = await Post.aggregate([
       { $match: { _id: { $nin: seenPostIds.map((id) => new ObjectId(id)) } } },
-      { $sample: { size: 10 } },
+      { $sample: { size: 20 } },
     ]);
     const postIds = posts.map((post) => post._id);
     const populatedPosts = await Post.find({ _id: { $in: postIds } })
