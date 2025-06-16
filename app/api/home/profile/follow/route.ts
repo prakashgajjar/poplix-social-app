@@ -7,7 +7,8 @@ import status from "@/utils/status";
 export async function POST(req: NextRequest) {
   try {
     const userId = await getUserIdFromToken();
-    const { id } = await req.json();
+  const  id  = await req.json();
+    // console.log(userId , id);
 
     if (!userId || !id) {
       return NextResponse.json(

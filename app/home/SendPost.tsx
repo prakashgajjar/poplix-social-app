@@ -85,13 +85,15 @@ const SendPost = () => {
   return (
     <div className="bg-black p-4 rounded-xl border border-gray-800 text-white w-full  mx-auto">
       <div className="flex items-start gap-3">
-        <Image
-          src={`${userData?.user?.avatar || ""}`}
-          alt="Profile"
-          height={40}
-          width={40}
-          className="w-10 h-10 rounded-full object-cover"
-        />
+        {
+          userData && <Image
+            src={`${userData?.user?.avatar || ""}`}
+            alt="Profile"
+            height={40}
+            width={40}
+            className="w-10 h-10 rounded-full object-cover"
+          />
+        }
         <div className="flex-1">
           <input
             value={content}

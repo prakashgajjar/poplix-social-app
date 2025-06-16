@@ -11,7 +11,7 @@ const TrendingCard = () => {
     run();
   },[])
   return (
-    <div className="bg-gradient-to-br from-[#1f2937] via-[#111827] to-black p-5 rounded-2xl shadow-lg border border-gray-700">
+   trends && <div className="bg-gradient-to-br from-[#1f2937] via-[#111827] to-black p-5 rounded-2xl shadow-lg border border-gray-700">
       <h2 className="text-xl font-bold text-white mb-4 tracking-tight">
         What’s happening 🔥
       </h2>

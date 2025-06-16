@@ -8,14 +8,12 @@ export async function POST(req: NextRequest) {
   await connectDB();
   const userId = await getUserIdFromToken();
 
- const  {username}  = await req.json();
+  const { username } = await req.json();
 
   try {
-    const user = await User.findOne({username}).populate({
-        path:"posts",
-    })
+    const user = await User.findOne({ username }).populate("posts");
 
-    console.log(user);
+    // console.log(user);
     if (!user) {
       NextResponse.json(
         { message: status.NOT_FOUND.message },
@@ -24,7 +22,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      { message: status.OK.message, user , userId },
+      { message: status.OK.message, user, userId },
       { status: status.OK.code }
     );
   } catch (error) {

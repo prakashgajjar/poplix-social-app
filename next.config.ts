@@ -9,7 +9,8 @@ const nextConfig: NextConfig = {
       "res.cloudinary.com",
       "asset.cloudinary.com",
       "api.dicebear.com",
-      "i.pravatar.cc"
+      "i.pravatar.cc",
+      "images.pexels.com"
     ],
   },
 };

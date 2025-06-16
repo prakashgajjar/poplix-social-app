@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { Camera, ArrowLeft } from "lucide-react";
+import { Camera, ArrowLeft, ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { uploadBanner } from "@/actions/profile/uploadbanner";
@@ -9,6 +9,8 @@ import { uploadprofilepic } from "@/actions/profile/uploadprofilepic";
 import { getprofiledatail } from "@/actions/profile/getprofiledetail";
 import Follow from "./follow"
 import ProfileInfo from "./Profile";
+import { checkfollowuser } from "@/actions/profile/checkfollow";
+import Card from "../explore/Card";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("posts");
@@ -16,6 +18,7 @@ export default function ProfilePage() {
   const profilePicRef = useRef(null);
   const [profile, setProfile] = useState([]);
   const [userId, setUserId] = useState(null);
+  const [checkFollow, setCheckFollow] = useState<boolean>(false);
   const router = useRouter();
   const params = useParams();
 
@@ -47,20 +50,27 @@ export default function ProfilePage() {
   const fetchData = async () => {
     try {
       const data = await getprofiledatail({ username });
+      const data1 = await checkfollowuser(data.user._id);
+      console.log("posts of user : ", data.user.posts)
       setProfile(data.user);
       setUserId(data.userId);
+      setCheckFollow(data1);
     } catch (error) {
       console.error("Failed to fetch profile", error);
     }
   };
 
+
+
   useEffect(() => {
     if (username) fetchData();
   }, [username]);
 
+
+
   return (
     profile && (
-      <div className="max-w-4xl mx-auto bg-black text-white min-h-screen">
+      <div className="max-w-4xl mx-auto bg-black text-white overflow-auto h-screen">
         {/* Top Sticky Header */}
         <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-gray-800 px-4 py-2 flex items-center gap-4">
           <button onClick={() => router.replace('/home')} className="text-white hover:text-gray-300">
@@ -135,40 +145,34 @@ export default function ProfilePage() {
               )}
             </div>
 
-            <Follow id={profile._id}  />
+            {profile && <Follow id={profile._id} checkFollow={checkFollow} />}
           </div>
 
           <ProfileInfo profile={profile} />
         </div>
 
-        {/* Tabs */}
         <div className="mt-6 px-4">
-          <div className="flex gap-4 border-b border-gray-700">
-            {["posts", "replies", "media"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`py-2 text-sm font-medium border-b-2 transition-all duration-150 ${activeTab === tab
-                  ? "text-white border-white"
-                  : "text-gray-300 border-transparent hover:text-white"
-                  }`}
-              >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </button>
-            ))}
+          <div className="flex items-center gap-2 border-b-1 border-blue-500  py-2 text-white font-semibold hover:bg-blue-500/10 transition-all cursor-pointer">
+            <ImageIcon className="w-5 h-5 text-blue-400" />
+            <span>Posts</span>
           </div>
 
           <div className="mt-4">
-            {activeTab === "posts" && (
-              <div className="text-center py-6 text-gray-400">No posts yet.</div>
-            )}
-            {activeTab === "replies" && (
-              <div className="text-center py-6 text-gray-400">No replies yet.</div>
-            )}
-            {activeTab === "media" && (
-              <div className="text-center py-6 text-gray-400">No media uploaded yet.</div>
-            )}
+
+            <div className="grid grid-cols-3 gap-[1px] bg-black">
+              {profile?.posts?.length > 0 ? (
+                profile.posts.map((post, index) => (
+                  <div key={index} className="aspect-square bg-neutral-900 overflow-hidden">
+                    <Card post={post} />
+                  </div>
+                ))
+              ) : (
+                <p className="col-span-full text-center text-white py-6">No posts yet</p>
+              )}
+            </div>
+
           </div>
+
         </div>
       </div>
     )

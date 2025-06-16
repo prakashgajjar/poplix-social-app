@@ -1,4 +1,4 @@
-import { count } from "console";
+
 import { Schema, model, models, Types } from "mongoose";
 
 const PostSchema = new Schema({
@@ -19,9 +19,6 @@ const PostSchema = new Schema({
     default: null,
   },
   countRepost:{type:Number , default :0},
-  countLike:{type:Number , default :0},
-  countComments:{type:Number , default :0},
-  
   views: { type: Number, default: 0 },
   isPinned: { type: Boolean, default: false },
   likes: [{ type: Types.ObjectId, ref: "User" }],

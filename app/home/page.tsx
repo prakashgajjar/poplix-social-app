@@ -8,11 +8,13 @@ import { useEffect, useState } from "react";
 import SendPost from "./SendPost";
 import { getPosts } from '@/actions/postActions/getpost';
 import RePostCard from "./RePost";
+import { getpostfollowing } from '@/actions/postActions/getpostforfollowing';
 
 
 
 export default function HomeLayout() {
   const [posts, setPosts] = useState([]);
+  const [followingPost , setFollowingPost] = useState([]);
   const [activeTab, setActiveTab] = useState("foryou");
 
   useEffect(() => {
@@ -38,7 +40,12 @@ export default function HomeLayout() {
             For You
           </button>
           <button
-            onClick={() => setActiveTab("following")}
+            onClick={async () => {
+              setActiveTab("following")
+              const data = await getpostfollowing()
+              console.log("following data : " , data)
+              setFollowingPost(data)
+            }}
             className={`w-1/2 py-2 font-semibold ${activeTab === "following"
               ? "border-b-4 border-blue-500 text-white"
               : "text-gray-400 hover:text-white"
@@ -47,20 +54,39 @@ export default function HomeLayout() {
             Following
           </button>
         </div>
-
-        <div className="p-4">
-          <SendPost />
-          <div>
-            {posts?.map((post) =>
-              post?.isRetweet ? (
-                <RePostCard key={post._id} post={post?.retweetOf} repostUser={post?.user} />
-              ) : (
-                <Post key={post?._id} post={post} />
-              )
-            )}
-          </div>
+        <div>
+          {activeTab === "foryou" ? (
+            <div className="p-4">
+              <SendPost />
+              <div>
+                {posts?.map((post) =>
+                  post?.isRetweet ? (
+                    <RePostCard key={post._id} post={post?.retweetOf} repostUser={post?.user} />
+                  ) : (
+                    <Post key={post?._id} post={post} />
+                  )
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="p-4">
+              {
+               followingPost && <div>
+                {followingPost?.map((post) =>
+                  post?.isRetweet ? (
+                    <RePostCard key={post._id} post={post?.retweetOf} repostUser={post?.user} />
+                  ) : (
+                    <Post key={post?._id} post={post} />
+                  )
+                )}
+              </div>
+              }
+            </div>
+          )}
         </div>
+
       </main>
+
 
       {/* Right sidebar */}
 

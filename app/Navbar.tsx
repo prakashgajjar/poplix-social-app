@@ -5,7 +5,7 @@ import {
   FaRocket, FaUsers, FaBriefcase, FaListUl, FaEllipsisH, FaBolt
 } from "react-icons/fa";
 import Image from "next/image";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getuserinfo } from "@/actions/auth/getuserinfo";
 
@@ -38,7 +38,7 @@ export default function Sidebar() {
   }, [])
   const router = useRouter();
   return (
-     <div className="hidden md:flex flex-col justify-between w-[300px] px-1 py-6 border-r border-gray-800 ">
+    <div className="hidden md:flex flex-col justify-between w-[300px] px-1 py-6 border-r border-gray-800 ">
       <div>
         <div className="mb-10">
           <Image
@@ -55,12 +55,12 @@ export default function Sidebar() {
               key={i}
               onClick={async () => {
                 setSelectedIndex(i)
-                if (route === "/profile" ) {
+                if (route === "/profile") {
                   router.replace(`${user?.user?.username}`)
-                }else{
+                } else {
                   router.replace(`${route}`)
                 }
-                
+
               }}
               className={`flex items-center gap-4 p-2 text-lg rounded-lg cursor-pointer hover:bg-gray-800 ${selectedIndex === i ? "bg-gray-700" : ""
                 }`}
@@ -76,13 +76,15 @@ export default function Sidebar() {
         </button>
       </div>
 
-      <div className="flex items-center gap-3 mt-6 p-2 hover:bg-gray-800 rounded cursor-pointer" onClick={()=>router.replace(`${user?.user?.username}`)}>
-        <Image src={`${user?.user?.avatar || "/images/default-avatar.png"}`} className="w-10 h-10 rounded-full" alt="Profile" width={40} height={40}/>
-        <div>
-          <p className="font-semibold text-white">{user?.user?.fullname }</p>
-          <p className="text-sm text-gray-400">{user?.user?.username}</p>
+      {
+       user && <div className="flex items-center gap-3 mt-6 p-2 hover:bg-gray-800 rounded cursor-pointer" onClick={() => router.replace(`${user?.user?.username}`)}>
+          <Image src={`${user?.user?.avatar || "/images/default-avatar.png"}`} className="w-10 h-10 rounded-full" alt="Profile" width={40} height={40} />
+          <div>
+            <p className="font-semibold text-white">{user?.user?.fullname}</p>
+            <p className="text-sm text-gray-400">{user?.user?.username}</p>
+          </div>
         </div>
-      </div>
+      }
     </div>
   );
 }
