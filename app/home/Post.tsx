@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageCircle, Heart, Repeat, Share2 } from "lucide-react";
+import { MessageCircle, Heart, Repeat, Share2, Bookmark, BarChart3 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { likepost } from "@/actions/postActions/postlike";
@@ -13,6 +13,7 @@ import { toast } from "react-hot-toast";
 import CommentSection from "./CommentSection";
 import { getcomments } from "@/actions/postActions/getcomments";
 import { getuserinfo } from "@/actions/auth/getuserinfo";
+import { Share } from "next/font/google";
 
 const PostCard = ({ post }) => {
     const [expanded, setExpanded] = useState(false);
@@ -84,13 +85,13 @@ const PostCard = ({ post }) => {
         <div>
             <div className="max-w-2xl mx-auto bg-black text-white p-4 rounded-xl shadow-md">
                 {/* Header */}
-                <div className="flex relative -left-[29px] items-center space-x-2">
+                <div className="flex relative -left-[25px]  items-center md:-left-[29px] space-x-2">
                     <Image
                         src={`${post?.user?.avatar}`}
                         alt="User"
                         width={40}
                         height={40}
-                        className="w-10 h-10 rounded-full object-cover"
+                        className="md:w-10 md:h-10 w-8 h-8 rounded-full object-cover"
                     />
                     <div>
                         <div className="font-bold flex items-center space-x-1 cursor-pointer" onClick={() => {
@@ -105,14 +106,14 @@ const PostCard = ({ post }) => {
                                 className="w-4 h-4 object-contain"
                             />
                             <span className="text-gray-400">
-                                {post?.user?.username} · {formatDistanceToNow(new Date(post?.createdAt), { addSuffix: true })}
+                                · {formatDistanceToNow(new Date(post?.createdAt), { addSuffix: true })}
                             </span>
                         </div>
                     </div>
                 </div>
 
                 {/* Content */}
-                <div className="mt-2 max-w-2xl relative left-5 space-y-2 text-md">
+                <div className="mt-2 max-w-2xl relative left-[16px] space-y-2 text-md">
                     <div
                         ref={contentRef}
                         className={`text-white whitespace-pre-wrap break-words overflow-hidden ${expanded ? "" : "line-clamp-4"}`}
@@ -137,7 +138,7 @@ const PostCard = ({ post }) => {
 
                 {/* Media */}
                 {post?.type === "image" && (
-                    <div className="mt-3 grid relative left-5 grid-cols-2 gap-2 rounded-xl overflow-hidden">
+                    <div className="mt-3 grid relative left-[16px] grid-cols-2 gap-2 rounded-xl overflow-hidden">
                         <Image
                             src={post?.url}
                             alt="Post media"
@@ -149,7 +150,7 @@ const PostCard = ({ post }) => {
                 )}
 
                 {post?.type === "video" && (
-                    <div className="mt-3 grid relative left-5 grid-cols-2 gap-2 rounded-xl overflow-hidden">
+                    <div className="mt-3 grid relative left-[16px] grid-cols-2 gap-2 rounded-xl overflow-hidden">
                         <video
                             src={post?.url}
                             className="col-span-2 rounded-xl"
@@ -163,9 +164,9 @@ const PostCard = ({ post }) => {
                 )}
 
                 {/* Action Buttons */}
-                <div className="flex justify-between text-gray-400 mt-4 text-sm">
-                    <div className="flex items-center space-x-1 hover:text-blue-400 cursor-pointer" onClick={async () => {
-                        if(!commentLoad){                        
+                <div className="flex justify-between px-3 text-gray-400 mt-4 ml-4 text-sm">
+                    <div className="flex items-center  hover:text-blue-400 cursor-pointer" onClick={async () => {
+                        if (!commentLoad) {
                             const data = await getcomments(post?._id);
                             setCommentData(data)
                         }
@@ -180,7 +181,10 @@ const PostCard = ({ post }) => {
                         <Heart size={16} className={`${isLiked ? "fill-pink-500" : ""}`} /> <span>{post?.likes.length}</span>
                     </div>
                     <div className="flex items-center space-x-1 hover:text-white cursor-pointer">
-                        <Share2 size={16} /> <span>0</span>
+                        <BarChart3 size={16} /> <span>0</span>
+                    </div>
+                    <div className="flex items-center space-x-1 hover:text-white cursor-pointer">
+                        <Bookmark size={16} /> <span>0</span>
                     </div>
                 </div>
 

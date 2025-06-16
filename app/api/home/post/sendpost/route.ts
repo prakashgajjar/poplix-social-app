@@ -55,27 +55,27 @@ export async function POST(req: NextRequest) {
     user.posts.push(newPost._id);
     await user.save();
 
-    if (user.followers && user.followers.length > 0) {
-      const followers = await User.find({ _id: { $in: user.followers } });
+    // if (user.followers && user.followers.length > 0) {
+    //   const followers = await User.find({ _id: { $in: user.followers } });
 
-      await Promise.all(
-        followers.map(async (follower) => {
-          const notification = await Notification.create({
-            recipient: follower._id,
-            sender: userId,
-            type: "post", // optional: add this to enum
-            message: `${user.username} just posted something new!`,
-            meta: {
-              avatar: user.avatar,
-              username: user.username,
-            },
-          });
+    //   await Promise.all(
+    //     followers.map(async (follower) => {
+    //       const notification = await Notification.create({
+    //         recipient: follower._id,
+    //         sender: userId,
+    //         type: "post", // optional: add this to enum
+    //         message: `${user.username} just posted something new!`,
+    //         meta: {
+    //           avatar: user.avatar,
+    //           username: user.username,
+    //         },
+    //       });
 
-          follower.notifications.push(notification._id);
-          await follower.save();
-        })
-      );
-    }
+    //       follower.notifications.push(notification._id);
+    //       await follower.save();
+    //     })
+    //   );
+    // }
 
     return NextResponse.json(
       {

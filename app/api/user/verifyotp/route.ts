@@ -47,11 +47,11 @@ export async function POST(req: NextRequest) {
     const token = jwt.sign(
       { userId: user._id, email: user.email },
       jwtSecret,
-      { expiresIn: "1d" }
+      { expiresIn: "2h" }
     );
 
     const cookieStore = cookies();
-    (await cookieStore).set("signup", token, {
+    (await cookieStore).set("login", token, {
       httpOnly: true,
       secure: true,
       maxAge: 60 * 60 * 24, 

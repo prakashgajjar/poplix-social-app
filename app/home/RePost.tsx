@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import { MessageCircle, Heart, Repeat, Share2 } from "lucide-react";
+import { MessageCircle, Heart, Repeat, Share2, BarChart3, Bookmark } from "lucide-react";
 import { likepost } from "@/actions/postActions/postlike";
 import { getlikes } from "@/actions/postActions/getlikes";
 import { useRouter } from "next/navigation";
@@ -52,15 +52,15 @@ const RePostCard = ({ post, repostUser }) => {
     <div className="max-w-2xl mx-auto bg-black text-white px-4 py-3 rounded-xl shadow-md ">
 
       {/* Repost Header with avatar */}
-      <div className="flex items-start -left-[29px] relative space-x-3 mb-2 cursor-pointer " onClick={()=>{
-         router.replace(`/${repostUser?.username}`);
+      <div className="flex items-start -left-[25px]  md:-left-[29px] relative space-x-3 mb-2 cursor-pointer " onClick={() => {
+        router.replace(`/${repostUser?.username}`);
       }}>
         <Image
           src={`${repostUser?.avatar}`}
           alt="User"
           width={40}
           height={40}
-          className="w-10 h-10 rounded-full object-cover"
+          className="md:w-10 md:h-10 w-8 h-8 rounded-full object-cover"
         />
         <div>
           <div className="flex items-center gap-1 text-sm text-gray-400">
@@ -72,7 +72,7 @@ const RePostCard = ({ post, repostUser }) => {
       </div>
 
       {/* Original Post Card */}
-      <div className="ml-8 border border-gray-700 rounded-xl px-4 py-3 bg-[#111]">
+      <div className="ml-4 border border-gray-700 rounded-xl px-2 py-3 bg-[#111]">
         {/* Original Post Header */}
         <div className="flex items-start space-x-3">
           <Image
@@ -80,7 +80,7 @@ const RePostCard = ({ post, repostUser }) => {
             alt="User"
             width={40}
             height={40}
-            className="w-10 h-10 rounded-full object-cover"
+            className="md:w-10 md:h-10 w-8 h-8 rounded-full object-cover"
           />
           <div>
             <div className="flex items-center gap-1 font-bold cursor-pointer" onClick={() => router.replace(`/${post?.user?.username}`)}>
@@ -146,18 +146,18 @@ const RePostCard = ({ post, repostUser }) => {
         )}
 
         {/* Action Buttons */}
-        <div className="flex justify-between text-gray-400 mt-4 ml-12 text-sm">
+        <div className="flex justify-between px-6 text-gray-400 mt-4 text-sm">
           <div className="flex items-center space-x-1 hover:text-blue-400 cursor-pointer">
             <MessageCircle size={16} /> <span>{post?.comments?.length}</span>
           </div>
           <div className="flex items-center space-x-1 hover:text-green-400 cursor-pointer">
-            <Repeat size={16} /> <span>{post?.countRepost?.length ||0}</span>
+            <Repeat size={16} /> <span>{post?.countRepost?.length || 0}</span>
           </div>
           <div className="flex items-center space-x-1 hover:text-pink-400 cursor-pointer" onClick={handleLike}>
             <Heart size={16} className={`${isLiked ? "fill-pink-500" : ""}`} /> <span>{post?.likes?.length}</span>
           </div>
           <div className="flex items-center space-x-1 hover:text-white cursor-pointer">
-            <Share2 size={16} /> <span>0</span>
+            <BarChart3 size={16} /> <span>0</span>
           </div>
         </div>
       </div>

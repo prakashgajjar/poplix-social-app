@@ -1,16 +1,12 @@
 
 "use client"
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Image as ImageIcon,
   Video as VideoIcon,
   Smile,
-  CalendarClock,
-  MapPin,
   X as XIcon,
-  Navigation,
-  Route,
-  Map,
+
 } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -24,8 +20,8 @@ const SendPost = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isPosting, setIsPosting] = useState<boolean | null>(false);
   const [showEmoji, setShowEmoji] = useState<boolean | null>(false);
-  const [userData, setUSerData] = useState<Object | null>(null);
-
+  const [userData, setUSerData] = useState<object | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -82,6 +78,14 @@ const SendPost = () => {
     run();
   }, [])
 
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto"; 
+      textarea.style.height = textarea.scrollHeight + "px";
+    }
+  }, [content]);
+
   return (
     <div className="bg-black p-4 rounded-xl border border-gray-800 text-white w-full  mx-auto">
       <div className="flex items-start gap-3">
@@ -91,15 +95,17 @@ const SendPost = () => {
             alt="Profile"
             height={40}
             width={40}
-            className="w-10 h-10 rounded-full object-cover"
+            className="md:w-10 md:h-10 w-8 h-8 rounded-full object-cover"
           />
         }
         <div className="flex-1">
-          <input
+          <textarea
+            ref={textareaRef}
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="What’s happening?"
-            className="w-full bg-transparent text-white placeholder-gray-500 text-lg outline-none"
+            className="w-full bg-transparent text-white placeholder-gray-500 text-lg outline-none resize-none overflow-hidden"
+            rows={1}
           />
 
           {/* Unified Media Preview */}
@@ -155,9 +161,7 @@ const SendPost = () => {
               <div onClick={() => setShowEmoji(!showEmoji)}>
                 <Smile className="w-5 h-5" />
               </div>
-              <CalendarClock className="w-5 h-5" />
-              <MapPin className="w-5 h-5" />
-              <Route className="w-5 h-5" />
+
             </div>
 
             <button

@@ -26,7 +26,7 @@ export default function EmojiPicker({setContent}) {
     );
 
     return (
-         <div className="w-80 bg-black text-white border border-gray-700 rounded-xl shadow-xl">
+         <div className="md:w-80 w-[262px] bg-black text-white border border-gray-700 rounded-xl shadow-xl">
             <input
                 type="text"
                 value={search}

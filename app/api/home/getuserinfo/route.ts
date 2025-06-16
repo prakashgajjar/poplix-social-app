@@ -11,7 +11,6 @@ export async function GET() {
   try {
     const user = await User.findOne({_id : userId}).populate({
         path:"posts",
-        populate : { path : "notifications"}
     })
 
     // console.log(user);

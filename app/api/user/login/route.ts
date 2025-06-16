@@ -4,13 +4,15 @@ import connectDb from "@/lib/db";
 import User from "@/models/User.models";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { cookies } from "next/headers";
 
 export async function POST(req: NextRequest) {
   await connectDb();
   try {
     const body = await req.json();
     const { email, password } = body;
+
+    console.log(body)
+
     if (!email || !password) {
       return NextResponse.json({
         status: status.BAD_REQUEST.code,
@@ -25,6 +27,8 @@ export async function POST(req: NextRequest) {
         error: status.UNAUTHORIZED.message,
       });
     }
+
+    console.log(user)
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -48,21 +52,31 @@ export async function POST(req: NextRequest) {
         error: "JWT secret is not defined in environment variables.",
       });
     }
-    const token = jwt.sign({ userId: user._id, email: user.email }, jwtSecret, {
-      expiresIn: "1d",
-    });
 
-    const cookieStore = cookies();
-    (await cookieStore).set("login", token, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 60 * 60 * 24,
-    });
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      jwtSecret,
+      { expiresIn: "1d" }
+    );
 
-    return NextResponse.json({
+    console.log(token)
+
+    // Create response and set cookie
+    const response = NextResponse.json({
       status: status.OK.code,
       message: status.OK.message,
     });
+
+    response.cookies.set("login", token, {
+      httpOnly: true,
+      // secure: process.env.NODE_ENV === "production", // set to true in production
+      maxAge: 60 * 60 * 24, // 1 day
+      path: "/",
+      // sameSite: "strict",
+    });
+
+    return response;
+
   } catch (error) {
     console.error("Error in POST /login:", error);
     return NextResponse.json({

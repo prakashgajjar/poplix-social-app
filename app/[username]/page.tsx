@@ -11,6 +11,7 @@ import Follow from "./follow"
 import ProfileInfo from "./Profile";
 import { checkfollowuser } from "@/actions/profile/checkfollow";
 import Card from "../explore/Card";
+import GlassSidebar from "@/components/GlassSidebar";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("posts");
@@ -83,7 +84,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Banner */}
-        <div className="relative w-full h-60 bg-gray-800 group" >
+        <div className="relative w-full md:h-60 h-36 bg-gray-800 group" >
           {profile?.banner && (
             <Image
               src={`${profile?.banner}`}
@@ -174,6 +175,7 @@ export default function ProfilePage() {
           </div>
 
         </div>
+        <GlassSidebar />
       </div>
     )
   );

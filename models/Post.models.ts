@@ -22,6 +22,7 @@ const PostSchema = new Schema({
   views: { type: Number, default: 0 },
   isPinned: { type: Boolean, default: false },
   likes: [{ type: Types.ObjectId, ref: "User" }],
+  saved: [{ type: Types.ObjectId, ref: "User" }],
   upvotes: { type: Number, default: 0 },
   comments: [{ type: Types.ObjectId, ref: "Comment" }],
   createdAt: { type: Date, default: Date.now },

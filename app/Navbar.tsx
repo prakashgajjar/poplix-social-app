@@ -18,12 +18,9 @@ export default function Sidebar() {
     { icon: <FaSearch />, label: "Explore", route: "/explore" },
     { icon: <FaBell />, label: "Notifications", route: "/notifications" },
     { icon: <FaEnvelope />, label: "Messages", route: "/messages" },
-    { icon: <FaListUl />, label: "Lists", route: "/lists" },
     { icon: <FaBookmark />, label: "Bookmarks", route: "/bookmarks" },
     { icon: <FaBriefcase />, label: "Jobs", route: "/jobs" },
-    { icon: <FaUsers />, label: "Communities", route: "/communities" },
     { icon: <FaRocket />, label: "Premium", route: "/premium" },
-    { icon: <FaBolt />, label: "Verified Orgs", route: "/verified-orgs" },
     { icon: <FaUser />, label: "Profile", route: `/profile` },
     { icon: <FaEllipsisH />, label: "More", route: "/more" },
   ];
