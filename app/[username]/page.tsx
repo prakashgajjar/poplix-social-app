@@ -12,12 +12,13 @@ import ProfileInfo from "./Profile";
 import { checkfollowuser } from "@/actions/profile/checkfollow";
 import Card from "../explore/Card";
 import GlassSidebar from "@/components/GlassSidebar";
+import ProfileSkeleton from "@/components/ProfilepageLoader";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("posts");
   const bannerRef = useRef(null);
   const profilePicRef = useRef(null);
-  const [profile, setProfile] = useState([]);
+  const [profile, setProfile] = useState(null);
   const [userId, setUserId] = useState(null);
   const [checkFollow, setCheckFollow] = useState<boolean>(false);
   const router = useRouter();
@@ -70,7 +71,7 @@ export default function ProfilePage() {
 
 
   return (
-    profile && (
+    profile ? (
       <div className="max-w-4xl mx-auto bg-black text-white overflow-auto h-screen">
         {/* Top Sticky Header */}
         <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-gray-800 px-4 py-2 flex items-center gap-4">
@@ -177,6 +178,8 @@ export default function ProfilePage() {
         </div>
         <GlassSidebar />
       </div>
+    ):(
+      <ProfileSkeleton/>
     )
   );
 }

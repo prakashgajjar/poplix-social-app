@@ -15,14 +15,18 @@ import { getPosts } from '@/actions/postActions/getpost';
 import { getpostfollowing } from '@/actions/postActions/getpostforfollowing';
 import { getuserinfo } from "@/actions/auth/getuserinfo";
 import GlassSidebar from '@/components/GlassSidebar';
-import Image from 'next/image';
-import SendPostBigComp from './SendPostBigComp';
+import Image from 'next/image';;
+import LoadingPost from '@/components/Loading';
+import LogoLoader from '@/components/LogoLoader';
+
+
 
 export default function HomeLayout() {
   const [posts, setPosts] = useState([]);
   const [followingPost, setFollowingPost] = useState([]);
   const [activeTab, setActiveTab] = useState("foryou");
   const [userData, setUSerData] = useState(null);
+  const [showLoader, setShowLoader] = useState(false)
 
   const router = useRouter();
 
@@ -32,7 +36,7 @@ export default function HomeLayout() {
     async function fetchUser() {
       const data = await getuserinfo();
       setUSerData(data);
-      console.log(data)
+      // console.log(data)
     }
 
     fetchUser();
@@ -40,17 +44,19 @@ export default function HomeLayout() {
 
 
 
+
   return (
     <div className="flex h-screen overflow-hidden bg-black text-white">
-      <Toaster position="top-right" reverseOrder={false} />
 
+      <Toaster position="top-right" reverseOrder={false} />
+      {showLoader && <LogoLoader />}
       {/* Feed center */}
       <main className="flex-1 max-w-3xl border-x h-screen overflow-scroll border-gray-800 mx-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
         <div className="flex items-center justify-between px-4 py-3">
           {/* 🚀 Logo Left */}
           <div className="flex items-center gap-2">
             <Image
-              src="/logos/poplix1.png"
+              src="/logos/poplix2.png"
               alt="Logo"
               className="h-8 w-8 object-contain"
               height={40}
@@ -97,38 +103,57 @@ export default function HomeLayout() {
 
 
         {/* Posts Feed */}
-        <div>
-          {activeTab === "foryou" ? (
-            <div className="p-4 [&>div:last-child]:mb-10">
-              <SendPost />
-              <div>
-                {posts?.map((post) =>
-                  post?.isRetweet ? (
-                    <RePostCard key={post._id} post={post?.retweetOf} repostUser={post?.user} />
-                  ) : (
-                    <Post key={post._id} post={post} />
-                  )
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="p-4 [&>div:last-child]:mb-10">
-              {followingPost && (
+
+        {(posts === null || posts === undefined) ? (
+          <LoadingPost />
+        ) : (
+          <div>
+            {activeTab === "foryou" ? (
+              <div className="p-4 [&>div:last-child]:mb-10">
+                <SendPost />
                 <div>
-                  {followingPost?.map((post) =>
+                  {posts.length > 0 ? (
+                    posts.map((post) =>
+                      post?.isRetweet ? (
+                        <RePostCard key={post._id} post={post?.retweetOf} repostUser={post?.user} />
+                      ) : (
+                        <Post key={post._id} post={post} />
+                      )
+                    )
+                  ) : (
+                    <div className="text-center text-gray-400 mt-10">
+                      <LoadingPost />
+                      <LoadingPost />
+                      <LoadingPost />
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="p-4 [&>div:last-child]:mb-10">
+                {followingPost?.length > 0 ? (
+                  followingPost.map((post) =>
                     post?.isRetweet ? (
                       <RePostCard key={post._id} post={post?.retweetOf} repostUser={post?.user} />
                     ) : (
                       <Post key={post._id} post={post} />
                     )
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+                  )
+                ) : (
+                  <div className="text-center text-gray-400  mt-10">
+                    <LoadingPost />
+                    <LoadingPost />
+                    <LoadingPost />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+
         <div>
-          <GlassSidebar />
+          <GlassSidebar url={userData?.user?.username} />
         </div>
       </main>
 
@@ -141,6 +166,7 @@ export default function HomeLayout() {
           }}
         />
         <FaSearch className="text-2xl cursor-pointer transition-all duration-200 ease-out hover:text-blue-500 active:text-blue-400 active:scale-95" onClick={() => {
+          setShowLoader(true)
           router.replace("/explore")
         }} />
         <FaPlus className="text-2xl bg-blue-500 text-white p-2 rounded-full cursor-pointer transition-all duration-200 active:bg-blue-600 active:scale-95" onClick={() => {
@@ -152,14 +178,12 @@ export default function HomeLayout() {
         <FaUser
           className="text-2xl cursor-pointer transition-all duration-200 ease-out hover:text-blue-500 active:text-blue-400 active:scale-95"
           onClick={() => {
-            if (userData) {
+          
               router.replace(`/${userData?.user?.username}`);
-            }
+            
           }}
         />
       </div>
-
-
     </div>
   );
 }

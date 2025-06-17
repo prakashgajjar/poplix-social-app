@@ -13,7 +13,8 @@ import { toast } from "react-hot-toast";
 import CommentSection from "./CommentSection";
 import { getcomments } from "@/actions/postActions/getcomments";
 import { getuserinfo } from "@/actions/auth/getuserinfo";
-import { Share } from "next/font/google";
+import { addview } from "@/actions/postActions/addviews";
+import { savepost } from "@/actions/postActions/savepost";
 
 const PostCard = ({ post }) => {
     const [expanded, setExpanded] = useState(false);
@@ -21,20 +22,18 @@ const PostCard = ({ post }) => {
     const [showRepostModal, setShowRepostModal] = useState(false);
     const [commentLoad, setCommentLoad] = useState(false);
     const [commentData, setCommentData] = useState([]);
+    const [savedPost, setSavedPost] = useState(false);
+    const [checkSavedPost, setCheckSavedPost] = useState(false);
+
     const [user, setUser] = useState(null);
     const contentRef = useRef(null);
+    const postRef = useRef(null);
+    const hasViewed = useRef(false);
     const router = useRouter()
 
     const [likedPost, setLikedPost] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
 
-    useEffect(() => {
-        if (likedPost && likedPost.includes(post._id)) {
-            setIsLiked(true);
-        } else {
-            setIsLiked(false);
-        }
-    }, [likedPost, post._id]);
 
     const handleLike = async () => {
         const res = await likepost(post._id);
@@ -61,6 +60,23 @@ const PostCard = ({ post }) => {
         }
     };
 
+    const handleSavedPost = async () => {
+        const data = await savepost(post._id);
+        console.log(data)
+        setSavedPost(data);
+    }
+
+
+    //ckecklike include or not 
+    useEffect(() => {
+        if (likedPost && likedPost.includes(post._id)) {
+            setIsLiked(true);
+        } else {
+            setIsLiked(false);
+        }
+    }, [likedPost, post._id]);
+
+    //like get handler useEffect
     useEffect(() => {
         async function getData() {
             try {
@@ -74,6 +90,7 @@ const PostCard = ({ post }) => {
         getData();
     }, []);
 
+    //show more and less for text 
     useEffect(() => {
         const el = contentRef.current;
         if (el && el.scrollHeight > el.clientHeight) {
@@ -81,8 +98,31 @@ const PostCard = ({ post }) => {
         }
     }, [post]);
 
+
+    //add view useEffect 
+    useEffect(() => {
+        const observer = new IntersectionObserver(async (entries) => {
+            const entry = entries[0];
+
+            if (entry.isIntersecting && !hasViewed.current) {
+                hasViewed.current = true;
+                await addview(post._id);
+            }
+        }, { threshold: 0.6 });
+
+        if (postRef.current) {
+            observer.observe(postRef.current);
+        }
+
+        return () => {
+            if (postRef.current) {
+                observer.unobserve(postRef.current);
+            }
+        };
+    }, [post._id]);
+
     return (
-        <div>
+        <div ref={postRef}>
             <div className="max-w-2xl mx-auto bg-black text-white p-4 rounded-xl shadow-md">
                 {/* Header */}
                 <div className="flex relative -left-[25px]  items-center md:-left-[29px] space-x-2">
@@ -181,11 +221,13 @@ const PostCard = ({ post }) => {
                         <Heart size={16} className={`${isLiked ? "fill-pink-500" : ""}`} /> <span>{post?.likes.length}</span>
                     </div>
                     <div className="flex items-center space-x-1 hover:text-white cursor-pointer">
-                        <BarChart3 size={16} /> <span>0</span>
+                        <BarChart3 size={16} /> <span>{post?.views}</span>
                     </div>
-                    <div className="flex items-center space-x-1 hover:text-white cursor-pointer">
-                        <Bookmark size={16} /> <span>0</span>
-                    </div>
+                    {<div className="flex items-center space-x-1 hover:text-white cursor-pointer" onClick={() => {
+                        handleSavedPost()
+                    }}>
+                        <Bookmark size={16} className={`${(savedPost ) ? "fill-blue-600" : ""}`} /> <span>{post?.saved?.length || 0}</span>
+                    </div>}
                 </div>
 
             </div>

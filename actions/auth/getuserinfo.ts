@@ -7,7 +7,7 @@
           "Content-Type": "aplication/json"
         }
       })
-      console.log("userinfo : ",response.data);
+      // console.log("userinfo : ",response.data);
       if (response.status === 200) {
         const data = response.data;
         return data;

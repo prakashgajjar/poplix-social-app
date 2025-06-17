@@ -2,8 +2,10 @@
 
 import {
   FaHome, FaSearch, FaBell, FaEnvelope, FaBookmark, FaUser, FaPlus,
-  FaRocket, FaUsers, FaBriefcase, FaListUl, FaEllipsisH, FaBolt
+  FaRocket, FaEllipsisH,
+
 } from "react-icons/fa";
+
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -19,9 +21,21 @@ export default function Sidebar() {
     { icon: <FaBell />, label: "Notifications", route: "/notifications" },
     { icon: <FaEnvelope />, label: "Messages", route: "/messages" },
     { icon: <FaBookmark />, label: "Bookmarks", route: "/bookmarks" },
-    { icon: <FaBriefcase />, label: "Jobs", route: "/jobs" },
     { icon: <FaRocket />, label: "Premium", route: "/premium" },
     { icon: <FaUser />, label: "Profile", route: `/profile` },
+    {
+      icon: (
+        <Image
+        src="/logos/poplix2.png"
+        alt="Popai Icon"
+        width={20}
+        height={20}
+        className="rounded-sm"
+        />
+      ),
+      label: "Popai",
+      route: "/popai"
+    },
     { icon: <FaEllipsisH />, label: "More", route: "/more" },
   ];
 
@@ -74,7 +88,7 @@ export default function Sidebar() {
       </div>
 
       {
-       user && <div className="flex items-center gap-3 mt-6 p-2 hover:bg-gray-800 rounded cursor-pointer" onClick={() => router.replace(`${user?.user?.username}`)}>
+        user && <div className="flex items-center gap-3 mt-6 p-2 hover:bg-gray-800 rounded cursor-pointer" onClick={() => router.replace(`${user?.user?.username}`)}>
           <Image src={`${user?.user?.avatar || "/images/default-avatar.png"}`} className="w-10 h-10 rounded-full" alt="Profile" width={40} height={40} />
           <div>
             <p className="font-semibold text-white">{user?.user?.fullname}</p>

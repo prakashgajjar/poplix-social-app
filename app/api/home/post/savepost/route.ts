@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     await findUser.save();
     await post.save();
 
-    return NextResponse.json({ saved: true }, { status: status.OK.code });
+    return NextResponse.json( { saved: true  }, { status: status.OK.code });
   } catch (error) {
     console.error("Error toggling like:", error);
     return NextResponse.json(

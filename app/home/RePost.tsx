@@ -157,7 +157,7 @@ const RePostCard = ({ post, repostUser }) => {
             <Heart size={16} className={`${isLiked ? "fill-pink-500" : ""}`} /> <span>{post?.likes?.length}</span>
           </div>
           <div className="flex items-center space-x-1 hover:text-white cursor-pointer">
-            <BarChart3 size={16} /> <span>0</span>
+            <BarChart3 size={16} /> <span>{post?.views}</span>
           </div>
         </div>
       </div>

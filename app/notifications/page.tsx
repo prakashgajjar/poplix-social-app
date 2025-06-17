@@ -7,6 +7,7 @@ import NotificationItem from "./NotificationItem";
 import GlassSidebar from "@/components/GlassSidebar";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import NotificationSkeleton from "@/components/NotificationSkeleton";
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
@@ -27,7 +28,7 @@ export default function NotificationsPage() {
   return (
     <div className="relative h-screen w-full overflow-y-auto bg-background">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm flex items-center justify-between px-4 py-3 border-b">
+      <div className=" top-0 z-10 bg-background/80 backdrop-blur-sm flex items-center justify-between px-4 py-3 border-b">
         <button onClick={() => router.push("/home")} className="text-white">
           <ArrowLeft className="w-5 h-5" />
         </button>
@@ -54,7 +55,18 @@ export default function NotificationsPage() {
             />
           ))
         ) : (
-          <div className="text-center text-gray-400 pt-10">No notifications yet.</div>
+          <div className="text-center text-gray-400 gap-3 flex flex-col">
+            <NotificationSkeleton/>
+            <NotificationSkeleton/>
+            <NotificationSkeleton/>
+            <NotificationSkeleton/>
+            <NotificationSkeleton/>
+            <NotificationSkeleton/>
+            <NotificationSkeleton/>
+            <NotificationSkeleton/>
+            <NotificationSkeleton/>
+            <NotificationSkeleton/>
+          </div>
         )}
       </div>
 
