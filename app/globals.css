@@ -21,3 +21,30 @@
 }
 
 /* Add to globals.css or Tailwind config */
+
+@keyframes glow {
+  0% {
+    filter: drop-shadow(0 0 5px #00f0ff);
+  }
+  50% {
+    filter: drop-shadow(0 0 20px #8e2eff);
+  }
+  100% {
+    filter: drop-shadow(0 0 5px #ff4fcf);
+  }
+}
+
+@keyframes pulseWave {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}

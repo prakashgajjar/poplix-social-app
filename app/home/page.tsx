@@ -18,6 +18,8 @@ import GlassSidebar from '@/components/GlassSidebar';
 import Image from 'next/image';;
 import LoadingPost from '@/components/Loading';
 import LogoLoader from '@/components/LogoLoader';
+import PopAIAssistantOverlay from '@/components/popai';
+import PopAIChatOverlay from '@/components/Popaichatoverlay';
 
 
 
@@ -27,7 +29,7 @@ export default function HomeLayout() {
   const [activeTab, setActiveTab] = useState("foryou");
   const [userData, setUSerData] = useState(null);
   const [showLoader, setShowLoader] = useState(false)
-
+  const [showPopai,setShowPopai] = useState(false)
   const router = useRouter();
 
   useEffect(() => {
@@ -128,6 +130,7 @@ export default function HomeLayout() {
                     </div>
                   )}
                 </div>
+                          {/* <PopAIAssistantOverlay/> */}
               </div>
             ) : (
               <div className="p-4 [&>div:last-child]:mb-10">
@@ -148,6 +151,7 @@ export default function HomeLayout() {
                 )}
               </div>
             )}
+
           </div>
         )}
 
@@ -170,7 +174,7 @@ export default function HomeLayout() {
           router.replace("/explore")
         }} />
         <FaPlus className="text-2xl bg-blue-500 text-white p-2 rounded-full cursor-pointer transition-all duration-200 active:bg-blue-600 active:scale-95" onClick={() => {
-          router.replace(`/home`);
+          setShowPopai(true);
         }} />
         <FaBell className="text-2xl cursor-pointer transition-all duration-200 ease-out hover:text-blue-500 active:text-blue-400 active:scale-95" onClick={() => {
           router.replace(`/notifications`);

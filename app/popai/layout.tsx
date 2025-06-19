@@ -1,9 +1,8 @@
 import "../globals.css";
 import type { Metadata } from "next";
-
     
 export const metadata: Metadata = {
-  title: `Poplix-Profile`,
+  title: `Popai`,
   description:
     "Poplix is your next-gen social media platform, designed to help you connect with friends, share moments, and discover local buzz.",
   icons: {
@@ -17,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en"  suppressHydrationWarning={true}>
+    <html lang="en" suppressHydrationWarning>
       <body className="bg-black text-white antialiased ">
         {children}
       </body>

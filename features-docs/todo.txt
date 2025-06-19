@@ -6,3 +6,11 @@ music libarie build
 we add the multipost at time and they show like instagram
 we add the ai based post generete text post 
 url shortner with ai based we can build any type of shortest url
+
+
+today :
+-----
+complete the profile
+complete the more feature page
+ai chat intigration
+ai voice backend (thing how to build)

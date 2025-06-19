@@ -15,7 +15,7 @@ import GlassSidebar from "@/components/GlassSidebar";
 import ProfileSkeleton from "@/components/ProfilepageLoader";
 
 export default function ProfilePage() {
-  const [activeTab, setActiveTab] = useState("posts");
+  // const [activeTab, setActiveTab] = useState("posts");
   const bannerRef = useRef(null);
   const profilePicRef = useRef(null);
   const [profile, setProfile] = useState(null);
@@ -74,7 +74,7 @@ export default function ProfilePage() {
     profile ? (
       <div className="max-w-4xl mx-auto bg-black text-white overflow-auto h-screen">
         {/* Top Sticky Header */}
-        <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-gray-800 px-4 py-2 flex items-center gap-4">
+        <div className="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-gray-800 px-4 py-2 flex items-center gap-4">
           <button onClick={() => router.replace('/home')} className="text-white hover:text-gray-300">
             <ArrowLeft size={20} />
           </button>
@@ -150,7 +150,7 @@ export default function ProfilePage() {
             {profile && <Follow id={profile._id} checkFollow={checkFollow} />}
           </div>
 
-          <ProfileInfo profile={profile} />
+          <ProfileInfo profile={profile} userId={userId} />
         </div>
 
         <div className="mt-6 px-4">
@@ -176,7 +176,9 @@ export default function ProfilePage() {
           </div>
 
         </div>
-        <GlassSidebar />
+       <div className="z-50">
+         <GlassSidebar url={profile?.username}/>
+       </div>
       </div>
     ):(
       <ProfileSkeleton/>

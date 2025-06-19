@@ -10,7 +10,9 @@ const nextConfig: NextConfig = {
       "asset.cloudinary.com",
       "api.dicebear.com",
       "i.pravatar.cc",
-      "images.pexels.com"
+      "images.pexels.com",
+      "images.unsplash.com",
+      "www.w3schools.com"
     ],
   },
 };

@@ -23,7 +23,6 @@ const PostCard = ({ post }) => {
     const [commentLoad, setCommentLoad] = useState(false);
     const [commentData, setCommentData] = useState([]);
     const [savedPost, setSavedPost] = useState(false);
-    const [checkSavedPost, setCheckSavedPost] = useState(false);
 
     const [user, setUser] = useState(null);
     const contentRef = useRef(null);
