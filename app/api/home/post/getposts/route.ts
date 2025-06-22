@@ -2,7 +2,9 @@ import Post from "@/models/Post.models";
 import status from "@/utils/status";
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/db";
-import { ObjectId } from "mongoose";
+import { ObjectId } from "mongodb";
+import "@/models/Comment.models";
+import "@/models/User.models";
 
 export async function POST(req: NextRequest) {
   await connectDB();
@@ -25,7 +27,14 @@ export async function POST(req: NextRequest) {
         populate: {
           path: "user", // also populate the user of the original post
         },
-      }).sort({ createdAt: -1 });
+      })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+        },
+      })
+      .sort({ createdAt: -1 });
     return NextResponse.json({ status: status.OK.code, data: populatedPosts });
   } catch (error) {
     console.error(error);

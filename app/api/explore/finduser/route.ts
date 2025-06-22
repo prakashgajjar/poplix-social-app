@@ -1,6 +1,7 @@
 import status from "@/utils/status";
 import { NextResponse } from "next/server";
 import User from "@/models/User.models";
+import path from "path";
 
 export async function POST(req: Request) {
   try {
@@ -18,7 +19,7 @@ const user = await User.find({
     { username: { $regex: username, $options: "i" } }, // similar usernames 
     { fullname: { $regex: username, $options: "i" } }  // similar fullnames
   ]
-});
+})
 
 
     if (!user) {

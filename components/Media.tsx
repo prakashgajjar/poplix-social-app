@@ -31,13 +31,14 @@ const MediaCard = ({ post }: { post: any }) => {
             alt="post"
             fill
             className="object-cover group-hover:scale-100 transition-transform duration-300"
+            onContextMenu={(e) => e.preventDefault()}
           />
 
           {isHovered && (
             <div className="absolute inset-0 bg-black/50 flex flex-col justify-between p-2 text-white transition-opacity duration-300">
               <div className="flex items-center gap-1 text-xs">
                 <span>@{post.user.username}</span>
-                {post.verified && <Check className="w-3 h-3 text-blue-400" />}
+                {post.isVerified && <Check className="w-3 h-3 text-blue-400" />}
               </div>
               <div className="flex justify-center items-center gap-6 m-auto">
                 <div className="flex items-center gap-1">

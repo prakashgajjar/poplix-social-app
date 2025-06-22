@@ -26,7 +26,7 @@ export default function SwipeToGoBack({
       const endX = e.changedTouches[0].clientX;
       const screenWidth = window.innerWidth;
 
-      if (screenWidth < 768 && endX - startX > threshold) {
+      if (screenWidth < 1500 && endX - startX > threshold) {
         setNavigating(true);
         setTimeout(() => {
           router.push(to);
