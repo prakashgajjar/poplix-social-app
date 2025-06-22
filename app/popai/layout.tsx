@@ -1,10 +1,10 @@
 import "../globals.css";
 import type { Metadata } from "next";
-    
+
 export const metadata: Metadata = {
-  title: `Popai`,
+  title: "Popai - Poplix Voice Assistant",
   description:
-    "Poplix is your next-gen social media platform, designed to help you connect with friends, share moments, and discover local buzz.",
+    "Popai is your smart social companion on Poplix — ask questions, get insights, and interact effortlessly with your content using voice and AI.",
   icons: {
     icon: "/logos/poplix1.png",
   },

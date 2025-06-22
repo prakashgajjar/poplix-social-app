@@ -2,10 +2,10 @@ import "../globals.css";
 import type { Metadata } from "next";
     
 export const metadata: Metadata = {
-  title: `poplix-explore`,
-  description:
-    "Poplix is your next-gen social media platform, designed to help you connect with friends, share moments, and discover local buzz.",
-  icons: {
+  title: `Poplix - Explore`,
+description:
+    "Dive into Poplix Explore — discover trending posts, creative people, and what's buzzing in your local community. Stay connected, stay inspired.",
+    icons: {
     icon: "/logos/poplix1.png",
   },
 };
@@ -16,10 +16,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="bg-black text-white antialiased ">
+    <html lang="en" >
+      <body className="bg-black h-screen overflow-hidden text-white antialiased ">
         {children}
       </body>
     </html>
   );
 }
+

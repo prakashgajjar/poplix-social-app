@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 import status from "@/utils/status";
 
-const protectedRoute = ["/home", "/about", "/profile"];
+const protectedRoute = [
+  "/home", "/explore", "/notifications" , "/popai" , '/:username*' , "/messages" , "/bookmarks" , "/premium" 
+  , '/more' , '/((?!api|login|register|about|contact|_next|favicon.ico).*)'
+];
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("login")?.value;

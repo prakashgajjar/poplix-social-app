@@ -10,7 +10,7 @@ import { getprofiledatail } from "@/actions/profile/getprofiledetail";
 import Follow from "./follow"
 import ProfileInfo from "./Profile";
 import { checkfollowuser } from "@/actions/profile/checkfollow";
-import Card from "../explore/Card";
+import Card from "../../components/Card";
 import GlassSidebar from "@/components/GlassSidebar";
 import ProfileSkeleton from "@/components/ProfilepageLoader";
 

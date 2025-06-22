@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
     const posts = await Post.aggregate([
       { $match: { _id: { $nin: seenPostIds.map((id) => new ObjectId(id)) } } },
-      { $sample: { size: 20 } },
+      { $sample: { size: 30 } },
     ]);
     const postIds = posts.map((post) => post._id);
     const populatedPosts = await Post.find({ _id: { $in: postIds } })
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
         populate: {
           path: "user", // also populate the user of the original post
         },
-      });
+      }).sort({ createdAt: -1 });
     return NextResponse.json({ status: status.OK.code, data: populatedPosts });
   } catch (error) {
     console.error(error);

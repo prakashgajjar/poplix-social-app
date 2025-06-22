@@ -1,10 +1,10 @@
 import "../globals.css";
 import type { Metadata } from "next";
-    
+
 export const metadata: Metadata = {
-  title: `poplix-notifications`,
+  title: `Poplix - Notifications`,
   description:
-    "Poplix is your next-gen social media platform, designed to help you connect with friends, share moments, and discover local buzz.",
+    "Stay in the loop with Poplix — check your latest likes, comments, followers, and updates all in one place. Never miss a moment!",
   icons: {
     icon: "/logos/poplix1.png",
   },

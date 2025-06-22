@@ -14,12 +14,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-const showSidebar = !(pathname === "/" || pathname === "/popai");
+const showSidebar = !(pathname === "/" || pathname === "/popai" || pathname === '/premium');
 
   return (
     <html lang="en"  >
       <body
-        className="bg-black text-white antialiased "
+        className="bg-black h-screen overflow-hidden text-white antialiased "
       >
         <div className="flex h-screen overflow-hidden max-w-[1400px] mx-auto">
           {/* Left Sidebar */}

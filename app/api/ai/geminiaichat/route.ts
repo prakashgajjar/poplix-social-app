@@ -1,13 +1,12 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
 import status from "@/utils/status";
-export async function POST(req:NextRequest) {
+export async function POST(req: NextRequest) {
+  const text = await req.json();
 
-    const text = await req.json();
-
-    if(!text){
+  if (!text) {
     return NextResponse.json({ message: "" }, { status: 500 });
-    }
+  }
 
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
@@ -18,7 +17,7 @@ export async function POST(req:NextRequest) {
           role: "user",
           parts: [
             {
-              text: `You're a smart, cheerful, and human-like assistant.no coding question no code only chating text only text .
+              text: `You're a smart, cheerful, and human-like assistant.but does not use emoji .
 Always reply in a friendly and polite tone — as if you're smiling and talking warmly. 
 Keep the answers short, sweet, and clear — ideally 1 to 2 lines if posible then answer in 2-3 word.
 Imagine your words are being spoken aloud using a voice, so it should sound smooth and pleasant, like you're chatting with a friend.
@@ -37,9 +36,12 @@ Now, here's my question:`,
       ],
     });
     const res = response.text;
-    return NextResponse.json({ text:res }, { status: status.OK.code });
+    return NextResponse.json({ text: res }, { status: status.OK.code });
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ message: status.INTERNAL_ERROR.message }, { status: status.INTERNAL_ERROR.code });
+    return NextResponse.json(
+      { message: status.INTERNAL_ERROR.message },
+      { status: status.INTERNAL_ERROR.code }
+    );
   }
 }

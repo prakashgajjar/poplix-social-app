@@ -12,10 +12,9 @@ import {
   FaStar,
   FaBuilding,
   FaEllipsisH,
-  FaBriefcase
 } from "react-icons/fa";
 
-export default function GlassSidebar({ url }) {
+export default function GlassSidebar() {
   const [open, setOpen] = useState(false);
   const [activeLabel, setActiveLabel] = useState("Home"); // ✅ track current active label
   const router = useRouter();
@@ -65,12 +64,6 @@ export default function GlassSidebar({ url }) {
             label="Home"
             activeLabel={activeLabel}
             onClick={() => handleNavClick("Home", "/home")}
-          />
-          <SidebarOption
-            Icon={FaUser}
-            label="Profile"
-            activeLabel={activeLabel}
-            onClick={() => handleNavClick("Profile", `/${url}`)}
           />
           <SidebarOption
             Icon={FaBell}

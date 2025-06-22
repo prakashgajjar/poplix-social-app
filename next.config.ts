@@ -12,7 +12,8 @@ const nextConfig: NextConfig = {
       "i.pravatar.cc",
       "images.pexels.com",
       "images.unsplash.com",
-      "www.w3schools.com"
+      "www.w3schools.com",
+      "via.placeholder.com"
     ],
   },
 };

@@ -157,7 +157,7 @@ export default function HomeLayout() {
 
 
         <div>
-          <GlassSidebar url={userData?.user?.username} />
+          <GlassSidebar />
         </div>
       </main>
 

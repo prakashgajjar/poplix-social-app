@@ -18,7 +18,7 @@ const Card = ({ post }) => {
       {post?.type === "video" && (
         <video
           src={post.url}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-100"
           playsInline
           muted
           loop

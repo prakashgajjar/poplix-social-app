@@ -8,6 +8,7 @@ import GlassSidebar from "@/components/GlassSidebar";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import NotificationSkeleton from "@/components/NotificationSkeleton";
+import SwipeToGoBack from "@/components/SwipeToGoBack";
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
@@ -26,7 +27,8 @@ export default function NotificationsPage() {
   }, []);
 
   return (
-    <div className="relative h-screen w-full overflow-y-auto bg-background">
+   <SwipeToGoBack to="/home">
+     <div className="relative h-screen w-full overflow-y-auto bg-background">
       {/* Header */}
       <div className=" top-0 z-10 bg-background/80 backdrop-blur-sm flex items-center justify-between px-4 py-3 border-b">
         <button onClick={() => router.push("/home")} className="text-white">
@@ -75,5 +77,6 @@ export default function NotificationsPage() {
         <GlassSidebar />
       </div>
     </div>
+   </SwipeToGoBack>
   );
 }
