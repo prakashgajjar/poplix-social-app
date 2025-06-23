@@ -1,7 +1,7 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import { followuser } from '@/actions/profile/follow'
 
-const Follow = ({ id , checkFollow}) => {
+const Follow = ({ id, checkFollow }) => {
     const [follow, setFollow] = useState<boolean>(false);
     const handleFollow = async () => {
         const data = await followuser(id);

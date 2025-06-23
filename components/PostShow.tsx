@@ -66,28 +66,34 @@ export default function MediaModal({ post, onClose }: MediaModalProps) {
                             src={post.url}
                             className="max-h-[90vh] w-auto h-auto object-contain"
                             playsInline
-                            muted
+                            muted={false}
                             loop
                             autoPlay
-                            controls
+                            
                             onContextMenu={(e) => e.preventDefault()}
                         />
                     )}
                 </div>
 
                 {/* Desktop Comment Sidebar */}
-                <div className='md:w-[500px] lg:block hidden'>
-                    {
-                        post?.comments?.length > 0 && (
-                            post.comments.map((comment, index) => (
-                                <div key={comment._id || index}>
-                                    <PostComment comment={comment} />
-                                </div>
-                            ))
-                        )
-                    }
+                <div className="md:w-[500px] lg:block hidden bg-[#111] p-4 rounded-xl">
+                    <div className="mb-4 border-b border-gray-700 pb-2">
+                        <h1 className="text-lg font-semibold text-white">Comments</h1>
+                    </div>
 
+                    {post?.comments?.length > 0 ? (
+                        post.comments.map((comment, index) => (
+                            <div key={comment._id || index} className="mb-3">
+                                <PostComment comment={comment} />
+                            </div>
+                        ))
+                    ) : (
+                        <div className="text-center text-sm text-gray-400 py-10">
+                            No comments yet. Be the first to share your thoughts 💬
+                        </div>
+                    )}
                 </div>
+
             </div>
 
             {/* Mobile Bottom Actions */}

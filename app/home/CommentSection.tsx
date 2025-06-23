@@ -26,7 +26,7 @@ export default function CommentSection({ comments, postId, user }) {
       {/* 📝 Input */}
       <div className="flex items-center gap-3 px-4 py-3 border-b border-[#333] bg-[#121218]">
         <Image
-          src={user?.user?.avatar || "/fallback-avatar.png"}
+          src={user?.user?.avatar}
           alt="User"
           width={36}
           height={36}
@@ -55,7 +55,7 @@ export default function CommentSection({ comments, postId, user }) {
         {comments?.map((comment, idx) => (
           <div key={idx} className="flex items-start gap-3">
             <Image
-              src={comment?.user?.avatar || "/fallback-avatar.png"}
+              src={comment?.user?.avatar }
               alt="User Avatar"
               width={36}
               height={36}

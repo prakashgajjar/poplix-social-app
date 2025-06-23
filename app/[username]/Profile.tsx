@@ -52,7 +52,7 @@ export default function ProfileInfo({ profile, userId }) {
   return (
     <div className="mt-2 text-white" ref={editRef}>
       {/* Name */}
-      {(editingField === "name" && (userId === profile._id)) ? (
+      {(editingField === "name" && (userId === profile?._id)) ? (
         <div className="flex items-center gap-2">
           <input
             value={updatedName}
@@ -71,7 +71,7 @@ export default function ProfileInfo({ profile, userId }) {
           className="text-xl font-bold cursor-pointer"
           onDoubleClick={() => setEditingField("name")}
         >
-          {(userId === profile._id && updatedName !== profile.fullname) ? updatedName : profile?.fullname || "Suthar Prakash"}
+          {(userId === profile?._id && updatedName !== profile?.fullname) ? updatedName : profile?.fullname || "Suthar Prakash"}
         </h1>
       )}
 
@@ -79,7 +79,7 @@ export default function ProfileInfo({ profile, userId }) {
       <p className="text-sm text-gray-400">@{profile?.username}</p>
 
       {/* Bio */}
-      {(editingField === "bio" && (userId === profile._id)) ? (
+      {(editingField === "bio" && (userId === profile?._id)) ? (
         <div className="flex items-center text-sm gap-2 mt-1">
           <textarea
             style={{ lineHeight: "1.5rem" }}
@@ -104,7 +104,7 @@ export default function ProfileInfo({ profile, userId }) {
           style={{ whiteSpace: 'pre-line' }}
           onDoubleClick={() => setEditingField("bio")}
         >
-          {(userId === profile._id && updatedBio !== profile.bio)
+          {(userId === profile?._id && updatedBio !== profile?.bio)
             ? updatedBio
             : (profile?.bio || "Hey there! I'm new here. Excited to connect and explore")}
         </p>
@@ -129,8 +129,8 @@ export default function ProfileInfo({ profile, userId }) {
 
       {/* Followers/Following */}
       <div className="flex gap-4 mt-1 text-sm">
-        <span className="font-bold text-white">{profile.following?.length || 0}</span> Following
-        <span className="font-bold text-white">{profile.followers?.length || 0}</span> Followers
+        <span className="font-bold text-white">{profile?.following?.length || 0}</span> Following
+        <span className="font-bold text-white">{profile?.followers?.length || 0}</span> Followers
       </div>
     </div>
   );

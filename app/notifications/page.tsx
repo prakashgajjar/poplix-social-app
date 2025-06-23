@@ -45,8 +45,8 @@ export default function NotificationsPage() {
             <NotificationItem
               key={notif._id || idx}
               type={notif?.type}
-              avatar={notif?.meta?.avatar || "/fallback-avatar.png"}
-              username={notif?.meta?.username || "Unknown"}
+              avatar={notif?.meta?.avatar}
+              username={notif?.meta?.username }
               message={notif?.message}
               time={formatDistanceToNow(new Date(notif.createdAt), { addSuffix: true })}
               isPrivateProfile={notif.type === "follow" && false}

@@ -68,7 +68,8 @@ export default function Sidebar() {
                 setSelectedIndex(i)
                 if (route === "/profile") {
                   router.replace(`${user?.user?.username}`)
-                } else {
+                } 
+                else {
                   router.replace(`${route}`)
                 }
 

@@ -120,6 +120,10 @@ const ExplorePage = () => {
             <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 gap-[2px]">
               {filteredPosts.map((post) => {
 
+                const handleClick = () => {
+                  setPostData(post);
+                  setShowPost(true);
+                }
                 const handlePressStart = () => {
                   holdTimeout.current = setTimeout(() => {
                     setPostData(post);
@@ -141,10 +145,8 @@ const ExplorePage = () => {
                     onTouchStart={handlePressStart}
                     onTouchEnd={handlePressEnd}
                     onTouchCancel={handlePressEnd}
-                    onMouseDown={handlePressStart} // also works on desktop
-                    onMouseUp={handlePressEnd}
-                    onMouseLeave={handlePressEnd}
-                    onContextMenu={(e) => e.preventDefault()} 
+                    onClick={handleClick}
+                    onContextMenu={(e) => e.preventDefault()}
                     className='last:mb-20'
                   >
                     <MediaCard post={post} />

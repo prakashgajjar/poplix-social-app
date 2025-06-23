@@ -4,6 +4,7 @@ import { Heart, MessageCircle, VolumeX, Volume2, Check } from "lucide-react";
 import Image from "next/image";
 
 const MediaCard = ({ post }: { post: any }) => {
+  console.log(post)
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -26,13 +27,15 @@ const MediaCard = ({ post }: { post: any }) => {
       {/* Image Post */}
       {post.type === "image" && (
         <>
+        { post.url && 
           <Image
-            src={post.url}
+            src={post?.url || null}
             alt="post"
             fill
             className="object-cover group-hover:scale-100 transition-transform duration-300"
             onContextMenu={(e) => e.preventDefault()}
           />
+        }
 
           {isHovered && (
             <div className="absolute inset-0 bg-black/50 flex flex-col justify-between p-2 text-white transition-opacity duration-300">
@@ -58,9 +61,9 @@ const MediaCard = ({ post }: { post: any }) => {
       {/* Video Post */}
       {post.type === "video" && (
         <>
-          <video
+       { post.url &&  <video
             ref={videoRef}
-            src={post.url}
+            src={post?.url}
             className="w-full h-full object-cover group-hover:scale-100 transition-transform duration-300"
             muted={muted}
             loop
@@ -69,7 +72,7 @@ const MediaCard = ({ post }: { post: any }) => {
             onMouseOver={(e) => e.currentTarget.play()}
             onMouseOut={(e) => e.currentTarget.pause()}
           />
-
+       }
           {isHovered && (
             <div
               className="absolute top-2 right-2 bg-black/50 p-1 rounded-full text-white cursor-pointer z-10"

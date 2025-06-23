@@ -39,10 +39,10 @@ export default function PostComment({ comment }: PostComment) {
         <p className="text-sm text-white mb-2">{comment?.content}</p>
 
         {/* Likes */}
-        <div className="flex items-center gap-1 text-xs text-gray-400">
+        {/* <div className="flex items-center gap-1 text-xs text-gray-400">
           <Heart size={14} className="text-red-500 fill-red-500" />
           {comment?.likes?.length} {comment?.likes?.length === 1 ? "like" : "likes"}
-        </div>
+        </div> */}
       </div>
     </div>
   );

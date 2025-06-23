@@ -17,7 +17,7 @@ const RePostCard = ({ post, repostUser }) => {
   const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
-    if (likedPost.includes(post._id)) {
+    if (likedPost?.includes(post._id)) {
       setIsLiked(true);
     } else {
       setIsLiked(false);

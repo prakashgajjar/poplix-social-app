@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageCircle, Heart, Repeat, Share2, Bookmark, BarChart3 } from "lucide-react";
+import { MessageCircle, Heart, Repeat, Bookmark, BarChart3 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { likepost } from "@/actions/postActions/postlike";
@@ -16,7 +16,8 @@ import { getuserinfo } from "@/actions/auth/getuserinfo";
 import { addview } from "@/actions/postActions/addviews";
 import { savepost } from "@/actions/postActions/savepost";
 
-const PostCard = ({ post }) => {
+
+const PostCard = ( {post} ) => {
     const [expanded, setExpanded] = useState(false);
     const [showReadMore, setShowReadMore] = useState(false);
     const [showRepostModal, setShowRepostModal] = useState(false);
@@ -32,6 +33,8 @@ const PostCard = ({ post }) => {
 
     const [likedPost, setLikedPost] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
+    const [videoLoaded, setVideoLoaded] = useState(false);
+
 
 
     const handleLike = async () => {
@@ -121,7 +124,7 @@ const PostCard = ({ post }) => {
     }, [post._id]);
 
     return (
-        <div ref={postRef}>
+        post && <div ref={postRef}>
             <div className="max-w-2xl mx-auto bg-black text-white p-4 rounded-xl shadow-md">
                 {/* Header */}
                 <div className="flex relative -left-[25px]  items-center md:-left-[29px] space-x-2">
@@ -144,8 +147,8 @@ const PostCard = ({ post }) => {
                                 height={16}
                                 className="w-4 h-4 object-contain"
                             />
-                            <span className="text-gray-400">
-                                · {formatDistanceToNow(new Date(post?.createdAt), { addSuffix: true })}
+                            <span className="text-gray-400 text-sm">
+                                · {formatDistanceToNow(new Date(post?.createdAt))}
                             </span>
                         </div>
                     </div>
@@ -190,29 +193,40 @@ const PostCard = ({ post }) => {
 
                 {post?.type === "video" && (
                     <div className="mt-3 grid relative left-[16px] grid-cols-2 gap-2 rounded-xl overflow-hidden">
-                        <video
-                            src={post?.url}
-                            className="col-span-2 rounded-xl"
-                            controls
-                            preload="metadata"
-                            playsInline
-                            muted
-                            autoPlay
-                        />
+                        <div className="col-span-2 rounded-xl relative">
+                            {!videoLoaded && (
+                                <div className="w-full aspect-video bg-gray-300 animate-pulse rounded-xl" />
+                            )}
+                            <video
+                                src={post?.url}
+                                className={`w-full rounded-xl ${!videoLoaded ? 'hidden' : ''}`}
+                                controls
+                                preload="metadata"
+                                playsInline
+                                muted
+                                autoPlay
+                                onLoadedData={() => setVideoLoaded(true)}
+                            />
+                        </div>
                     </div>
                 )}
+
 
                 {/* Action Buttons */}
                 <div className="flex justify-between px-3 text-gray-400 mt-4 ml-4 text-sm">
                     <div className="flex items-center  hover:text-blue-400 cursor-pointer" onClick={async () => {
                         if (!commentLoad) {
-                            const data = await getcomments(post?._id);
+                            console.log(post._id)
+                            const data = await getcomments(post._id);
                             setCommentData(data)
+                            console.log(data);
+
                         }
                         setCommentLoad(!commentLoad);
                     }}>
-                        <MessageCircle size={16} /> <span>{post?.comments.length}</span>
+                        <MessageCircle size={16} /> <span>{post?.comments?.length}</span>
                     </div>
+
                     <div className="flex items-center space-x-1 hover:text-green-400 cursor-pointer" onClick={() => setShowRepostModal(true)}>
                         <Repeat size={16} /> <span>{post?.countRepost || 0}</span>
                     </div>
@@ -225,7 +239,7 @@ const PostCard = ({ post }) => {
                     {<div className="flex items-center space-x-1 hover:text-white cursor-pointer" onClick={() => {
                         handleSavedPost()
                     }}>
-                        <Bookmark size={16} className={`${(savedPost ) ? "fill-blue-600" : ""}`} /> <span>{post?.saved?.length || 0}</span>
+                        <Bookmark size={16} className={`${(savedPost) ? "fill-blue-600" : ""}`} /> <span>{post?.saved?.length || 0}</span>
                     </div>}
                 </div>
 
