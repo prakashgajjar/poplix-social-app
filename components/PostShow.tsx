@@ -48,7 +48,7 @@ export default function MediaModal({ post, onClose }: MediaModalProps) {
             {/* Modal Container */}
             <div
                 ref={modalRef}
-                className="bg-black   rounded-lg shadow-lg w-full max-w-6xl max-h-[90vh] flex  md:flex-row overflow-hidden"
+                className="bg-black/40 backdrop-blur-xs  rounded-lg shadow-lg w-full max-w-6xl max-h-[90vh] flex  md:flex-row overflow-hidden"
             >
                 {/* Media Section */}
                 <div className="flex-1 w-[530px] h-[670px] md:h-[943px] flex items-center justify-center bg-transparent ">

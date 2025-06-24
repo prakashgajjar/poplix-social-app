@@ -20,7 +20,7 @@ const MediaCard = ({ post }: { post: any }) => {
 
   return (
   post && <div
-      className="relative aspect-square group overflow-hidden bg-black"
+      className="relative aspect-square group overflow-hidden "
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

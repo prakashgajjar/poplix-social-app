@@ -19,7 +19,7 @@ export default function Sidebar() {
     { icon: <FaHome />, label: "Home", route: "/home" },
     { icon: <FaSearch />, label: "Explore", route: "/explore" },
     { icon: <FaBell />, label: "Notifications", route: "/notifications" },
-    { icon: <FaEnvelope />, label: "Messages", route: "/messages" },
+    { icon: <FaEnvelope />, label: "Messages", route: "/message" },
     { icon: <FaBookmark />, label: "Bookmarks", route: "/bookmarks" },
     { icon: <FaRocket />, label: "Premium", route: "/premium" },
     { icon: <FaUser />, label: "Profile", route: `/profile` },

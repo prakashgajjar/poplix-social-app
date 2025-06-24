@@ -15,23 +15,25 @@ export default function RootLayout({
 }>) {
   const pathname = usePathname();
 const showSidebar = !(pathname === "/" || pathname === "/popai" || pathname === '/premium');
+const showSidebar1 = !(pathname === '/message')
 
   return (
     <html lang="en"  >
       <body
         className="bg-black h-screen overflow-hidden text-white antialiased "
       >
-        <div className="flex h-screen overflow-hidden max-w-[1400px] mx-auto">
+        <div className="flex h-screen overflow-hidden w-screen mx-auto">
           {/* Left Sidebar */}
           {showSidebar && <Sidebar />}
 
           {/* Main Content */}
-          <div className="flex-1 px-1 py-4 md:px-1 lg:px-1">
+
+          <div className={`flex-1 px-1  py-4 md:px-1 lg:px-1`}>
             {children}
           </div>
 
           {
-            showSidebar && <aside className="hidden lg:block w-[300px] px-1 mt-2 py-1">
+            showSidebar && showSidebar1 && <aside className="hidden lg:block w-[300px] px-1 mt-2 py-1">
               <div className="flex flex-col mt-2 gap-5">
                 <SubscribePremium />
                 <TrendingCard />

@@ -235,7 +235,7 @@ export default function PopAIAssistantOverlay({ visible = true }: { visible?: bo
 
         {/* 🕑 History */}
         {history.length > 0 && (
-          <div className="absolute hidden lg:block top-4 left-4 bg-black/50 rounded-xl p-3 text-white text-xs space-y-1 backdrop-blur-md">
+          <div className="absolute hidden lg:block top-16 left-4 bg-black/50 rounded-xl p-3 text-white text-xs space-y-1 backdrop-blur-md">
             <div className="font-semibold text-sm text-pink-300">Recent:</div>
             <ul className="list-disc pl-4">
               {history.map((line, idx) => (

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   FaHome,
-  FaUser,
+  FaEnvelope,
   FaSearch,
   FaBell,
   FaBookmark,
@@ -76,6 +76,12 @@ export default function GlassSidebar() {
             label="Explore"
             activeLabel={activeLabel}
             onClick={() => handleNavClick("Explore", "explore")}
+          />
+          <SidebarOption
+            Icon={FaEnvelope}
+            label="Messages"
+            activeLabel={activeLabel}
+            onClick={() => handleNavClick("Messages", "message")}
           />
           <SidebarOption
             Icon={FaBookmark}
