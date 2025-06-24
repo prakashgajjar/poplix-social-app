@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export const finduser = async (username) => {
+export const deletepost = async ( postId ) => {
   try {
     const response = await axios.post(
-      "/api/explore/finduser",
-      { username },
+      "/api/home/post/deletepost",
+       {postId} ,
       {
         headers: {
           "Content-Type": "application/json",
@@ -13,8 +13,8 @@ export const finduser = async (username) => {
       }
     );
     if (response.status === 200) {
-      // console.log("user from search : ", response.data);
-      return response.data;
+      console.log(response);
+      return response;
     }
   } catch (error) {
     console.error(error);

@@ -1,14 +1,20 @@
 // components/DeleteConfirm.tsx
 "use client";
 import React from "react";
+import { deletepost } from "@/actions/postActions/deletepost";
 
 interface DeleteConfirmProps {
   onDelete: () => void;
   onCancel: () => void;
+  postId: string;
 }
 
-const DeleteConfirm: React.FC<DeleteConfirmProps> = ({ onDelete, onCancel , postId }) => {
-    console.log(postId)
+const handleOndelete = async (postId) => {
+  await deletepost(postId)
+}
+
+const DeleteConfirm: React.FC<DeleteConfirmProps> = ({ onDelete, onCancel, postId }) => {
+  console.log(postId)
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="bg-white dark:bg-[#1e1e1e] w-[90%] max-w-sm rounded-xl p-6 shadow-lg space-y-4">
@@ -25,7 +31,10 @@ const DeleteConfirm: React.FC<DeleteConfirmProps> = ({ onDelete, onCancel , post
             Cancel
           </button>
           <button
-            onClick={onDelete}
+            onClick={async() => {
+               onDelete()
+              await handleOndelete(postId)
+            }}
             className="flex-1 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
           >
             Delete

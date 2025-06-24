@@ -3,11 +3,12 @@ import toast from "react-hot-toast";
  
  export  const repost = async (postId) => {
     try {
-      const response = await axios.post("api/home/post/repost",{postId}
+      const response = await axios.post("/api/home/post/repost",{postId}
       , {
-        headers: {
-          "Content-Type": "aplication/json"
-        }
+       headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true
       })
       if (response.status === 200) {
         const data = response

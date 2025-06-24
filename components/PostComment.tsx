@@ -32,17 +32,18 @@ export default function PostComment({ comment }: PostComment) {
         <div className="flex items-center gap-2 text-muted-foreground mb-1">
           <MessageCircle size={16} className="text-blue-500" />
           <span className="font-semibold text-white">{comment?.user?.username}</span>
-          <span className="text-xs text-gray-400 ml-auto">{formatDistanceToNow(new Date(comment?.createdAt))}
+          <span className="text-xs text-gray-400 ml-auto">{comment?.createdAt ? formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true }) : "just now"}
+
           </span>
         </div>
 
         <p className="text-sm text-white mb-2">{comment?.content}</p>
 
         {/* Likes */}
-        {/* <div className="flex items-center gap-1 text-xs text-gray-400">
+        <div className="flex items-center gap-1 text-xs text-gray-400">
           <Heart size={14} className="text-red-500 fill-red-500" />
           {comment?.likes?.length} {comment?.likes?.length === 1 ? "like" : "likes"}
-        </div> */}
+        </div>
       </div>
     </div>
   );

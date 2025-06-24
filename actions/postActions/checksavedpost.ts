@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const checksavepost = async () => {
   try {
-    const response = await axios.get("api/home/post/checksavedpost", {
+    const response = await axios.get("/api/home/post/checksavedpost", {
       headers: {
         "Content-Type": "aplication/json",
       },

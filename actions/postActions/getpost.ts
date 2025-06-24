@@ -2,10 +2,11 @@
  
  export  const getPosts = async () => {
     try {
-      const response = await axios.post("api/home/post/getposts", {}, {
+      const response = await axios.post("/api/home/post/getposts", {}, {
         headers: {
-          "Content-Type": "aplication/json"
-        }
+          "Content-Type": "application/json"
+        },
+        withCredentials: true,
       })
       if (response.status === 200) {
         const data = response.data.data;

@@ -66,11 +66,11 @@ export default function Sidebar() {
               key={i}
               onClick={async () => {
                 setSelectedIndex(i)
-                if (route === "/profile") {
-                  router.replace(`${user?.user?.username}`)
+                if (route !== "/profile") {
+                  router.replace(`${route}`)
                 } 
                 else {
-                  router.replace(`${route}`)
+                  user?.user.username && router.replace(`${user.user.username}`)
                 }
 
               }}

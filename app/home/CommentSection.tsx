@@ -26,7 +26,7 @@ export default function CommentSection({ comments, postId, user }) {
       {/* 📝 Input */}
       <div className="flex items-center gap-3 px-4 py-3 border-b border-[#333] bg-[#121218]">
         <Image
-          src={user?.user?.avatar}
+          src={user?.user?.avatar || "https://res.cloudinary.com/dsndcjfwh/image/upload/v1749358852/user_irazfm.png"}
           alt="User"
           width={36}
           height={36}

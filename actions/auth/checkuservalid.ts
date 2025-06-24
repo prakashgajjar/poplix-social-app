@@ -1,20 +1,21 @@
 import axios from "axios";
 
-export const finduser = async (username) => {
+export const checkuservalid = async (username: string) => {
   try {
     const response = await axios.post(
-      "/api/explore/finduser",
+      "/api/user/checkuservalid",
       { username },
       {
         headers: {
           "Content-Type": "application/json",
         },
-        withCredentials: true,
+        "withCredentials": true
       }
     );
+    // console.log(response)
     if (response.status === 200) {
-      // console.log("user from search : ", response.data);
-      return response.data;
+      const data = response.data.auth;
+      return data;
     }
   } catch (error) {
     console.error(error);

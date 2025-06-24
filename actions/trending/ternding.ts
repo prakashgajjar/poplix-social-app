@@ -2,10 +2,11 @@
  
  export  const trendingtag = async () => {
     try {
-      const response = await axios.get("api/home/trending", {
-        headers: {
-          "Content-Type": "aplication/json"
-        }
+      const response = await axios.get("/api/home/trending", {
+      headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true
       })
       if (response.status === 200) {
         const data = response.data;
