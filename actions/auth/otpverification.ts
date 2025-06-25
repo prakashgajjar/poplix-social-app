@@ -11,23 +11,21 @@ export const handleOtp = async (
   }
 
   try {
-    const res = await fetch('/api/user/verifyotp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("/api/user/verifyotp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: data.email, otp }),
     });
 
-    if (!res.ok) {
-      console.error("Network response was not ok");
-      return false;
+    if (res.ok) {
+      const resData = await res.json();
+      console.log("OTP verification successful:", resData);
+      return true;
     }
-
-    const resData = await res.json();
-    console.log('OTP verification successful:', resData);
-    return true;
-
+    console.error("Network response was not ok");
+    return false;
   } catch (error) {
-    console.error('There was a problem with the fetch operation:', error);
+    console.error("There was a problem with the fetch operation:", error);
     return false;
   }
 };

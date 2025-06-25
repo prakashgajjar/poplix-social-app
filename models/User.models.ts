@@ -4,7 +4,7 @@ const { Schema, model, models, Types } = mongoose;
 const UserSchema = new Schema(
   {
     username: { type: String, unique: true, required: true, trim: true },
-    fullname : {type:String},
+    fullname: { type: String },
     email: {
       type: String,
       unique: true,
@@ -42,10 +42,10 @@ const UserSchema = new Schema(
       enum: ["ACTIVE", "SUSPENDED", "DELETED"],
       default: "ACTIVE",
     },
-    profil:{
-      type:String,
-      enum : ["PRIVATE" , "PUBLIC"],
-      default : "PUBLIC"
+    profil: {
+      type: String,
+      enum: ["PRIVATE", "PUBLIC"],
+      default: "PUBLIC",
     },
 
     posts: [{ type: Types.ObjectId, ref: "Post" }],
@@ -53,19 +53,17 @@ const UserSchema = new Schema(
     likes: [{ type: Types.ObjectId, ref: "User" }],
     followers: [{ type: Types.ObjectId, ref: "User" }],
     following: [{ type: Types.ObjectId, ref: "User" }],
-    pending:[{ type: Types.ObjectId, ref: "User" }],
+    pending: [{ type: Types.ObjectId, ref: "User" }],
     blockedUsers: [{ type: Types.ObjectId, ref: "User" }],
     blockedBy: [{ type: Types.ObjectId, ref: "User" }],
     savedPosts: [{ type: Types.ObjectId, ref: "Post" }],
     notifications: [{ type: Types.ObjectId, ref: "Notification" }],
     messagesSent: [{ type: Types.ObjectId, ref: "Message" }],
     messagesReceived: [{ type: Types.ObjectId, ref: "Message" }],
-
-    interviewHistory: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Interview" },
+    contacts: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] },
     ],
-    cvGenerated: { type: Boolean, default: false },
-    portfolioGenerated: { type: Boolean, default: false },
+    isOnline: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

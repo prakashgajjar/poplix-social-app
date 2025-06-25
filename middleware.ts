@@ -3,8 +3,8 @@ import { jwtVerify } from "jose";
 import status from "@/utils/status";
 
 const protectedRoute = [
-  "/home", "/explore", "/notifications" , "/popai" , '/:username*' , "/messages" , "/bookmarks" , "/premium" 
-  , '/more' , '/((?!api|login|register|about|contact|_next|favicon.ico).*)'
+  "/home", "/explore", "/notifications" , "/popai" , '/:username*' , "/message" , "/bookmarks" , "/premium" 
+  , '/more' , '/((?!api|login|register|about|contact|_next|favicon.ico).*)' , '/post' 
 ];
 
 export async function middleware(req: NextRequest) {

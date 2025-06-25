@@ -67,7 +67,7 @@ const UserPostPage = () => {
   };
 
   return (
-    <SwipeToGoBack>
+    <SwipeToGoBack to={`/${username}`}>
       <div className="h-screen overflow-auto p-2 md:p-6">
         <GlassSidebar/>
         {/* Header */}

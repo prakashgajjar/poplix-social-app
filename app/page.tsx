@@ -61,7 +61,10 @@ export default function LoginPage() {
   };
 
   const onOtpverification = async (e) => {
-    handleOtp(e, data, otp);
+    const success = await handleOtp(e, data, otp);
+    if (success) {
+      router.push('/home');
+    }
   };
 
   return (

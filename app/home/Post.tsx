@@ -15,9 +15,10 @@ import { getcomments } from "@/actions/postActions/getcomments";
 import { getuserinfo } from "@/actions/auth/getuserinfo";
 import { addview } from "@/actions/postActions/addviews";
 import { savepost } from "@/actions/postActions/savepost";
+import CustomVideoPlayer from "@/components/CustomVideoPlayer";
 
 
-const PostCard = ( {post} ) => {
+const PostCard = ({ post }) => {
     const [expanded, setExpanded] = useState(false);
     const [showReadMore, setShowReadMore] = useState(false);
     const [showRepostModal, setShowRepostModal] = useState(false);
@@ -194,17 +195,8 @@ const PostCard = ( {post} ) => {
                 {post?.type === "video" && (
                     <div className="mt-3 grid relative left-[16px] grid-cols-2 gap-2 rounded-xl overflow-hidden">
                         <div className="col-span-2 rounded-xl relative">
-                            {!videoLoaded && (
-                                <div className="w-full aspect-video bg-gray-300 animate-pulse rounded-xl" />
-                            )}
-                            <video
+                            <CustomVideoPlayer
                                 src={post?.url}
-                                className={`w-full rounded-xl ${!videoLoaded ? 'hidden' : ''}`}
-                                controls
-                                preload="metadata"
-                                playsInline
-                                muted
-                                autoPlay
                                 onLoadedData={() => setVideoLoaded(true)}
                             />
                         </div>

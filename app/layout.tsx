@@ -1,6 +1,5 @@
 "use client";
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+
 import "./globals.css";
 import { usePathname } from "next/navigation";
 import Sidebar from "./Navbar";
@@ -15,7 +14,7 @@ export default function RootLayout({
 }>) {
   const pathname = usePathname();
 const showSidebar = !(pathname === "/" || pathname === "/popai" || pathname === '/premium');
-const showSidebar1 = !(pathname === '/message')
+const showSidebar1 = !pathname.startsWith("/message")
 
   return (
     <html lang="en"  >
@@ -28,7 +27,7 @@ const showSidebar1 = !(pathname === '/message')
 
           {/* Main Content */}
 
-          <div className={`flex-1 px-1  py-4 md:px-1 lg:px-1`}>
+          <div className={`flex-1 px-1  md:px-1 lg:px-1`}>
             {children}
           </div>
 

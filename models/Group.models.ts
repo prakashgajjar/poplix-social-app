@@ -1,16 +1,23 @@
-import { Schema, model, Types } from 'mongoose';
+import mongoose from "mongoose";
 
-const GroupSchema = new Schema({
-  name: String,
-  slug: { type: String, unique: true },
-  city: String,
-  category: String,
+const GroupSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
   description: String,
-  posts: [{ type: Types.ObjectId, ref: 'Post' }],
-  members: [{ type: Types.ObjectId, ref: 'User' }],
-  createdAt: { type: Date, default: Date.now },
-});
+  avatar: String, // group icon or cover photo
 
-const Group = model('Group', GroupSchema);
-export default Group;
+  members: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      role: { type: String, enum: ["admin", "member"], default: "member" },
+      joinedAt: { type: Date, default: Date.now },
+    },
+  ],
 
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  chat: { type: mongoose.Schema.Types.ObjectId, ref: "Chat" }, // link to chat messages
+}, { timestamps: true });
+
+export default mongoose.model("Group", GroupSchema);

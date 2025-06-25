@@ -1,24 +1,33 @@
+"use client";
+
 import "../globals.css";
-import type { Metadata } from "next";
-    
-export const metadata: Metadata = {
-  title: `poplix-messages`,
-  description:
-    "Poplix is your next-gen social media platform, designed to help you connect with friends, share moments, and discover local buzz.",
-  icons: {
-    icon: "/logos/poplix1.png",
-  },
-};
+import ContactNavbar from "./ContactsNavbar";
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const showSidebar = !(pathname === "/message");
+
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="bg-black text-white antialiased ">
-        {children}
+      <body className="bg-black text-white h-screen antialiased">
+        <div className="flex h-screen w-full">
+          {/* Sidebar */}
+          {showSidebar && (
+            <div className=" w-[300px] hidden sm:block flex-shrink-0 border-r border-white/10 bg-zinc-950">
+              <ContactNavbar /> 
+            </div>
+          )}
+
+          {/* Main Chat Area */}
+          <div className="flex-1 overflow-hidden">
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   );

@@ -3,6 +3,7 @@ import User from "@/models/User.models";
 import connectDB from "@/lib/db";
 import status from "@/utils/status";
 import { getUserIdFromToken } from "@/lib/getUserIdfromToken";
+import "@/models/Post.models";
 
 export async function GET() {
   await connectDB();

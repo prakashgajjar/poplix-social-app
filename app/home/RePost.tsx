@@ -7,6 +7,7 @@ import { likepost } from "@/actions/postActions/postlike";
 import { getlikes } from "@/actions/postActions/getlikes";
 import { useRouter } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
+import CustomVideoPlayer from "@/components/CustomVideoPlayer";
 
 const RePostCard = ({ post, repostUser }) => {
   const router = useRouter();
@@ -15,6 +16,8 @@ const RePostCard = ({ post, repostUser }) => {
   const contentRef = useRef(null);
   const [likedPost, setLikedPost] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
 
   useEffect(() => {
     if (likedPost?.includes(post._id)) {
@@ -132,16 +135,13 @@ const RePostCard = ({ post, repostUser }) => {
         )}
 
         {post?.type === "video" && post?.url && (
-          <div className="mt-3 ml-12 mr-2 rounded-xl overflow-hidden">
-            <video
-              src={post.url}
-              className="w-full rounded-xl"
-              controls
-              preload="metadata"
-              playsInline
-              muted
-              autoPlay
-            />
+          <div className="mt-3 grid relative left-[16px] grid-cols-2 gap-2 rounded-xl overflow-hidden">
+            <div className="col-span-2 rounded-xl relative">
+              <CustomVideoPlayer
+                src={post?.url}
+                onLoadedData={() => setVideoLoaded(true)}
+              />
+            </div>
           </div>
         )}
 

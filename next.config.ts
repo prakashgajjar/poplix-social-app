@@ -13,7 +13,9 @@ const nextConfig: NextConfig = {
       "images.pexels.com",
       "images.unsplash.com",
       "www.w3schools.com",
-      "via.placeholder.com"
+      "via.placeholder.com",
+      "www.pexels.com",
+      "cdn-icons-png.flaticon.com"
     ],
   },
 };

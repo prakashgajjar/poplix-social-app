@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     const token = jwt.sign(
       { userId: user._id, email: user.email },
       jwtSecret,
-      { expiresIn: "1d" }
+      { expiresIn: "2d" }
     );
 
     console.log(token)
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
     response.cookies.set("login", token, {
       httpOnly: true,
       // secure: process.env.NODE_ENV === "production", // set to true in production
-      maxAge: 60 * 60 * 24, // 1 day
+      maxAge: 60 * 60 * 24 * 2, // 1 day
       path: "/",
       // sameSite: "strict",
     });

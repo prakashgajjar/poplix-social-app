@@ -3,7 +3,6 @@ import { NextResponse, NextRequest } from "next/server";
 import Post from "@/models/Post.models";
 import User from "@/models/User.models";
 import { getUserIdFromToken } from "@/lib/getUserIdfromToken";
-import { Notification } from "@/models/Notification.models";
 
 export async function POST(req: NextRequest) {
   try {
@@ -31,7 +30,7 @@ export async function POST(req: NextRequest) {
         cloudinary.uploader
           .upload_stream(
             {
-              folder: "poplix",
+              folder: "poplix/posts",
               resource_type: "auto", // supports both images & videos
             },
             (err, result) => {
