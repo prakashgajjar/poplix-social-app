@@ -5,7 +5,9 @@
       const response = await axios.post("api/home/profile/uploadbanner", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
-        }
+        },
+        withCredentials:true
+        
       })
       // console.log(response.data);
       if (response.status === 200) {

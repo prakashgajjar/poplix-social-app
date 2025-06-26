@@ -4,7 +4,7 @@ import status from "@/utils/status";
 
 export async function POST(req: NextRequest) {
   try {
-const  username  = await req.json();
+    const  username  = await req.json();
 
     if (!username) {
       return NextResponse.json(
@@ -14,7 +14,7 @@ const  username  = await req.json();
     }
 
     const user = await User.findOne({ username: username }).populate({
-      path: "followers",
+      path: "following",
     });
 
     if (!user) {
@@ -25,7 +25,7 @@ const  username  = await req.json();
     }
 
     return NextResponse.json(
-      { followers: user.followers },
+      { following: user.following },
       { status: status.OK.code }
     );
   } catch (error) {

@@ -1,16 +1,16 @@
  import axios from "axios";
  
- export  const getprofiledatail = async (username) => {
+ export  const getfollowers = async (username) => {
     try {
-      const response = await axios.post("api/home/profile/getprofiledetail", username, {
+      const response = await axios.post("/api/home/profile/getfollowers", username, {
         headers: {
           "Content-Type": "application/json"
         },
         withCredentials:true
       })
-      // console.log(response.data);
+
       if (response.status === 200) {
-        const data = response.data;
+        const data = response.data.followers;
         return data;
       }
     } catch (error) {

@@ -63,12 +63,13 @@ export default function NotificationItem({
               </button>
             </div>
           ) : !isFollowingBack && (
-            <button
-              onClick={onFollowBack}
-              className="px-4 py-1.5 text-sm font-medium rounded-full bg-white/10 backdrop-blur-md text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-300 shadow-md flex items-center gap-2 border border-blue-500 mt-2 sm:mt-0"
-            >
-              <UserPlus size={16} className="stroke-[2]" /> Follow
-            </button>
+            // <button
+            //   onClick={onFollowBack}
+            //   className="px-4 py-1.5 text-sm font-medium rounded-full bg-white/10 backdrop-blur-md text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-300 shadow-md flex items-center gap-2 border border-blue-500 mt-2 sm:mt-0"
+            // >
+            //   <UserPlus size={16} className="stroke-[2]" /> Follow
+            // </button>
+            <h1></h1>
           )
         )}
       </div>

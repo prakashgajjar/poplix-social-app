@@ -10,6 +10,7 @@ import GlassSidebar from "@/components/GlassSidebar";
 import { sendmessage } from "@/actions/messages/sendmessage";
 import { Image as ImageIcon, Video, FileText } from "lucide-react";
 import CustomVideoPlayer from "@/components/CustomVideoPlayer";
+import EmojiPicker from "@/app/home/EmojiComp";
 
 const Page = () => {
   const [message, setMessage] = useState("");
@@ -22,7 +23,8 @@ const Page = () => {
   const [media, setMedia] = useState<File | null>(null);
   const inputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [ videoLoaded,setVideoLoaded ] = useState(false)
+  const [videoLoaded, setVideoLoaded] = useState(false)
+  const [showEmoji, setShowEmoji] = useState(false)
 
   const uploadTypes = [
     { type: "image", label: "Image", icon: ImageIcon, accept: "image/*" },
@@ -131,7 +133,7 @@ const Page = () => {
 
                   {msg.type === "video" && (
                     <div>
-                      <CustomVideoPlayer src={msg.url} onLoadedData={()=>setVideoLoaded(true)}/>
+                      <CustomVideoPlayer src={msg.url} onLoadedData={() => setVideoLoaded(true)} />
                       <h1>{msg.content}</h1>
                     </div>
                   )}
@@ -222,11 +224,56 @@ const Page = () => {
           )}
         </div>
 
+        <div>
+          {previewUrl && (
+            <div className="px-4 pt-2 pb-1">
+              <div className="relative inline-block rounded-xl overflow-hidden border border-zinc-700 bg-zinc-900 max-w-xs">
+                <button
+                  onClick={() => {
+                    setMedia(null);
+                    setPreviewUrl(null);
+                  }}
+                  className="absolute top-1 right-1 bg-black/70 text-white rounded-full p-1 hover:bg-black z-10"
+                >
+                  ✖
+                </button>
+
+                {media?.type.startsWith("image") ? (
+                  <Image
+                    src={previewUrl}
+                    alt="Preview"
+                    width={250}
+                    height={250}
+                    className="w-full h-auto object-contain max-h-[300px]"
+                  />
+                ) : media?.type.startsWith("video") ? (
+                  <video
+                    src={previewUrl}
+                    controls
+                    className="w-full h-auto object-contain max-h-[300px] bg-black"
+                  />
+                ) : (
+                  <div className="text-white p-4">File selected</div>
+                )}
+              </div>
+            </div>
+          )}
+
+        </div>
+
         {/* Input bar */}
         <div className="flex items-center px-4  py-3 border-t border-gray-800 gap-3 bg-[#1e1e1e]">
-          <button>
-            <Smile size={20} className="text-white" />
-          </button>
+          <div className="relative">
+            <button onClick={() => setShowEmoji(!showEmoji)}>
+              <Smile size={20} className="text-white" />
+            </button>
+
+            {showEmoji && (
+              <div className="absolute bottom-12 left-0 z-50">
+                <EmojiPicker setContent={setMessage} />
+              </div>
+            )}
+          </div>
           <button onClick={() => {
             setShowUploadTypeSelector(!showUploadTypeSelector)
           }}>

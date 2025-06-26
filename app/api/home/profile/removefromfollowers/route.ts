@@ -1,22 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/User.models";
 import status from "@/utils/status";
+import { getUserIdFromToken } from "@/lib/getUserIdfromToken";
 
 export async function POST(req: NextRequest) {
   try {
-const  username  = await req.json();
+    const {id} = await req.json();
+    const userId = await getUserIdFromToken();
 
-    if (!username) {
+    if (!id) {
       return NextResponse.json(
         { message: status.UNAUTHORIZED.message },
         { status: status.UNAUTHORIZED.code }
       );
     }
 
-    const user = await User.findOne({ username: username }).populate({
-      path: "followers",
-    });
-
+    const user = await User.findOne({ _id: userId });
     if (!user) {
       return NextResponse.json(
         { message: status.NOT_FOUND.message },
@@ -24,8 +23,10 @@ const  username  = await req.json();
       );
     }
 
+    const removedId = await user.followers.remove(id);
+    await user.save();
     return NextResponse.json(
-      { followers: user.followers },
+      { removedId: removedId },
       { status: status.OK.code }
     );
   } catch (error) {

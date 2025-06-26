@@ -11,8 +11,9 @@ interface MediaModalProps {
 }
 
 export default function MediaModal({ post, onClose }: MediaModalProps) {
+
     const modalRef = useRef<HTMLDivElement>(null);
-    console.log(post?.comments)
+    console.log("post comments : " , post?.comments)
 
     // Escape key to close
     useEffect(() => {
@@ -51,7 +52,7 @@ export default function MediaModal({ post, onClose }: MediaModalProps) {
                 className="bg-black/40 backdrop-blur-xs  rounded-lg shadow-lg w-full max-w-6xl max-h-[90vh] flex  md:flex-row overflow-hidden"
             >
                 {/* Media Section */}
-                <div className="flex-1 w-[530px] h-[670px] md:h-[943px] flex items-center justify-center bg-transparent ">
+                <div className="flex-1 w-[530px] h-[670px] md:h-[943px] flex items-center justify-center bg-[#111] ">
                     {post.type === 'image' ? (
                         <Image
                             src={post.url}
@@ -76,13 +77,13 @@ export default function MediaModal({ post, onClose }: MediaModalProps) {
                 </div>
 
                 {/* Desktop Comment Sidebar */}
-                <div className="md:w-[500px] lg:block hidden bg-[#111] p-4 rounded-xl">
+                <div className="md:w-[500px] lg:block hidden bg-[#111] p-4 border-l-[1px] border-white/20 rounded-r-xl">
                     <div className="mb-4 border-b border-gray-700 pb-2">
                         <h1 className="text-lg font-semibold text-white">Comments</h1>
                     </div>
 
                     {post?.comments?.length > 0 ? (
-                        post.comments.map((comment, index) => (
+                        post?.comments.map((comment, index) => (
                             <div key={comment._id || index} className="mb-3">
                                 <PostComment comment={comment} />
                             </div>

@@ -3,6 +3,7 @@
 import { Toaster } from 'react-hot-toast';
 import {
   FaHome, FaSearch, FaBell, FaUser, FaPlus,
+  FaEnvelope,
 } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
@@ -18,6 +19,7 @@ import GlassSidebar from '@/components/GlassSidebar';
 import Image from 'next/image';;
 import LoadingPost from '@/components/Loading';
 import LogoLoader from '@/components/LogoLoader';
+import PostCard from '@/app/home/Post';
 
 
 
@@ -28,6 +30,7 @@ export default function HomeLayout() {
   const [activeTab, setActiveTab] = useState("foryou");
   const [userData, setUSerData] = useState(null);
   const [showLoader, setShowLoader] = useState(false)
+  const [showPost, setShowPost] = useState(true);
   // const [showPopai,setShowPopai] = useState(false)
   const router = useRouter();
 
@@ -129,7 +132,7 @@ export default function HomeLayout() {
                     </div>
                   )}
                 </div>
-                          {/* <PopAIAssistantOverlay/> */}
+                {/* <PopAIAssistantOverlay/> */}
               </div>
             ) : (
               <div className="p-4 [&>div:last-child]:mb-10">
@@ -154,7 +157,6 @@ export default function HomeLayout() {
           </div>
         )}
 
-
         <div>
           <GlassSidebar />
         </div>
@@ -162,28 +164,29 @@ export default function HomeLayout() {
 
       {/* Mobile Bottom Nav */}
       <div className="fixed bottom-0 w-full bg-black border-t border-gray-800 flex justify-around items-center py-2 md:hidden z-50">
-        <FaHome
-          className="text-2xl cursor-pointer transition-all duration-200 ease-out hover:text-blue-500 active:text-blue-400 active:scale-95"
-          onClick={() => {
-            if (userData) router.replace(`/home`);
-          }}
-        />
+
+       
         <FaSearch className="text-2xl cursor-pointer transition-all duration-200 ease-out hover:text-blue-500 active:text-blue-400 active:scale-95" onClick={() => {
           setShowLoader(true)
           router.replace("/explore")
         }} />
-        <FaPlus className="text-2xl bg-blue-500 text-white p-2 rounded-full cursor-pointer transition-all duration-200 active:bg-blue-600 active:scale-95" onClick={() => {
-          // setShowPopai(true);
+        <FaEnvelope className="text-2xl   cursor-pointer transition-all duration-200 active:bg-blue-600 active:scale-95" onClick={() => {
+          router.push('/message')
         }} />
+        <FaHome
+          className="text-2xl cursor-pointer transition-all duration-200 ease-out hover:text-blue-500 active:text-blue-400 active:scale-95"
+          onClick={() => {
+            if (userData) router.replace(`/home`);
+          }} />
         <FaBell className="text-2xl cursor-pointer transition-all duration-200 ease-out hover:text-blue-500 active:text-blue-400 active:scale-95" onClick={() => {
           router.replace(`/notifications`);
         }} />
         <FaUser
           className="text-2xl cursor-pointer transition-all duration-200 ease-out hover:text-blue-500 active:text-blue-400 active:scale-95"
           onClick={() => {
-          
-              router.replace(`/${userData?.user?.username}`);
-            
+
+            router.replace(`/${userData?.user?.username}`);
+
           }}
         />
       </div>

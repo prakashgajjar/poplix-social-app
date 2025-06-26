@@ -4,6 +4,7 @@ import connectDB from "@/lib/db";
 import status from "@/utils/status";
 import { getUserIdFromToken } from "@/lib/getUserIdfromToken";
 
+
 export async function POST(req: NextRequest) {
   await connectDB();
   const userId = await getUserIdFromToken();
@@ -11,7 +12,15 @@ export async function POST(req: NextRequest) {
   const { username } = await req.json();
 
   try {
-    const user = await User.findOne({ username }).populate("posts");
+    const user = await User.findOne({ username }).populate({
+      path:"posts",
+      populate:{
+        path:"comments",
+        populate:{
+          path:"user"
+        }
+      }
+    });
 
     // console.log(user);
     if (!user) {

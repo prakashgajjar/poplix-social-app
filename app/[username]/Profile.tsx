@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { updateprofile } from "@/actions/profile/updateprofile";
+import { useRouter } from "next/navigation";
 
 export default function ProfileInfo({ profile, userId }) {
   const [editingField, setEditingField] = useState(null);
@@ -10,10 +11,11 @@ export default function ProfileInfo({ profile, userId }) {
 
   const editRef = useRef(null);
   const contentRef = useRef(null);
+  const router = useRouter();
 
   const handleSave = async () => {
     await updateprofile(updatedName, updatedBio)
-    console.log("Saving profile:", { updatedName, updatedBio });
+    // console.log("Saving profile:", { updatedName, updatedBio });
     setEditingField(null);
   };
 
@@ -104,10 +106,12 @@ export default function ProfileInfo({ profile, userId }) {
           style={{ whiteSpace: 'pre-line' }}
           onDoubleClick={() => setEditingField("bio")}
         >
-          {(userId === profile?._id && updatedBio !== profile?.bio)
-            ? updatedBio
-            : (profile?.bio || "Hey there! I'm new here. Excited to connect and explore")}
+          {userId === profile?._id
+            ? (updatedBio || profile?.bio || "Hey there! I'm new here. Excited to connect and explore.")
+            : (profile?.bio || "Hey there! I'm new here. Excited to connect and explore.")
+          }
         </p>
+
       )}
 
       {
@@ -122,15 +126,27 @@ export default function ProfileInfo({ profile, userId }) {
       }
 
       {/* Static info */}
-      <div className="flex gap-4 mt-2 text-sm text-gray-400">
-        <span>Born February 5, 1985</span>
-        <span>Joined June 2010</span>
-      </div>
+
 
       {/* Followers/Following */}
-      <div className="flex gap-4 mt-1 text-sm">
-        <span className="font-bold text-white">{profile?.following?.length || 0}</span> Following
-        <span className="font-bold text-white">{profile?.followers?.length || 0}</span> Followers
+      <div className="flex gap-4 mt-2 text-sm">
+        <div
+          className="cursor-pointer"
+          onClick={() => {
+            router.push(`/${profile?.username}/following`)
+          }}>
+          <span
+            className="font-bold cursor-pointer text-white">{profile?.following?.length || 0}</span> Following
+        </div>
+        <div
+          className="cursor-pointer"
+          onClick={() => {
+            router.push(`/${profile?.username}/followers`)
+          }}>
+          <span
+
+            className="font-bold cursor-pointer text-white">{profile?.followers?.length || 0}</span> Followers
+        </div>
       </div>
     </div>
   );

@@ -2,10 +2,11 @@
  
  export  const followuser = async (id) => {
     try {
-      const response = await axios.post("api/home/profile/follow", id, {
+      const response = await axios.post("/api/home/profile/follow", id, {
         headers: {
           "Content-Type": "application/json"
-        }
+        },
+        withCredentials:true
       })
 
       if (response.status === 200) {

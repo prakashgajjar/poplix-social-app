@@ -70,7 +70,7 @@ export default function Sidebar() {
                   router.replace(`${route}`)
                 } 
                 else {
-                  user?.user.username && router.replace(`${user.user.username}`)
+                  user?.user.username && router.push(`/${user.user.username}`)
                 }
 
               }}
@@ -89,7 +89,7 @@ export default function Sidebar() {
       </div>
 
       {
-        user && <div className="flex items-center gap-3 mt-6 p-2 hover:bg-gray-800 rounded cursor-pointer" onClick={() => router.replace(`${user?.user?.username}`)}>
+        user && <div className="flex items-center gap-3 mt-6 p-2 hover:bg-gray-800 rounded cursor-pointer" onClick={() => router.push(`/${user?.user?.username}`)}>
           <Image src={`${user?.user?.avatar || "/images/default-avatar.png"}`} className="w-10 h-10 rounded-full" alt="Profile" width={40} height={40} />
           <div>
             <p className="font-semibold text-white">{user?.user?.fullname}</p>
