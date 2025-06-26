@@ -3,11 +3,13 @@
 import { useRouter } from "next/navigation";
 import { CheckCircle2, ArrowLeft } from "lucide-react";
 import SwipeToGoBack from "@/components/SwipeToGoBack";
+import CheckoutButton from "@/components/CheckoutPayment";
 
 const plans = [
   {
     name: "Basic",
     price: "₹149",
+    amount:14900,
     frequency: "/month",
     features: [
       "Small reply boost",
@@ -19,6 +21,7 @@ const plans = [
   {
     name: "Premium",
     price: "₹349",
+    amount:34900,
     frequency: "/month",
     features: [
       "Everything in Basic",
@@ -32,6 +35,7 @@ const plans = [
   {
     name: "Premium+",
     price: "₹1,999",
+    amount:199900,
     frequency: "/month",
     features: [
       "Everything in Premium",
@@ -82,9 +86,13 @@ export default function PremiumPage() {
                   ))}
                 </ul>
               </div>
-              <button className="mt-8 w-full bg-pink-600 hover:bg-pink-700 text-white py-2 rounded-xl font-semibold transition">
-                Subscribe Now
-              </button>
+              <div>
+                <CheckoutButton
+                  planName={plan.name}
+                  amount={plan.amount}
+                  email="prakashgajjar096@gmail.com"
+                />
+              </div>
             </div>
           ))}
         </div>

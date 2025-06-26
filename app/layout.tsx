@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-const showSidebar = !(pathname === "/" || pathname === "/popai" || pathname === '/premium');
+const showSidebar = !(pathname === "/" || pathname === "/popai" || pathname === '/premium' || pathname === '/premium/success' || pathname === '/premium/cancel');
 const showSidebar1 = !pathname.startsWith("/message")
 
   return (
