@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { ArrowLeft, Mic } from "lucide-react";
 import { sendtexttoai } from "@/actions/ai/sendtexttoai";
 import Image from "next/image";
-import TextLoop from "react-text-loop";
 import GlassSidebar from "@/components/GlassSidebar";
 import SwipeToGoBack from "@/components/SwipeToGoBack";
 import { useRouter } from "next/navigation";
@@ -216,13 +215,7 @@ export default function PopAIAssistantOverlay({ visible = true }: { visible?: bo
 
         {/* 📢 Feedback */}
         <div className="text-center mt-4">
-          {loading && (
-            <TextLoop className="text-white text-lg font-semibold">
-              <span>Thinking...</span>
-              <span>Analysing...</span>
-              <span>Generating reply...</span>
-            </TextLoop>
-          )}
+
           {text && !loading && (
             <p className="text-white text-lg font-medium">
               You said: <span className="italic text-pink-400">{text}</span>
