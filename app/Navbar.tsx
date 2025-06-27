@@ -83,9 +83,9 @@ export default function Sidebar() {
           ))}
         </nav>
 
-        <button className="mt-6 bg-white text-black font-semibold rounded-full py-2 w-full hover:bg-gray-300 flex items-center justify-center">
+        {/* <button className="mt-6 bg-white text-black font-semibold rounded-full py-2 w-full hover:bg-gray-300 flex items-center justify-center">
           <FaPlus className="mr-2" /> Post
-        </button>
+        </button> */}
       </div>
 
       {

@@ -13,7 +13,7 @@ interface MediaModalProps {
 export default function MediaModal({ post, onClose }: MediaModalProps) {
 
     const modalRef = useRef<HTMLDivElement>(null);
-    console.log("post comments : " , post?.comments)
+    // console.log("post comments : " , post?.comments)
 
     // Escape key to close
     useEffect(() => {
@@ -36,7 +36,7 @@ export default function MediaModal({ post, onClose }: MediaModalProps) {
     }, [onClose]);
 
     return (
-        <div className="fixed w-screen h-[800px] sm:h-screen inset-0 z-50 bg-transparent flex items-center justify-center p-2 md:p-4 animate-fadeIn">
+      <div className="fixed w-screen h-[800px] sm:h-screen inset-0 z-50 bg-transparent flex items-center justify-center p-2 md:p-4 animate-fadeIn">
             {/* Close Button */}
             <button
                 onClick={onClose}

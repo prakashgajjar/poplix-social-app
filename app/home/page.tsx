@@ -5,7 +5,7 @@ import {
   FaHome, FaSearch, FaBell, FaUser,
   FaPaperPlane,
 } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from 'next/navigation';
 
 import SendPost from "./SendPost";
@@ -19,6 +19,7 @@ import GlassSidebar from '@/components/GlassSidebar';
 import Image from 'next/image';;
 import LoadingPost from '@/components/Loading';
 import LogoLoader from '@/components/LogoLoader';
+import { get } from 'http';
 
 
 
@@ -29,20 +30,53 @@ export default function HomeLayout() {
   const [activeTab, setActiveTab] = useState("foryou");
   const [userData, setUSerData] = useState(null);
   const [showLoader, setShowLoader] = useState(false)
+  const [page, setPage] = useState(1); // for 20 posts per page
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const loaderRef = useRef(null);
   const router = useRouter();
 
   useEffect(() => {
-    getPosts().then(setPosts).catch(console.error);
+    getPosts(page).then(setPosts).catch(console.error);
 
     async function fetchUser() {
       const data = await getuserinfo();
       setUSerData(data);
-      // console.log(data)
+
     }
 
     fetchUser();
   }, []);
 
+  const fetchPosts = async () => {
+    setLoading(true);
+    const newPosts = await getPosts(page); // API should return next 20
+    if (newPosts.length < 15) setHasMore(false); // no more pages
+    setPosts(prev => [...prev, ...newPosts]); // merge with old
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, [page]);
+
+  useEffect(() => {
+    if (!loaderRef.current) return;
+
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && !loading && hasMore) {
+        setPage(prev => prev + 1); // go to next page
+      }
+    }, {
+      threshold: 1
+    });
+
+    observer.observe(loaderRef.current);
+
+    return () => {
+      if (loaderRef.current) observer.unobserve(loaderRef.current);
+    };
+  }, [loaderRef.current, loading, hasMore]);
 
 
 
@@ -86,7 +120,7 @@ export default function HomeLayout() {
             <button
               onClick={async () => {
                 setActiveTab("following");
-                const data = await getpostfollowing();
+                const data = await getpostfollowing(page);
                 setFollowingPost(data);
               }}
               className={`w-1/2 py-2 font-semibold transition ${activeTab === "following"
@@ -127,7 +161,13 @@ export default function HomeLayout() {
                     </div>
                   )}
                 </div>
-                
+
+                {hasMore && (
+                  <div ref={loaderRef} className="text-center text-gray-400 py-4">
+                    {loading ? "Loading more..." : "Scroll to load more"}
+                  </div>
+                )}
+
               </div>
             ) : (
               <div className={`p-4`} >
@@ -147,6 +187,12 @@ export default function HomeLayout() {
                   </div>
                 )}
               </div>
+
+            )}
+            {hasMore && (
+              <div ref={loaderRef} className="text-center text-gray-400 py-4">
+                {loading ? "Loading more..." : "Scroll to load more"}
+              </div>
             )}
           </div>
         )}
@@ -158,7 +204,7 @@ export default function HomeLayout() {
       {/* Mobile Bottom Nav */}
       <div className="fixed bottom-0  w-full bg-black border-t border-gray-800 flex justify-around items-center py-2 md:hidden z-50">
 
-       
+
         <FaSearch className="text-2xl cursor-pointer transition-all duration-200 ease-out hover:text-blue-500 active:text-blue-400 active:scale-95" onClick={() => {
           setShowLoader(true)
           router.push("/explore")

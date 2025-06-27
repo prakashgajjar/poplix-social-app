@@ -14,6 +14,7 @@ import MediaCard from '@/components/Media';
 import { finduser } from '@/actions/explore/finduser';
 import SwipeToGoBack from '@/components/SwipeToGoBack';
 import PostShow from '@/components/PostShow';
+import page from '../more/page';
 
 const ExplorePage = () => {
   const [posts, setPosts] = useState([]);
@@ -25,6 +26,10 @@ const ExplorePage = () => {
   const [postData, setPostData] = useState({})
   const router = useRouter();
   const holdTimeout = useRef<NodeJS.Timeout | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [page, setPage] = useState(1); // for 20 posts per page
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
 
   const handleFindUser = async () => {
@@ -32,15 +37,53 @@ const ExplorePage = () => {
     setUsers(user)
   }
 
+  const handleScroll = () => {
+    if (!containerRef.current || loading || !hasMore) return;
+    const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+
+    if (scrollTop + clientHeight >= scrollHeight - 300) {
+      setPage((prev) => prev + 1); // ⬅️ Move this here
+    }
+  };
+  const fetchData = async (pageNo = 1) => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+    const fetchedPosts = await getPosts(pageNo);
+    const textPosts = fetchedPosts;
+
+    if (textPosts.length > 0) {
+      setPosts((prev) => [...prev, ...textPosts]);
+      setFilteredPosts((prev) => [...prev, ...textPosts]);
+    } else {
+      setHasMore(false);
+    }
+
+    setLoading(false);
+  };
+
 
   useEffect(() => {
-    const fetchData = async () => {
-      const fetchedPosts = await getPosts();
-      setPosts(fetchedPosts || []);
-      setFilteredPosts(fetchedPosts || []);
+    fetchData(page);
+  }, [page]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current || loading || !hasMore) return;
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+
+      if (scrollTop + clientHeight >= scrollHeight - 300) {
+        setPage((prev) => prev + 1);
+      }
     };
-    fetchData();
-  }, []);
+
+    const currentRef = containerRef.current;
+    if (currentRef) currentRef.addEventListener('scroll', handleScroll);
+
+    return () => {
+      if (currentRef) currentRef.removeEventListener('scroll', handleScroll);
+    };
+  }, [loading, hasMore]);
 
   useEffect(() => {
     const lowerSearch = searchTerm.toLowerCase().trim();

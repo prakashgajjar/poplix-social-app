@@ -2,7 +2,6 @@ import Post from "@/models/Post.models";
 import status from "@/utils/status";
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/db";
-import { ObjectId } from "mongodb";
 import "@/models/Comment.models";
 import "@/models/User.models";
 
@@ -10,32 +9,25 @@ export async function POST(req: NextRequest) {
   await connectDB();
 
   try {
-    const body = await req.json();
-    const seenPostIds = body.seen || [];
+    const { page } = await req.json();
+    const limit = 15;
+    const skip = (page - 1) * limit;
 
-    const posts = await Post.aggregate([
-      { $match: { _id: { $nin: seenPostIds.map((id) => new ObjectId(id)) } } },
-      { $sample: { size: 30 } },
-    ]);
-    const postIds = posts.map((post) => post._id);
-    const populatedPosts = await Post.find({ _id: { $in: postIds } })
+    const posts = await Post.find({})
+      .sort({ createdAt: -1 }) // newest first
+      .skip(skip)
+      .limit(limit)
+      .populate("user")
       .populate({
-        path: "user", // user who posted or reposted
-      })
-      .populate({
-        path: "retweetOf", // the original post
-        populate: {
-          path: "user", // also populate the user of the original post
-        },
+        path: "retweetOf",
+        populate: { path: "user" },
       })
       .populate({
         path: "comments",
-        populate: {
-          path: "user",
-        },
-      })
-      .sort({ createdAt: -1 });
-    return NextResponse.json({ status: status.OK.code, data: populatedPosts });
+        populate: { path: "user" },
+      });
+
+    return NextResponse.json({ status: status.OK.code, data: posts });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -44,3 +36,4 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+

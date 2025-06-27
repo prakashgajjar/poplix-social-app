@@ -2,12 +2,14 @@ import connectDB from "@/lib/db";
 import User from "@/models/User.models";
 import Post from "@/models/Post.models";
 import { getUserIdFromToken } from "@/lib/getUserIdfromToken";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import status from "@/utils/status";
 
-export async function GET() {
+export async function POST(req: NextRequest) {
   await connectDB();
-
+  const { page } = await req.json();
+  const limit = 15;
+  const skip = (page - 1) * limit;
   try {
     const userId = await getUserIdFromToken();
     const user = await User.findById(userId).populate("following");
@@ -22,6 +24,9 @@ export async function GET() {
     const followingIds = user.following.map((f) => f._id);
 
     const posts = await Post.find({ user: { $in: followingIds } })
+      .sort({ createdAt: -1 }) // newest first
+      .skip(skip)
+      .limit(limit)
       .populate("user")
       .populate({
         path: "retweetOf",

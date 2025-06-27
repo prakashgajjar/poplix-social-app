@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export const getpostfollowing = async () => {
+export const getpostfollowing = async (page) => {
   try {
-    const response = await axios.get("/api/home/post/followingpost", {
+    const response = await axios.post("/api/home/post/followingpost",{page}, {
       headers: {
         "Content-Type": "application/json",
       },

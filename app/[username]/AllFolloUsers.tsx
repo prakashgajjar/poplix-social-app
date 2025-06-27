@@ -16,7 +16,6 @@ export default function AllFollowUsers({ users, text }: Props) {
   const [search, setSearch] = useState('');
   const router = useRouter()
   const { username } = useParams();
-  const [checkFollow, setCheckFollow] = useState(true)
   const [userId , setUserId] = useState('')
   // console.log(users)
 
@@ -69,10 +68,10 @@ export default function AllFollowUsers({ users, text }: Props) {
               </div>
             </div>
 
-          {userId !== user?._id &&  <div className="flex gap-2">
+          { <div className="flex gap-2">
               {text === 'following' ? (
-                <div onClick={() => setCheckFollow(!checkFollow)}>
-                  <Follow id={user?._id} checkFollow={checkFollow} />
+                <div >
+                  <Follow id={user?._id}  />
                 </div>) : (
                 <button
                   onClick={()=>handleRemove(user?._id)}

@@ -162,7 +162,7 @@ export default function ProfilePage() {
               <div className="flex gap-3">
 
                 {userId !== profile?._id && <Message id={profile?._id} />}
-                {userId !== profile?._id &&<Follow id={profile?._id} checkFollow={checkFollow} />}
+                {userId !== profile?._id &&<Follow id={profile?._id}  />}
               </div>
             </div>
 

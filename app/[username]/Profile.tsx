@@ -8,6 +8,7 @@ export default function ProfileInfo({ profile, userId }) {
   const [updatedBio, setUpdatedBio] = useState(profile?.bio || "");
   const [showReadMore, setShowReadMore] = useState<boolean>(false);
   const [expanded, setExpanded] = useState<boolean>(false);
+  
 
   const editRef = useRef(null);
   const contentRef = useRef(null);

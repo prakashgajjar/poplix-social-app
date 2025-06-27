@@ -1,8 +1,8 @@
  import axios from "axios";
  
- export  const getPosts = async () => {
+ export  const getPosts = async (page) => {
     try {
-      const response = await axios.post("/api/home/post/getposts", {}, {
+      const response = await axios.post("/api/home/post/getposts", {page}, {
         headers: {
           "Content-Type": "application/json"
         },

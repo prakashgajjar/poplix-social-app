@@ -3,17 +3,20 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { follosuggetion } from "@/actions/followsuggetions/follosuggetion";
 import { RefreshCcw } from 'lucide-react'
-
+import Follow from "../[username]/Follow";
+import { useRouter } from "next/navigation";
 
 
 const FollowSuggestions = () => {
 
     const [users, setUsers] = useState([]);
+    const router = useRouter()
 
     const handleRefresh = async () => {
         const data = await follosuggetion();
         setUsers(data);
     }
+
 
     useEffect(() => {
         async function run() {
@@ -41,7 +44,7 @@ const FollowSuggestions = () => {
                         key={index}
                         className="flex items-center justify-between hover:bg-gray-800/60 p-3 rounded-lg transition-all duration-200 cursor-pointer"
                     >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3" onClick={()=>router.push(`/${user.username}`)}>
                             <Image
                                 src={user.avatar}
                                 alt={user.username}
@@ -56,9 +59,7 @@ const FollowSuggestions = () => {
                                 <p className="text-xs text-gray-400">{user.username}</p>
                             </div>
                         </div>
-                        <button className="bg-white text-black px-4 py-1.5 rounded-full font-semibold text-xs hover:bg-blue-100 transition">
-                            Follow
-                        </button>
+                       <Follow id={user._id} checkFollow={false}/>
                     </div>
                 ))}
             </div>
