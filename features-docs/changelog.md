@@ -14,3 +14,5 @@ ai-portfolio generete
 
 ---------------------
 the main chnage is i write contects instade of contacts so that mistack reflect in routes and messagepages 
+
+------------------

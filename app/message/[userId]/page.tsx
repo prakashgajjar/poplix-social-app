@@ -34,7 +34,7 @@ const Page = () => {
 
   const handleGetChat = async () => {
     const data = await getuserchat(userId)
-    console.log(data.messages, data.user);
+    // console.log(data.messages, data.user);
     setMessages(data.messages)
     setUser(data.user)
   }

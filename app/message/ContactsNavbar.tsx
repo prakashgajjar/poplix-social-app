@@ -24,7 +24,7 @@ export default function ContactNavbar() {
   const handleGetContacts = async () => {
     const data = await getcontacts();
     setContacts(data);
-    console.log("contacts data : ", data);
+    // console.log("contacts data : ", data);
   };
 
   useEffect(() => {

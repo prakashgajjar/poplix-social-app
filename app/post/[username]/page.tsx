@@ -56,7 +56,7 @@ const UserPostPage = () => {
     fetchUserPosts();
   }, [username]);
 
-  const handleBack = () => router.push("/home");
+  const handleBack = () => router.push(`/${username}`);
 
 
   const handleLongPress = (post: any) => {
@@ -100,7 +100,7 @@ const UserPostPage = () => {
             <LoadingPost />
           </div>
         ) : posts.length > 0 ? (
-          <div className="flex flex-col gap-4 mb-12">
+          <div className="flex pl-2 flex-col gap-4 mb-12">
             {posts.map((post) => (
               <div
                 key={post._id}

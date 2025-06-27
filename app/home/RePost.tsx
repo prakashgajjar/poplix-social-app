@@ -135,8 +135,8 @@ const RePostCard = ({ post, repostUser }) => {
         )}
 
         {post?.type === "video" && post?.url && (
-          <div className="mt-3 grid relative left-[16px] grid-cols-2 gap-2 rounded-xl overflow-hidden">
-            <div className="col-span-2 rounded-xl relative">
+          <div className="mt-3 grid grid-cols-1 gap-2 rounded-xl overflow-hidden">
+            <div className="relative w-full  rounded-xl overflow-hidden">
               <CustomVideoPlayer
                 src={post?.url}
                 onLoadedData={() => setVideoLoaded(true)}

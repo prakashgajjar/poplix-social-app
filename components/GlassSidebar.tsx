@@ -5,12 +5,12 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   FaHome,
-  FaEnvelope,
+  FaPaperPlane,
   FaSearch,
   FaBell,
   FaBookmark,
   FaStar,
-  FaBuilding,
+  // FaBuilding,
   FaEllipsisH,
 } from "react-icons/fa";
 
@@ -75,32 +75,32 @@ export default function GlassSidebar() {
             Icon={FaSearch}
             label="Explore"
             activeLabel={activeLabel}
-            onClick={() => handleNavClick("Explore", "explore")}
+            onClick={() => handleNavClick("Explore", "/explore")}
           />
           <SidebarOption
-            Icon={FaEnvelope}
+            Icon={FaPaperPlane}
             label="Messages"
             activeLabel={activeLabel}
-            onClick={() => handleNavClick("Messages", "message")}
+            onClick={() => handleNavClick("Messages", "/message")}
           />
           <SidebarOption
             Icon={FaBookmark}
             label="Bookmarks"
             activeLabel={activeLabel}
-            onClick={() => handleNavClick("Bookmarks", "bookmarks")}
+            onClick={() => handleNavClick("Bookmarks", "/bookmarks")}
           />
           <SidebarOption
             Icon={FaStar}
             label="Premium"
             activeLabel={activeLabel}
-            onClick={() => handleNavClick("Premium", "premium")}
+            onClick={() => handleNavClick("Premium", "/premium")}
           />
-          <SidebarOption
+          {/* <SidebarOption
             Icon={FaBuilding}
             label="Verified Orgs"
             activeLabel={activeLabel}
             onClick={() => handleNavClick("Verified Orgs", "verify-org")}
-          />
+          /> */}
           <SidebarOption
             Icon={() => (
               <Image
@@ -145,7 +145,7 @@ function SidebarOption({
   return (
     <div
       onClick={onClick}
-      className={`flex items-center space-x-3 cursor-pointer transition-all duration-300 p-3 rounded-xl 
+      className={`flex items-center space-x-3 cursor-pointer transition-all select-none duration-300 p-3 rounded-xl 
         ${isActive
           ? "bg-white/20 text-white shadow-md scale-[1.03]"
           : "text-white/80 hover:text-white hover:bg-white/10 hover:scale-[1.02]"

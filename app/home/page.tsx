@@ -2,8 +2,8 @@
 
 import { Toaster } from 'react-hot-toast';
 import {
-  FaHome, FaSearch, FaBell, FaUser, FaPlus,
-  FaEnvelope,
+  FaHome, FaSearch, FaBell, FaUser,
+  FaPaperPlane,
 } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
@@ -19,7 +19,6 @@ import GlassSidebar from '@/components/GlassSidebar';
 import Image from 'next/image';;
 import LoadingPost from '@/components/Loading';
 import LogoLoader from '@/components/LogoLoader';
-import PostCard from '@/app/home/Post';
 
 
 
@@ -30,8 +29,6 @@ export default function HomeLayout() {
   const [activeTab, setActiveTab] = useState("foryou");
   const [userData, setUSerData] = useState(null);
   const [showLoader, setShowLoader] = useState(false)
-  const [showPost, setShowPost] = useState(true);
-  // const [showPopai,setShowPopai] = useState(false)
   const router = useRouter();
 
   useEffect(() => {
@@ -55,7 +52,7 @@ export default function HomeLayout() {
       <Toaster position="top-right" reverseOrder={false} />
       {showLoader && <LogoLoader />}
       {/* Feed center */}
-      <main className="flex-1 max-w-3xl border-x h-screen overflow-scroll border-gray-800 mx-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+      <main className="flex-1 max-w-3xl border-x h-screen overflow-scroll pb-12 md:pb-8 lg:mb-0 border-gray-800 mx-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
         <div className="flex items-center justify-between px-4 py-3">
           {/* 🚀 Logo Left */}
           <div className="flex items-center gap-2">
@@ -69,8 +66,6 @@ export default function HomeLayout() {
 
             <h1 className="text-xl font-bold text-white">Home</h1>
           </div>
-
-          {/* 🧭 Optional - Can add search/settings later */}
         </div>
 
         {/* Sticky Tab Bar */}
@@ -132,10 +127,10 @@ export default function HomeLayout() {
                     </div>
                   )}
                 </div>
-                {/* <PopAIAssistantOverlay/> */}
+                
               </div>
             ) : (
-              <div className="p-4 [&>div:last-child]:mb-10">
+              <div className={`p-4`} >
                 {followingPost?.length > 0 ? (
                   followingPost.map((post) =>
                     post?.isRetweet ? (
@@ -153,33 +148,31 @@ export default function HomeLayout() {
                 )}
               </div>
             )}
-
           </div>
         )}
-
         <div>
           <GlassSidebar />
         </div>
       </main>
 
       {/* Mobile Bottom Nav */}
-      <div className="fixed bottom-0 w-full bg-black border-t border-gray-800 flex justify-around items-center py-2 md:hidden z-50">
+      <div className="fixed bottom-0  w-full bg-black border-t border-gray-800 flex justify-around items-center py-2 md:hidden z-50">
 
        
         <FaSearch className="text-2xl cursor-pointer transition-all duration-200 ease-out hover:text-blue-500 active:text-blue-400 active:scale-95" onClick={() => {
           setShowLoader(true)
-          router.replace("/explore")
+          router.push("/explore")
         }} />
-        <FaEnvelope className="text-2xl   cursor-pointer transition-all duration-200 active:bg-blue-600 active:scale-95" onClick={() => {
+        <FaPaperPlane className="text-2xl   cursor-pointer transition-all duration-200 active:text-blue-600 active:scale-95" onClick={() => {
           router.push('/message')
         }} />
         <FaHome
           className="text-2xl cursor-pointer transition-all duration-200 ease-out hover:text-blue-500 active:text-blue-400 active:scale-95"
           onClick={() => {
-            if (userData) router.replace(`/home`);
+            if (userData) router.push(`/home`);
           }} />
         <FaBell className="text-2xl cursor-pointer transition-all duration-200 ease-out hover:text-blue-500 active:text-blue-400 active:scale-95" onClick={() => {
-          router.replace(`/notifications`);
+          router.push(`/notifications`);
         }} />
         <FaUser
           className="text-2xl cursor-pointer transition-all duration-200 ease-out hover:text-blue-500 active:text-blue-400 active:scale-95"

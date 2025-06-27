@@ -172,7 +172,7 @@ export default function ProfilePage() {
 
           {/* Posts */}
           <div className="mt-6 px-4">
-            <div className="flex items-center gap-2 border-b-1 border-blue-500 py-2 text-white font-semibold hover:bg-blue-500/10 transition-all cursor-pointer"
+            <div className="flex items-center gap-2 border-b-1 select-none border-blue-500 py-2 text-white font-semibold hover:bg-blue-500/10 transition-all cursor-pointer"
               onClick={() => router.replace(`post/${username}`)}
             >
               <ImageIcon className="w-5 h-5 text-blue-400" />

@@ -131,7 +131,7 @@ export default function ProfileInfo({ profile, userId }) {
       {/* Followers/Following */}
       <div className="flex gap-4 mt-2 text-sm">
         <div
-          className="cursor-pointer"
+          className="cursor-pointer select-none"
           onClick={() => {
             router.push(`/${profile?.username}/following`)
           }}>
@@ -139,7 +139,7 @@ export default function ProfileInfo({ profile, userId }) {
             className="font-bold cursor-pointer text-white">{profile?.following?.length || 0}</span> Following
         </div>
         <div
-          className="cursor-pointer"
+          className="cursor-pointer select-none"
           onClick={() => {
             router.push(`/${profile?.username}/followers`)
           }}>

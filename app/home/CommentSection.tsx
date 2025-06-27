@@ -5,10 +5,32 @@ import { SendHorizonal } from "lucide-react";
 import Image from "next/image";
 import { sendcomment } from "@/actions/postActions/sendcomments";
 import { formatDistanceToNow } from "date-fns";
+import DeleteCommentModal from "@/components/DeleteCommentModal";
+import { deletecomments } from "@/actions/postActions/deletecomment";
 
 export default function CommentSection({ comments, postId, user }) {
   const [commentText, setCommentText] = useState("");
+  const [showCommentDelete, setShowCommentDelete] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState(null);
+
   const commentBoxRef = useRef(null);
+  const timeRef = useRef(null)
+
+  const handleTouchStart = (comment) => {
+    if (comment?.user?._id === user?.user?._id) {
+      {
+        timeRef.current = setTimeout(() => {
+          setCommentToDelete(comment); // store comment here
+          setShowCommentDelete(true);
+        }, 600);
+      }
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (comment?.user?._id === user?.user?._id)
+      clearTimeout(timeRef.current);
+  };
 
   const handleSend = () => {
     if (!commentText.trim()) return;
@@ -20,9 +42,14 @@ export default function CommentSection({ comments, postId, user }) {
     }, 100);
   };
 
+
+  const handleDeleteComment = async (id) => {
+    await deletecomments(id)
+  }
+
   return (
     <div className="w-full max-w-2xl h-[450px] bg-[#0d0d11] border border-[#2a2a2a] rounded-2xl shadow-xl mx-auto flex flex-col overflow-hidden">
-      
+
       {/* 📝 Input */}
       <div className="flex items-center gap-3 px-4 py-3 border-b border-[#333] bg-[#121218]">
         <Image
@@ -30,7 +57,7 @@ export default function CommentSection({ comments, postId, user }) {
           alt="User"
           width={36}
           height={36}
-          className="rounded-full object-cover border border-cyan-500"
+          className="rounded-full object-cover "
         />
 
         <div className="relative flex-1">
@@ -50,18 +77,45 @@ export default function CommentSection({ comments, postId, user }) {
         </div>
       </div>
 
+
+      <div>
+        {
+          <DeleteCommentModal
+            show={showCommentDelete && commentToDelete?.user?._id === user?.user?._id}
+            onDelete={() => {
+              handleDeleteComment(commentToDelete?._id);
+              setShowCommentDelete(false);
+              setCommentToDelete(null);
+            }}
+            onCancel={() => {
+              setShowCommentDelete(false);
+              setCommentToDelete(null);
+            }}
+          />
+
+        }
+      </div>
+
       {/* 💬 Comments */}
       <div ref={commentBoxRef} className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
         {comments?.map((comment, idx) => (
+
           <div key={idx} className="flex items-start gap-3">
+
             <Image
-              src={comment?.user?.avatar }
+              src={comment?.user?.avatar}
               alt="User Avatar"
               width={36}
               height={36}
               className="rounded-full h-8 w-8 object-cover border border-[#444] flex-shrink-0"
             />
-            <div className="flex-1 bg-[#181820] px-4 py-3 rounded-xl border border-[#2a2a2a]">
+            <div className="flex-1 bg-[#181820] px-4 py-3 rounded-xl border border-[#2a2a2a]"
+              onTouchStart={() => handleTouchStart(comment)}
+              onMouseDown={() => handleTouchStart(comment)}
+              onTouchEnd={handleTouchEnd}
+              onMouseUp={handleTouchEnd}
+              onMouseLeave={handleTouchEnd}
+            >
               <div className="flex justify-between items-center mb-1">
                 <p className="text-sm text-white font-medium">@{comment?.user?.username}</p>
                 <span
@@ -70,6 +124,7 @@ export default function CommentSection({ comments, postId, user }) {
                 >
                   {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
                 </span>
+
               </div>
               <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap">
                 {comment?.content}

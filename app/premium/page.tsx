@@ -8,8 +8,8 @@ import CheckoutButton from "@/components/CheckoutPayment";
 const plans = [
   {
     name: "Basic",
-    price: "₹149",
-    amount:14900,
+    price: "₹29",
+    amount:2900,
     frequency: "/month",
     features: [
       "Small reply boost",
@@ -20,9 +20,9 @@ const plans = [
   },
   {
     name: "Premium",
-    price: "₹349",
-    amount:34900,
-    frequency: "/month",
+    price: "₹49",
+    amount:4900,
+    frequency: "/3 month",
     features: [
       "Everything in Basic",
       "AI-powered suggestions",
@@ -34,9 +34,9 @@ const plans = [
   },
   {
     name: "Premium+",
-    price: "₹1,999",
-    amount:199900,
-    frequency: "/month",
+    price: "₹59",
+    amount:5900,
+    frequency: "/6 month",
     features: [
       "Everything in Premium",
       "Max boost & reach",

@@ -56,7 +56,7 @@ const PostCard = ({ post }) => {
         try {
             const res = await repost(post._id);
             if (res?.status == 200) {
-                toast.success("Reposted successfully!");
+                toast.success("Reposted done");
             }
         } catch (err) {
             toast.error("Something went wrong!");
@@ -65,8 +65,8 @@ const PostCard = ({ post }) => {
 
     const handleSavedPost = async () => {
         const data = await savepost(post._id);
-        console.log(data)
-        setSavedPost(data);
+        // console.log(data)
+        setSavedPost(true);
     }
 
 
@@ -208,10 +208,10 @@ const PostCard = ({ post }) => {
                 <div className="flex justify-between px-3 text-gray-400 mt-4 ml-4 text-sm">
                     <div className="flex items-center  hover:text-blue-400 cursor-pointer" onClick={async () => {
                         if (!commentLoad) {
-                            console.log(post._id)
+                            // console.log(post._id)
                             const data = await getcomments(post._id);
                             setCommentData(data)
-                            console.log(data);
+                            // console.log(data);
 
                         }
                         setCommentLoad(!commentLoad);

@@ -14,3 +14,9 @@ complete the profile
 complete the more feature page
 ai chat intigration
 ai voice backend (thing how to build)
+
+
+today :
+--------
+
+when i click reposted video then we go to actual user post and acset the post where is post 
