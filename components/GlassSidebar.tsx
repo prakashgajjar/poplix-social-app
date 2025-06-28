@@ -135,7 +135,7 @@ function SidebarOption({
   activeLabel,
   onClick
 }: {
-  Icon: any;
+  Icon: React.ReactNode;
   label: string;
   activeLabel?: string;
   onClick: () => void;
