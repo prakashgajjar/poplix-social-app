@@ -23,7 +23,7 @@ const Page = () => {
   const [media, setMedia] = useState<File | null>(null);
   const inputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [videoLoaded, setVideoLoaded] = useState(false)
+  // const [videoLoaded, setVideoLoaded] = useState(false)
   const [showEmoji, setShowEmoji] = useState(false)
 
   const uploadTypes = [
@@ -67,7 +67,7 @@ const Page = () => {
   useEffect(() => {
     handleGetChat()
     scrollToBottom();
-  }, []);
+  });
 
   return (
     <SwipeToGoBack to="/message">{
@@ -133,7 +133,7 @@ const Page = () => {
 
                   {msg.type === "video" && (
                     <div>
-                      <CustomVideoPlayer src={msg.url} onLoadedData={() => setVideoLoaded(true)} />
+                      <CustomVideoPlayer src={msg.url} onLoadedData={() => true} />
                       <h1>{msg.content}</h1>
                     </div>
                   )}

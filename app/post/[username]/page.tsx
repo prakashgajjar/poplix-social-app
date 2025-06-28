@@ -54,12 +54,12 @@ const UserPostPage = () => {
   useEffect(() => {
     checkAuth();
     fetchUserPosts();
-  }, [username]);
+  }, username);
 
   const handleBack = () => router.push(`/${username}`);
 
 
-  const handleLongPress = (post: any) => {
+  const handleLongPress = (post: object) => {
     setPostId(post?._id);
     if (auth) {
       setShowDeletePost(true);

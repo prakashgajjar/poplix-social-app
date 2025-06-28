@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import status from "@/utils/status";
 import User from "@/models/User.models";
 import { getUserIdFromToken } from "@/lib/getUserIdfromToken";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   await connectDB();
 
   try {

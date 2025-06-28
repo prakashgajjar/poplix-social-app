@@ -8,13 +8,14 @@ import CheckoutButton from "@/components/CheckoutPayment";
 const plans = [
   {
     name: "Basic",
-    price: "₹29",
-    amount:2900,
+    price: "₹19",
+    amount:190,
     frequency: "/month",
     features: [
       "Small reply boost",
       "Access to Explore",
       "Limited bookmarks",
+      "Large reply boost",
     ],
     highlight: false,
   },

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import { MessageCircle, Heart, Repeat, Share2, BarChart3, Bookmark } from "lucide-react";
+import { MessageCircle, Heart, Repeat, BarChart3 } from "lucide-react";
 import { likepost } from "@/actions/postActions/postlike";
 import { getlikes } from "@/actions/postActions/getlikes";
 import { useRouter } from "next/navigation";
@@ -16,7 +16,7 @@ const RePostCard = ({ post, repostUser }) => {
   const contentRef = useRef(null);
   const [likedPost, setLikedPost] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false);
+  // const [videoLoaded, setVideoLoaded] = useState(false);
 
 
   useEffect(() => {
@@ -139,7 +139,7 @@ const RePostCard = ({ post, repostUser }) => {
             <div className="relative w-full  rounded-xl overflow-hidden">
               <CustomVideoPlayer
                 src={post?.url}
-                onLoadedData={() => setVideoLoaded(true)}
+                onLoadedData={() => true}
               />
             </div>
           </div>

@@ -34,7 +34,7 @@ const PostCard = ({ post }) => {
 
     const [likedPost, setLikedPost] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
-    const [videoLoaded, setVideoLoaded] = useState(false);
+    // const [videoLoaded, setVideoLoaded] = useState(false);
 
 
 
@@ -60,11 +60,12 @@ const PostCard = ({ post }) => {
             }
         } catch (err) {
             toast.error("Something went wrong!");
+            console.log(err)
         }
     };
 
     const handleSavedPost = async () => {
-        const data = await savepost(post._id);
+         await savepost(post._id);
         // console.log(data)
         setSavedPost(true);
     }
@@ -197,7 +198,7 @@ const PostCard = ({ post }) => {
                         <div className="col-span-2 rounded-xl relative">
                             <CustomVideoPlayer
                                 src={post?.url}
-                                onLoadedData={() => setVideoLoaded(true)}
+                                onLoadedData={() => true}
                             />
                         </div>
                     </div>

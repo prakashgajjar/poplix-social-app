@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Mic, Send } from "lucide-react";
+// import { AnimatePresence, motion } from "framer-motion";
+import { Send } from "lucide-react";
 import Image from "next/image";
 
 export default function PopAIChatOverlay({ visible = true }) {

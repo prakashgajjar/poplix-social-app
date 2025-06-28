@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import {
   Heart,
   MessageCircle,
-  Check,
   ArrowLeft,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -15,7 +14,7 @@ import Image from "next/image";
 const BookmarkPage = () => {
   const router = useRouter();
   const [tab, setTab] = useState<"media" | "text">("media");
-  const [savedPosts, setSavedPosts] = useState<any[]>([]);
+  const [savedPosts, setSavedPosts] = useState<[]>([]);
 
 
   const getBookmarks = async () => {

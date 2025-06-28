@@ -12,10 +12,10 @@ export async function GET() {
 
     const hashtagCounts = {};
 
-    for (let post of recentPosts) {
+    for (const post of recentPosts) {
       const hashtags = post.content?.match(/#[a-zA-Z0-9_]+/g);
       if (hashtags) {
-        for (let tag of hashtags) {
+        for (const tag of hashtags) {
           const cleanTag = tag.toLowerCase();
           hashtagCounts[cleanTag] = (hashtagCounts[cleanTag] || 0) + 1;
         }

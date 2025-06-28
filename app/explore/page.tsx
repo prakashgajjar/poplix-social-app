@@ -14,7 +14,6 @@ import MediaCard from '@/components/Media';
 import { finduser } from '@/actions/explore/finduser';
 import SwipeToGoBack from '@/components/SwipeToGoBack';
 import PostShow from '@/components/PostShow';
-import page from '../more/page';
 
 const ExplorePage = () => {
   const [posts, setPosts] = useState([]);
@@ -37,14 +36,6 @@ const ExplorePage = () => {
     setUsers(user)
   }
 
-  const handleScroll = () => {
-    if (!containerRef.current || loading || !hasMore) return;
-    const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-
-    if (scrollTop + clientHeight >= scrollHeight - 300) {
-      setPage((prev) => prev + 1); // ⬅️ Move this here
-    }
-  };
   const fetchData = async (pageNo = 1) => {
     if (loading || !hasMore) return;
 

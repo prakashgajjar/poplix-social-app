@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { Heart, MessageCircle, VolumeX, Volume2, Check } from "lucide-react";
 import Image from "next/image";
 
-const MediaCard = ({ post }: { post: any }) => {
+const MediaCard = ({ post }: { post: object }) => {
   // console.log(post)
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);

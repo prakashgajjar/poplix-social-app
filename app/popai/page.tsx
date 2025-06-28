@@ -12,20 +12,20 @@ export default function PopAIAssistantOverlay({ visible = true }: { visible?: bo
   const [listening, setListening] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const [text, setText] = useState<string | null>(null);
-  const [voicesLoaded, setVoicesLoaded] = useState(false);
+  // const [voicesLoaded, setVoicesLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<string[]>([]);
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef(null);
 
 
   // 🌸 Load available voices
-  useEffect(() => {
-    const synth = window.speechSynthesis;
-    const loadVoices = () => setVoicesLoaded(true);
-    synth.onvoiceschanged = loadVoices;
-    loadVoices();
-  }, []);
+  // useEffect(() => {
+  //   const synth = window.speechSynthesis;
+  //   const loadVoices = () => setVoicesLoaded(true);
+  //   synth.onvoiceschanged = loadVoices;
+  //   loadVoices();
+  // }, []);
 
   // 🔊 Speak function
   const speak = (text: string) => {
@@ -53,7 +53,7 @@ export default function PopAIAssistantOverlay({ visible = true }: { visible?: bo
   useEffect(() => {
     if (typeof window !== "undefined") {
       const SpeechRecognition =
-        (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        window?.SpeechRecognition || window?.webkitSpeechRecognition;
 
       if (SpeechRecognition) {
         recognitionRef.current = new SpeechRecognition();

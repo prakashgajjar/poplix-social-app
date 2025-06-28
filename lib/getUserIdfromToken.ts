@@ -9,7 +9,7 @@ export async function getUserIdFromToken(): Promise<string | null> {
     if (!token) return null;
 
     const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
-    const { payload } = await jwtVerify(token, secret) as { payload: any };
+    const { payload } = await jwtVerify(token, secret) ;
 
     return payload.userId as string;
   } catch (err) {

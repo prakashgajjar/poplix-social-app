@@ -1,4 +1,4 @@
-import { Check, X, UserPlus, MessageCircle, Heart, Repeat2, AlertCircle } from 'lucide-react';
+import { Check, X} from 'lucide-react';
 import Image from 'next/image';
 
 interface NotificationItemProps {
@@ -24,7 +24,6 @@ export default function NotificationItem({
   isFollowingBack = false,
   onAccept,
   onReject,
-  onFollowBack,
 }: NotificationItemProps) {
   return (
     <div className="flex items-start gap-4 p-4 hover:bg-muted rounded-xl transition w-full hover:bg-gray-800">

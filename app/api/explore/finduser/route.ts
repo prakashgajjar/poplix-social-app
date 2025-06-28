@@ -1,7 +1,6 @@
 import status from "@/utils/status";
 import { NextResponse } from "next/server";
 import User from "@/models/User.models";
-import path from "path";
 
 export async function POST(req: Request) {
   try {

@@ -6,7 +6,6 @@ import connectDB from "@/lib/db";
 import { getUserIdFromToken } from "@/lib/getUserIdfromToken";
 import Chat from "@/models/Chat.models";
 import cloudinary from "@/lib/cloudinary";
-import { extname } from "path";
 
 export async function POST(req: NextRequest) {
   await connectDB();

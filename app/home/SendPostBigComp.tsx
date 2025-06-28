@@ -19,7 +19,7 @@ const SendPostBigComp = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isPosting, setIsPosting] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
-  const [userData, setUserData] = useState<any>(null);
+  const [userData, setUserData] = useState<object | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {

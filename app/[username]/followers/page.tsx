@@ -8,7 +8,7 @@ import AllFolloUserSkeleton from '../AllFolloUserSkeleton';
 
 const FollowersPage = () => {
   const { username } = useParams();
-  const [followers, setFollowers] = useState<any[]>([]);
+  const [followers, setFollowers] = useState<[]>([]);
   const [loading, setLoading] = useState(true);
 
 
@@ -16,7 +16,7 @@ const FollowersPage = () => {
     if (username) {
       handleGetFollowers();
     }
-  }, [username]);
+  },username);
 
   const handleGetFollowers = async () => {
     setLoading(true);

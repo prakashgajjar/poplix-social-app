@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  FaHome, FaSearch, FaBell, FaEnvelope, FaBookmark, FaUser, FaPlus,
+  FaHome, FaSearch, FaBell, FaEnvelope, FaBookmark, FaUser, 
   FaRocket, FaEllipsisH,
 
 } from "react-icons/fa";

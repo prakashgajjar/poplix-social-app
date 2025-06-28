@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import status from "@/utils/status";
 import Comment from "@/models/Comment.models";
-import mongoose from "mongoose";
 
 export async function POST(req: NextRequest) {
   await connectDB();

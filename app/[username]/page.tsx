@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { Camera, ArrowLeft, ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
@@ -9,7 +9,7 @@ import { uploadprofilepic } from "@/actions/profile/uploadprofilepic";
 import { getprofiledatail } from "@/actions/profile/getprofiledetail";
 import Follow from "./Follow";
 import ProfileInfo from "./Profile";
-import { checkfollowuser } from "@/actions/profile/checkfollow";
+// import { checkfollowuser } from "@/actions/profile/checkfollow";
 import GlassSidebar from "@/components/GlassSidebar";
 import ProfileSkeleton from "@/components/ProfilepageLoader";
 import MediaCard from "@/components/Media";
@@ -25,7 +25,7 @@ export default function ProfilePage() {
 
   const [profile, setProfile] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [checkFollow, setCheckFollow] = useState<boolean>(false);
+  // const [checkFollow, setCheckFollow] = useState<boolean>(false);
   const [showPost, setShowPost] = useState(false);
   const [postData, setPostData] = useState(null);
 
@@ -56,21 +56,21 @@ export default function ProfilePage() {
     }
   };
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const data = await getprofiledatail({ username });
-      const data1 = await checkfollowuser(data.user._id);
+      // const data1 = await checkfollowuser(data.user._id);
       setProfile(data.user);
       setUserId(data.userId);
-      setCheckFollow(data1);
+      // setCheckFollow(data1);
     } catch (error) {
       console.error("Failed to fetch profile", error);
     }
-  };
+  }, username); // Now fetchData is stable
 
   useEffect(() => {
     if (username) fetchData();
-  }, [username]);
+  }, [username, fetchData]);
 
   // ✨ Long press handlers
   const handlePressStart = (post) => {
@@ -162,7 +162,7 @@ export default function ProfilePage() {
               <div className="flex gap-3">
 
                 {userId !== profile?._id && <Message id={profile?._id} />}
-                {userId !== profile?._id &&<Follow id={profile?._id}  />}
+                {userId !== profile?._id && <Follow id={profile?._id} />}
               </div>
             </div>
 
