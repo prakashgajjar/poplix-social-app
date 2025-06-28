@@ -22,9 +22,6 @@ const BookmarkPage = () => {
     url?: string;
     type: "image" | "video" | "text" | "pdf" | "audio";
   }
-  interface Props {
-    savedPosts: Post[];
-  }
 
   const getBookmarks = async () => {
     const data = await getbookmarks();
