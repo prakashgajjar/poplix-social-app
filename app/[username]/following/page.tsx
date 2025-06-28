@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import AllFollowUsers from '../AllFolloUsers';
 import { getfollowing } from '@/actions/profile/getfollowing';
@@ -8,20 +8,20 @@ import AllFolloUserSkeleton from '../AllFolloUserSkeleton';
 
 const FollowersPage = () => {
   const { username } = useParams();
-  const [following, setFollowing] = useState<[]>([]);
+  const [following, setFollowing] = useState<[]>([]); // better type
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (username) {
       handleGetFollowers();
     }
-  }, username);
+  }, [username]); // must be an array
 
   const handleGetFollowers = async () => {
     setLoading(true);
     try {
       const data = await getfollowing(username as string);
-      console.log(data)
+      console.log(data);
       setFollowing(data || []);
     } catch (err) {
       console.error('Error fetching followers:', err);
@@ -33,9 +33,9 @@ const FollowersPage = () => {
   return (
     <div className="px-4 py-2 bg-black min-h-screen text-white">
       {loading ? (
-        <AllFolloUserSkeleton/>
+        <AllFolloUserSkeleton />
       ) : (
-        <AllFollowUsers users={following} text="following"/>
+        <AllFollowUsers users={following} text="following" />
       )}
     </div>
   );
