@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import Follow from './Follow';
 import { removefollowers } from '@/actions/profile/removefollowers';
-import { getuserinfo } from '@/actions/auth/getuserinfo';
+// import { getuserinfo } from '@/actions/auth/getuserinfo';
 
 interface Props {
   users: Follower[];
@@ -16,21 +16,21 @@ export default function AllFollowUsers({ users, text }: Props) {
   const [search, setSearch] = useState('');
   const router = useRouter()
   const { username } = useParams();
-  const [userId , setUserId] = useState('')
+  // const [userId , setUserId] = useState('')
   // console.log(users)
 
   const handleRemove = async (id) =>{
     await removefollowers(id)
   }
 
-  useEffect(()=>{
-    const getUser = async () => {
-      const data = await getuserinfo()
-      // console.log("data" , data.user._id)
-      setUserId(data?.user?._id)  
-    }
-    getUser()
-  })
+  // useEffect(()=>{
+  //   const getUser = async () => {
+  //     const data = await getuserinfo()
+  //     // console.log("data" , data.user._id)
+  //     // setUserId(data?.user?._id)  
+  //   }
+  //   getUser()
+  // })
 
   return (
     users && <div className="min-h-screen bg-black text-white px-4 py-2">

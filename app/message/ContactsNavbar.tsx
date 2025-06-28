@@ -2,14 +2,9 @@
 
 import { useEffect, useState } from "react";
 import {
-  Paperclip,
-  Mic,
-  Send,
-  Image as ImageIcon,
-  Smile,
   ArrowLeft,
   Users,
-  Plus,
+  
 } from "lucide-react";
 import { FaCog } from "react-icons/fa";
 

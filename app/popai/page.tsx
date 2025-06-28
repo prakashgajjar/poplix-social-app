@@ -17,7 +17,7 @@ export default function PopAIAssistantOverlay({ visible = true }: { visible?: bo
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<string[]>([]);
   const recognitionRef = useRef(null);
-
+ const router = useRouter();
 
   // 🌸 Load available voices
   // useEffect(() => {
@@ -61,7 +61,7 @@ export default function PopAIAssistantOverlay({ visible = true }: { visible?: bo
         recognitionRef.current.lang = "en-US";
         recognitionRef.current.interimResults = false;
 
-        recognitionRef.current.onresult = async (event: any) => {
+        recognitionRef.current.onresult = async (event) => {
           const transcript = event.results[0][0].transcript.trim();
           setText(transcript);
           setHistory(prev => [transcript, ...prev.slice(0, 4)]);
@@ -96,7 +96,7 @@ export default function PopAIAssistantOverlay({ visible = true }: { visible?: bo
         };
       }
     }
-  }, []);
+  });
 
   // 🎛️ Toggle listening
   const handleListenToggle = () => {
@@ -120,7 +120,7 @@ export default function PopAIAssistantOverlay({ visible = true }: { visible?: bo
   };
 
   if (!visible) return null;
-    const router = useRouter();
+   
 
   return (
     <SwipeToGoBack to='/home'>

@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  FaHome, FaSearch, FaBell, FaEnvelope, FaBookmark, FaUser, 
+  FaHome, FaSearch, FaBell, FaEnvelope, FaBookmark, FaUser,
   FaRocket, FaEllipsisH,
 
 } from "react-icons/fa";
@@ -26,11 +26,11 @@ export default function Sidebar() {
     {
       icon: (
         <Image
-        src="/logos/poplix2.png"
-        alt="Popai Icon"
-        width={20}
-        height={20}
-        className="rounded-sm"
+          src="/logos/poplix2.png"
+          alt="Popai Icon"
+          width={20}
+          height={20}
+          className="rounded-sm"
         />
       ),
       label: "Popai",
@@ -68,9 +68,11 @@ export default function Sidebar() {
                 setSelectedIndex(i)
                 if (route !== "/profile") {
                   router.replace(`${route}`)
-                } 
+                }
                 else {
-                  user?.user.username && router.push(`/${user.user.username}`)
+                  if (user?.user?.username) {
+                    router.push(`/${user.user.username}`);
+                  }
                 }
 
               }}

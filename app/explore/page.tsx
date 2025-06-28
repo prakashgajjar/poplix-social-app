@@ -56,7 +56,7 @@ const ExplorePage = () => {
 
   useEffect(() => {
     fetchData(page);
-  }, [page]);
+  }, page);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,7 +84,7 @@ const ExplorePage = () => {
         setFilteredPosts(posts);
       } else {
         setFilteredPosts(
-          posts.filter((post: any) =>
+          posts.filter((post: object) =>
             post.user?.username?.toLowerCase().includes(lowerSearch)
           )
         );
