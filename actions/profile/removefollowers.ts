@@ -1,6 +1,6 @@
  import axios from "axios";
  
- export  const removefollowers = async (id) => {
+ export  const removefollowers = async (id : string) => {
     try {
       const response = await axios.post("/api/home/profile/removefromfollowers", {id}, {
         headers: {

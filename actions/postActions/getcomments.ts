@@ -1,7 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export const getcomments = async (id) => {
+export const getcomments = async (id : string) => {
   try {
     const response = await axios.post(
       "/api/home/post/getcomments",

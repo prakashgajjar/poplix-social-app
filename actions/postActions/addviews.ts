@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const addview = async (id) => {
+export const addview = async (id : string) => {
   try {
     const response = await axios.post("/api/home/post/addview", {id}, {
       headers: {

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const finduser = async (username) => {
+export const finduser = async (username : string) => {
   try {
     const response = await axios.post(
       "/api/explore/finduser",

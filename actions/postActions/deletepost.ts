@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const deletepost = async ( postId ) => {
+export const deletepost = async ( postId : string ) => {
   try {
     const response = await axios.post(
       "/api/home/post/deletepost",

@@ -1,6 +1,6 @@
  import axios from "axios";
  
- export  const updateprofile = async (fullname , bio) => {
+ export  const updateprofile = async (fullname : string , bio : string) => {
     try {
       const response = await axios.post("api/home/profile/profileupdate", {fullname , bio}, {
         headers: {

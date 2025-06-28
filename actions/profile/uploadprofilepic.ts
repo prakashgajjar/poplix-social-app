@@ -1,6 +1,6 @@
  import axios from "axios";
  
- export  const uploadprofilepic = async (formData) => {
+ export  const uploadprofilepic = async (formData : FormData) => {
     try {
       const response = await axios.post("api/home/profile/uploadprofilepic", formData, {
         headers: {

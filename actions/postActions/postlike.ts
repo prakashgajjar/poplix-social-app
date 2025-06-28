@@ -1,7 +1,7 @@
  import axios from "axios";
 import toast from "react-hot-toast";
  
- export  const likepost = async (id) => {
+ export  const likepost = async (id : string) => {
     try {
       const response = await axios.post("api/home/post/likeposts", {
         id

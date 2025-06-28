@@ -1,6 +1,6 @@
  import axios from "axios";
  
- export  const sendtexttoai = async (text) => {
+ export  const sendtexttoai = async (text:string) => {
     try {
       const response = await axios.post("api/ai/geminiaichat",text, {
         headers: {

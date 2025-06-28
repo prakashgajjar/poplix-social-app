@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const deletecomments = async ( id ) => {
+export const deletecomments = async ( id : string ) => {
   try {
     const response = await axios.post(
       "/api/home/post/deletecomment",

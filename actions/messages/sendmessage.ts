@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const sendmessage = async (formData) => {
+export const sendmessage = async (formData : FormData) => {
   try {
     await axios.post("/api/messages/sendmessage", formData, {
       headers: {

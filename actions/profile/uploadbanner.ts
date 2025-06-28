@@ -1,6 +1,6 @@
  import axios from "axios";
  
- export  const uploadBanner = async (formData) => {
+ export  const uploadBanner = async (formData : FormData) => {
     try {
       const response = await axios.post("api/home/profile/uploadbanner", formData, {
         headers: {

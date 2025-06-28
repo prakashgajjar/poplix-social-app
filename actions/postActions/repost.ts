@@ -1,7 +1,7 @@
  import axios from "axios";
 import toast from "react-hot-toast";
  
- export  const repost = async (postId) => {
+ export  const repost = async (postId : string) => {
     try {
       const response = await axios.post("/api/home/post/repost",{postId}
       , {

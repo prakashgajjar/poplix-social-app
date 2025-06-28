@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const savepost = async (id) => {
+export const savepost = async (id:string) => {
   try {
     const response = await axios.post("/api/home/post/savepost", {id}, {
     headers: {

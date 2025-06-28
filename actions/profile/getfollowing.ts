@@ -1,6 +1,6 @@
  import axios from "axios";
  
- export  const getfollowing = async (username) => {
+ export  const getfollowing = async (username : string) => {
     try {
       const response = await axios.post("/api/home/profile/getfollowing", username, {
         headers: {

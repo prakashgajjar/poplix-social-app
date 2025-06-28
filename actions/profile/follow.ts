@@ -1,6 +1,6 @@
  import axios from "axios";
  
- export  const followuser = async (id) => {
+ export  const followuser = async (id : string) => {
     try {
       const response = await axios.post("/api/home/profile/follow", id, {
         headers: {
