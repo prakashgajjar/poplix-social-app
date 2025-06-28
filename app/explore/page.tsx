@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Search } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -23,7 +23,7 @@ interface Post {
   _id: string;
   user: User;
   media?: string;
-  [key: string]: any; // For any additional properties
+  [key: string]: unknown; // For any additional properties
 }
 
 const ExplorePage: React.FC = () => {
@@ -46,7 +46,7 @@ const ExplorePage: React.FC = () => {
     setUsers(userResult || []);
   };
 
-  const fetchData = async (pageNo = 1) => {
+  const fetchData = useCallback( async (pageNo = 1) => {
     if (loading || !hasMore) return;
     setLoading(true);
 
@@ -58,11 +58,11 @@ const ExplorePage: React.FC = () => {
       setHasMore(false);
     }
     setLoading(false);
-  };
+  },[hasMore]);
 
   useEffect(() => {
     fetchData(page);
-  }, [page]);
+  }, [page , fetchData]);
 
   useEffect(() => {
     const handleScroll = () => {

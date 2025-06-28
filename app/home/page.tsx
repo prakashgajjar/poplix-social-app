@@ -5,7 +5,7 @@ import {
   FaHome, FaSearch, FaBell, FaUser,
   FaPaperPlane,
 } from "react-icons/fa";
-import { use, useEffect, useRef, useState, useCallback } from "react";
+import {  useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from 'next/navigation';
 
 import SendPost from "./SendPost";

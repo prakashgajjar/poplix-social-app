@@ -1,21 +1,29 @@
-import status from "@/utils/status";
 import { NextRequest, NextResponse } from "next/server";
-import ChatMessage from "@/models/MessageChat.models";
-import User from "@/models/User.models";
 import connectDB from "@/lib/db";
-import { getUserIdFromToken } from "@/lib/getUserIdfromToken";
-import Chat from "@/models/Chat.models";
 import cloudinary from "@/lib/cloudinary";
+import status from "@/utils/status";
+import { getUserIdFromToken } from "@/lib/getUserIdfromToken";
+
+import User from "@/models/User.models";
+import Chat from "@/models/Chat.models";
+import ChatMessage from "@/models/MessageChat.models";
+
+type MediaType = "text" | "image" | "video" | "audio" | "pdf";
 
 export async function POST(req: NextRequest) {
   await connectDB();
+
   const senderId = await getUserIdFromToken();
+  if (!senderId) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
   const formData = await req.formData();
   const message = formData.get("message") as string | null;
-  const receiverId = formData.get("receiverId")?.toString() as string | null;
+  const receiverId = formData.get("receiverId")?.toString() || null;
   const media = formData.get("media") as File | null;
 
-  if (!message && !media) {
+  if (!receiverId || (!message && !media)) {
     return NextResponse.json(
       { message: status.FORBIDDEN.message },
       { status: status.FORBIDDEN.code }
@@ -23,8 +31,11 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const sender = await User.findById(senderId);
-    const receiver = await User.findById(receiverId);
+    const [sender, receiver] = await Promise.all([
+      User.findById(senderId),
+      User.findById(receiverId),
+    ]);
+
     if (!sender || !receiver) {
       return NextResponse.json(
         { message: status.NOT_FOUND.message },
@@ -32,51 +43,62 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    let uploadResult = null;
-    let type: "text" | "image" | "video" | "audio" | "pdf" = "text";
+    type UploadResultType = {
+      secure_url: string;
+      [key: string]: unknown;
+    };
+
+    let uploadUrl: string | "" = "";
+    let type: MediaType = "text";
 
     if (media) {
-      const bufferFile = Buffer.from(await media.arrayBuffer());
+      const buffer = Buffer.from(await media.arrayBuffer());
+      const mime = media.type;
 
-      // Detect mime
-      const mimeType = media.type; // like 'application/pdf', 'image/png'
-      if (mimeType.includes("pdf")) type = "pdf";
-      else if (mimeType.includes("image")) type = "image";
-      else if (mimeType.includes("video")) type = "video";
-      else if (mimeType.includes("audio")) type = "audio";
+      if (mime.includes("pdf")) type = "pdf";
+      else if (mime.includes("image")) type = "image";
+      else if (mime.includes("video")) type = "video";
+      else if (mime.includes("audio")) type = "audio";
 
-      uploadResult = await new Promise((resolve, reject) => {
-        cloudinary.uploader
-          .upload_stream(
-            {
-              folder: "poplix/messagesPosts",
-              resource_type: "auto", // auto handles all types
-            },
-            (err, result) => {
-              if (err) return reject(err);
-              resolve(result);
-            }
-          )
-          .end(bufferFile);
-      });
+      const uploadResult = await new Promise<UploadResultType>(
+        (resolve, reject) => {
+          cloudinary.uploader
+            .upload_stream(
+              {
+                folder: "poplix/messagesPosts",
+                resource_type: "auto",
+              },
+              (err, result) => {
+                if (err) reject(err);
+                else resolve(result as UploadResultType); 
+              }
+            )
+            .end(buffer);
+        }
+      );
+
+      uploadUrl = uploadResult.secure_url;
     }
 
+    // Check if chat exists
     let chat = await Chat.findOne({
       isGroup: false,
       members: { $all: [senderId, receiverId], $size: 2 },
     });
 
     if (!chat) {
-      chat = new Chat({ isGroup: false, members: [senderId, receiverId] });
-      await chat.save();
+      chat = await Chat.create({
+        isGroup: false,
+        members: [senderId, receiverId],
+      });
     }
 
     const messageChat = await ChatMessage.create({
       chat: chat._id,
       sender: senderId,
-      url: uploadResult?.secure_url || null,
+      url: uploadUrl,
       content: message,
-      type: media ? type : "text",
+      type,
     });
 
     chat.latestMessage = messageChat._id;
@@ -93,11 +115,17 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      { message: status.OK.message, chat, messageChat, sender, receiver },
+      {
+        message: status.OK.message,
+        chat,
+        messageChat,
+        sender,
+        receiver,
+      },
       { status: status.OK.code }
     );
   } catch (error) {
-    console.log("Error:", error);
+    console.error("Error sending message:", error);
     return NextResponse.json(
       { message: status.INTERNAL_ERROR.message },
       { status: status.INTERNAL_ERROR.code }

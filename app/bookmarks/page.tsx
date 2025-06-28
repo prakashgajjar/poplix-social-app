@@ -16,6 +16,15 @@ const BookmarkPage = () => {
   const [tab, setTab] = useState<"media" | "text">("media");
   const [savedPosts, setSavedPosts] = useState<[]>([]);
 
+  interface Post {
+    _id: string;
+    content?: string;
+    url?: string;
+    type: "image" | "video" | "text" | "pdf" | "audio";
+  }
+  interface Props {
+    savedPosts: Post[];
+  }
 
   const getBookmarks = async () => {
     const data = await getbookmarks();
@@ -27,10 +36,12 @@ const BookmarkPage = () => {
     getBookmarks();
   }, []);
 
+
+
   const mediaPosts = savedPosts.filter(
-    (post) => post.type === "image" || post.type === "video"
+    (post) => post?.type === "image" || post?.type === "video"
   );
-  const textPosts = savedPosts.filter((post) => post.type === "text");
+  const textPosts = savedPosts.filter((post) => post?.type === "text");
 
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-black text-white">

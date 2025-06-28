@@ -65,7 +65,7 @@ const PostCard = ({ post }: { post: object }) => {
     };
 
     const handleSavedPost = async () => {
-         await savepost(post._id);
+        await savepost(post._id);
         // console.log(data)
         setSavedPost(true);
     }

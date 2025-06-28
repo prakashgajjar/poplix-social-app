@@ -4,11 +4,12 @@ import connectDB from "@/lib/db";
 import status from "@/utils/status";
 import cloudinary from "@/lib/cloudinary";
 import { getUserIdFromToken } from "@/lib/getUserIdfromToken";
+import { UploadApiResponse } from "cloudinary";
 
 export async function POST(req: NextRequest) {
   await connectDB();
+
   const userId = await getUserIdFromToken();
-  console.log(userId)
   if (!userId) {
     return NextResponse.json(
       { message: status.NOT_FOUND.message },
@@ -17,46 +18,48 @@ export async function POST(req: NextRequest) {
   }
 
   const formData = await req.formData();
-  const file = formData.get("profilePic") as File;
+  const file = formData.get("profilePic");
 
-  if (!file) {
-    return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
+  if (!file || !(file instanceof File)) {
+    return NextResponse.json({ error: "No valid file uploaded" }, { status: 400 });
   }
+
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 
   try {
-    const result = await new Promise((resolve, reject) => {
-      cloudinary.uploader
-        .upload_stream(
-          {
-            folder: "poplix/profilePic",
-            resource_type: "image",
-          },
-          (error, result) => {
-            if (error) return reject(error);
-            resolve(result);
-          }
-        )
-        .end(buffer);
+    const uploadResult = await new Promise<UploadApiResponse>((resolve, reject) => {
+      cloudinary.uploader.upload_stream(
+        {
+          folder: "poplix/profilePic",
+          resource_type: "image",
+        },
+        (error, result) => {
+          if (error || !result) return reject(error);
+          resolve(result);
+        }
+      ).end(buffer);
     });
 
-    const user = await User.findOneAndUpdate({ _id: userId },{avatar : result.secure_url});
-    await user.save();
-    console.log(user);
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { avatar: uploadResult.secure_url },
+      { new: true }
+    );
+
     if (!user) {
-      NextResponse.json(
+      return NextResponse.json(
         { message: status.NOT_FOUND.message },
         { status: status.NOT_FOUND.code }
       );
     }
-    
+
     return NextResponse.json(
       { message: status.OK.message, user },
       { status: status.OK.code }
     );
   } catch (error) {
-    console.log(error);
+    console.error("Upload Error:", error);
     return NextResponse.json(
       { message: status.INTERNAL_ERROR.message },
       { status: status.INTERNAL_ERROR.code }

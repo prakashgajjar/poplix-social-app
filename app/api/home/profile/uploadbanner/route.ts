@@ -41,7 +41,8 @@ export async function POST(req: NextRequest) {
         .end(buffer);
     });
 
-    const user = await User.findOneAndUpdate({ _id: userId },{banner : result.secure_url});
+    const { secure_url } = result as { secure_url: string };
+    const user = await User.findOneAndUpdate({ _id: userId }, { banner: secure_url });
     await user.save();
     console.log(user);
     if (!user) {

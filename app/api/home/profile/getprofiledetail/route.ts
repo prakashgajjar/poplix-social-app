@@ -3,13 +3,15 @@ import User from "@/models/User.models";
 import connectDB from "@/lib/db";
 import status from "@/utils/status";
 import { getUserIdFromToken } from "@/lib/getUserIdfromToken";
+import "@/models/Comment.models"
 
 
 export async function POST(req: NextRequest) {
   await connectDB();
   const userId = await getUserIdFromToken();
 
-  const { username } = await req.json();
+  const  username  = await req.json();
+  console.log("username", username);
 
   try {
     const user = await User.findOne({ username }).populate({

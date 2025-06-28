@@ -80,7 +80,7 @@ export default function ProfilePage() {
   const fetchData = useCallback(async () => {
     if (!username) return;
     try {
-      const data: ProfileResponse = await getprofiledatail({ username });
+      const data: ProfileResponse = await getprofiledatail(username);
       setProfile(data.user);
       setUserId(data.userId);
     } catch (error) {

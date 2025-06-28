@@ -10,7 +10,7 @@ export async function GET() {
   try {
     const recentPosts = await Post.find({}).sort({ createdAt: -1 }).limit(100);
 
-    const hashtagCounts = {};
+    const hashtagCounts = {} as { [tag: string]: number };
 
     for (const post of recentPosts) {
       const hashtags = post.content?.match(/#[a-zA-Z0-9_]+/g);
