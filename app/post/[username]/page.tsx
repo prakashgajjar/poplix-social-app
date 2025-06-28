@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
@@ -26,22 +26,22 @@ const UserPostPage = () => {
   const router = useRouter();
 
   // Fetch posts by username
-  const fetchUserPosts = async () => {
+  const fetchUserPosts = useCallback(async () => {
     if (!username) return;
     try {
-      const res = await userpostdata(username);
+      const res = await userpostdata(username as string);
       setPosts(res);
     } catch (error) {
       console.error("Error fetching posts:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [username]);
 
   // Fetch logged-in user ID
-  async function checkAuth() {
+  const checkAuth = useCallback(async () => {
     try {
-      const res = await checkuservalid(username)
+      const res = await checkuservalid(username as string);
       // console.log(res);
       setAuth(res);
 
@@ -49,12 +49,12 @@ const UserPostPage = () => {
       console.log(e)
       setAuth(false);
     }
-  }
+  }, [username]);
 
   useEffect(() => {
     checkAuth();
     fetchUserPosts();
-  }, username);
+  }, [checkAuth, fetchUserPosts]);
 
   const handleBack = () => router.push(`/${username}`);
 
@@ -69,7 +69,7 @@ const UserPostPage = () => {
   return (
     <SwipeToGoBack to={`/${username}`}>
       <div className="h-screen overflow-auto p-2 md:p-6">
-        <GlassSidebar/>
+        <GlassSidebar />
         {/* Header */}
         <div className="flex items-center gap-3 mb-4">
           <button

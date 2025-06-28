@@ -15,6 +15,5 @@ export const getallnotifications = async () => {
     }
   } catch (error) {
     console.error(error);
-    toast.success(error?.message);
   }
 };

@@ -5,7 +5,7 @@ import {
   FaHome, FaSearch, FaBell, FaUser,
   FaPaperPlane,
 } from "react-icons/fa";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from 'next/navigation';
 
 import SendPost from "./SendPost";
@@ -46,35 +46,43 @@ export default function HomeLayout() {
     fetchUser();
   }, []);
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     setLoading(true);
     const newPosts = await getPosts(page); // API should return next 20
     if (newPosts.length < 15) setHasMore(false); // no more pages
     setPosts(prev => [...prev, ...newPosts]); // merge with old
     setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchPosts();
   }, [page]);
 
   useEffect(() => {
-    if (!loaderRef.current) return;
+    fetchPosts();
+  }, [page, fetchPosts]);
 
-    const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && !loading && hasMore) {
-        setPage(prev => prev + 1); // go to next page
+  useEffect(() => {
+    const currentRef = loaderRef.current;
+    if (!currentRef) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          setPage((prev) => prev + 1); // load next page
+        }
+      },
+      {
+        root: null,         // viewport
+        rootMargin: '0px',
+        threshold: 1.0      // when 100% in view
       }
-    }, {
-      threshold: 1
-    });
+    );
 
-    observer.observe(loaderRef.current);
+    observer.observe(currentRef);
 
     return () => {
-      if (loaderRef.current) observer.unobserve(loaderRef.current);
+      if (currentRef) observer.unobserve(currentRef);
     };
-  }, [loaderRef.current, loading, hasMore]);
+  }, []);
+
 
 
 

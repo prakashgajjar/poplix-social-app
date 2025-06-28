@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const followingIds = user.following.map((f) => f._id);
+    const followingIds = user.following.map((f: { _id: string }) => f._id);
 
     const posts = await Post.find({ user: { $in: followingIds } })
       .sort({ createdAt: -1 }) // newest first

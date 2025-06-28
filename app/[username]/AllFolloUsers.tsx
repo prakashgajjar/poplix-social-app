@@ -8,6 +8,12 @@ import Follow from './Follow';
 import { removefollowers } from '@/actions/profile/removefollowers';
 // import { getuserinfo } from '@/actions/auth/getuserinfo';
 
+type Follower = {
+  _id: string;
+  username: string;
+  avatar: string;
+  fullname?: string;
+};
 interface Props {
   users: Follower[];
   text: 'followers' | 'following';
@@ -19,7 +25,7 @@ export default function AllFollowUsers({ users, text }: Props) {
   // const [userId , setUserId] = useState('')
   // console.log(users)
 
-  const handleRemove = async (id) =>{
+  const handleRemove = async (id : string) =>{
     await removefollowers(id)
   }
 

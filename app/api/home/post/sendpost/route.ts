@@ -20,13 +20,19 @@ export async function POST(req: NextRequest) {
     const userId = await getUserIdFromToken();
     const user = await User.findById(userId);
 
-    let uploadResult = null;
+    type CloudinaryUploadResult = {
+      url?: string;
+      resource_type?: string;
+      [key: string]: unknown;
+    };
+
+    let uploadResult: CloudinaryUploadResult | null = null;
     let type: "text" | "image" | "video" = "text";
 
     if (file) {
       const buffer = Buffer.from(await file.arrayBuffer());
 
-      uploadResult = await new Promise((resolve, reject) => {
+      uploadResult = await new Promise<CloudinaryUploadResult>((resolve, reject) => {
         cloudinary.uploader
           .upload_stream(
             {
@@ -35,7 +41,7 @@ export async function POST(req: NextRequest) {
             },
             (err, result) => {
               if (err) return reject(err);
-              resolve(result);
+              resolve(result as CloudinaryUploadResult);
             }
           )
           .end(buffer);
@@ -53,28 +59,6 @@ export async function POST(req: NextRequest) {
 
     user.posts.push(newPost._id);
     await user.save();
-
-    // if (user.followers && user.followers.length > 0) {
-    //   const followers = await User.find({ _id: { $in: user.followers } });
-
-    //   await Promise.all(
-    //     followers.map(async (follower) => {
-    //       const notification = await Notification.create({
-    //         recipient: follower._id,
-    //         sender: userId,
-    //         type: "post", // optional: add this to enum
-    //         message: `${user.username} just posted something new!`,
-    //         meta: {
-    //           avatar: user.avatar,
-    //           username: user.username,
-    //         },
-    //       });
-
-    //       follower.notifications.push(notification._id);
-    //       await follower.save();
-    //     })
-    //   );
-    // }
 
     return NextResponse.json(
       {

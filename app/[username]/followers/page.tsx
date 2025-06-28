@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getfollowers } from '@/actions/profile/getfollowers';
 import { useParams } from 'next/navigation';
 import AllFollowUsers from '../AllFolloUsers';
@@ -12,31 +12,32 @@ const FollowersPage = () => {
   const [loading, setLoading] = useState(true);
 
 
-  useEffect(() => {
-    if (username) {
-      handleGetFollowers();
-    }
-  },username);
 
-  const handleGetFollowers = async () => {
-    setLoading(true);
-    try {
-      const data = await getfollowers(username as string);
-      // console.log(data)
-      setFollowers(data || []);
-    } catch (err) {
-      console.error('Error fetching followers:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+
+const handleGetFollowers = useCallback(async () => {
+  setLoading(true);
+  try {
+    const data = await getfollowers(username as string);
+    setFollowers(data || []);
+  } catch (err) {
+    console.error('Error fetching followers:', err);
+  } finally {
+    setLoading(false);
+  }
+}, [username]); // 🧠 include username here
+
+useEffect(() => {
+  if (username) {
+    handleGetFollowers();
+  }
+}, [username, handleGetFollowers]); 
 
   return (
     <div className="px-4 py-2 bg-black min-h-screen text-white">
       {loading ? (
-        <AllFolloUserSkeleton/>
+        <AllFolloUserSkeleton />
       ) : (
-        <AllFollowUsers users={followers }  text="followers"/>
+        <AllFollowUsers users={followers} text="followers" />
       )}
     </div>
   );

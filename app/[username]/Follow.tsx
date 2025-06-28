@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { checkfollowuser } from "@/actions/profile/checkfollow";
 import { followuser } from "@/actions/profile/follow";
 
-export default function Follow({ id }) {
+export default function Follow({ id }: { id: string }) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [loading, setLoading] = useState(true); // Optional: loading state for smoother UX
 

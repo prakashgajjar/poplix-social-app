@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import AllFollowUsers from '../AllFolloUsers';
 import { getfollowing } from '@/actions/profile/getfollowing';
@@ -11,24 +11,25 @@ const FollowersPage = () => {
   const [following, setFollowing] = useState<[]>([]); // better type
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (username) {
-      handleGetFollowers();
-    }
-  }, [username]); // must be an array
+const handleGetFollowers = useCallback(async () => {
+  setLoading(true);
+  try {
+    const data = await getfollowing(username as string);
+    console.log(data);
+    setFollowing(data || []);
+  } catch (err) {
+    console.error('Error fetching followers:', err);
+  } finally {
+    setLoading(false);
+  }
+}, [username]);
 
-  const handleGetFollowers = async () => {
-    setLoading(true);
-    try {
-      const data = await getfollowing(username as string);
-      console.log(data);
-      setFollowing(data || []);
-    } catch (err) {
-      console.error('Error fetching followers:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+useEffect(() => {
+  if (username) {
+    handleGetFollowers();
+  }
+}, [username, handleGetFollowers]);
+
 
   return (
     <div className="px-4 py-2 bg-black min-h-screen text-white">

@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     const userAlreadyLiked = findUser.likes.includes(id);
 
     if (postAlreadyLiked) {
-      findPost.likes = findPost.likes.filter(uid => uid.toString() !== userId);
+      findPost.likes = findPost.likes.filter((uid: string) => uid.toString() !== userId);
       await findPost.save();
     } else {
       findPost.likes.push(userId);
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (userAlreadyLiked) {
-      findUser.likes = findUser.likes.filter(pid => pid.toString() !== id);
+      findUser.likes = findUser.likes.filter((pid: string) => pid.toString() !== id);
       await findUser.save({optimisticConcurrency: false});
     } else {
       findUser.likes.push(id);

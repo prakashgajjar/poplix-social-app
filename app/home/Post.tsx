@@ -18,7 +18,7 @@ import { savepost } from "@/actions/postActions/savepost";
 import CustomVideoPlayer from "@/components/CustomVideoPlayer";
 
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post }: { post: object }) => {
     const [expanded, setExpanded] = useState(false);
     const [showReadMore, setShowReadMore] = useState(false);
     const [showRepostModal, setShowRepostModal] = useState(false);
